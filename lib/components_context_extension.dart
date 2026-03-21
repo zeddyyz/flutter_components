@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/utils.dart';
 
 extension ContextExtension on BuildContext {
   ThemeData get theme => Theme.of(this);
@@ -103,6 +102,6 @@ extension ContextExtension on BuildContext {
       );
 
   /// Padding for screens
-  double topPadding(double value) => value + mediaQueryPadding.top + 20;
-  double get bottomPadding => mediaQueryPadding.bottom + 80;
+  double topPadding(double value) => value + MediaQuery.paddingOf(this).top + 20;
+  double get bottomPadding => MediaQuery.paddingOf(this).bottom + 80;
 }

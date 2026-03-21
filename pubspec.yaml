@@ -14,9 +14,6 @@ dependencies:
     sdk: flutter
 
   logger: ^2.7.0
-  get:
-    git:
-      url: https://github.com/zeddyyz/getx.git
 
 dev_dependencies:
   flutter_test:
