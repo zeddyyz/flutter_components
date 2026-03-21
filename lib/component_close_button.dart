@@ -2,11 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_components/shared/gesture_click.dart';
-import 'package:get/get.dart';
+import 'package:flutter_components/shared/component_gesture_click.dart';
 
-class CupertinoCloseButton extends StatelessWidget {
-  const CupertinoCloseButton({
+class ComponentCloseButton extends StatelessWidget {
+  const ComponentCloseButton({
     super.key,
     this.bgColor,
     this.iconColor,
@@ -14,7 +13,7 @@ class CupertinoCloseButton extends StatelessWidget {
     this.isBlurred = false,
   });
 
-  const CupertinoCloseButton.blurred({
+  const ComponentCloseButton.blurred({
     super.key,
     this.bgColor,
     this.iconColor,
@@ -39,7 +38,7 @@ class CupertinoCloseButton extends StatelessWidget {
       return _buildBlurEffect(context, isLightTheme: isLightTheme);
     }
 
-    return GestureClick(
+    return ComponentGestureClick(
       onTap: onTap ?? () => Navigator.pop(context),
       child: Container(
         height: 34,

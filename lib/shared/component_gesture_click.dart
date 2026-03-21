@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-class GestureClick extends StatelessWidget {
-  const GestureClick({
+class ComponentGestureClick extends StatelessWidget {
+  const ComponentGestureClick({
     super.key,
     required this.onTap,
     required this.child,

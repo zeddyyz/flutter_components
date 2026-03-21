@@ -16,7 +16,7 @@ class ComponentBottomSheetHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(title, style: Theme.of(context).textTheme.headlineMedium),
-          CupertinoCloseButton(),
+          ComponentCloseButton(),
         ],
       ),
     );

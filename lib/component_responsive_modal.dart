@@ -54,7 +54,7 @@ class ComponentResponsiveModal {
                     centerTitle: false,
                     toolbarHeight: 80,
                     actionsPadding: EdgeInsets.only(right: 20),
-                    actions: [CupertinoCloseButton()],
+                    actions: [ComponentCloseButton()],
                   ),
                   body: isScrollable
                       ? SingleChildScrollView(child: builder(dialogContext, true))
@@ -94,7 +94,7 @@ class ComponentResponsiveModal {
                     centerTitle: false,
                     toolbarHeight: 65,
                     actionsPadding: EdgeInsets.only(right: 10),
-                    actions: [CupertinoCloseButton()],
+                    actions: [ComponentCloseButton()],
                   ),
                   body: isScrollable
                       ? SingleChildScrollView(child: builder(bottomSheetContext, true))
@@ -113,7 +113,7 @@ class ComponentResponsiveModal {
                 centerTitle: false,
                 toolbarHeight: 65,
                 actionsPadding: EdgeInsets.only(right: 10),
-                actions: [CupertinoCloseButton()],
+                actions: [ComponentCloseButton()],
               ),
               body: isScrollable
                   ? SingleChildScrollView(child: builder(bottomSheetContext, true))

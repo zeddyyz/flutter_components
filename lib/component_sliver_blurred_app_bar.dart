@@ -132,7 +132,7 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
 
     return SliverAppBar(
       title: title,
-      leading: shouldShowLeading ? (leading ?? ModernBackButton(onTap: onBackButtonTap)) : null,
+      leading: shouldShowLeading ? (leading ?? ComponentBackButton(onTap: onBackButtonTap)) : null,
       actions: actions,
       centerTitle: centerTitle,
       backgroundColor: Colors.transparent,

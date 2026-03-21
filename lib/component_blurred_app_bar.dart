@@ -135,7 +135,7 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
             titleSpacing: titleSpacing,
             leadingWidth: leadingWidth,
             leading: shouldShowLeading
-                ? (leading ?? ModernBackButton(onTap: onBackButtonTap))
+                ? (leading ?? ComponentBackButton(onTap: onBackButtonTap))
                 : null,
             actions: actions,
             actionsPadding: const EdgeInsets.only(right: 6),

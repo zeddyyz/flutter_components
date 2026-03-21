@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_components/shared/gesture_click.dart';
+import 'package:flutter_components/shared/component_gesture_click.dart';
 
-class ModernBackButton extends StatelessWidget {
-  const ModernBackButton({
+class ComponentBackButton extends StatelessWidget {
+  const ComponentBackButton({
     super.key,
     this.onTap,
     this.color,
@@ -17,7 +17,7 @@ class ModernBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isLightTheme = Theme.of(context).brightness == Brightness.light;
 
-    return GestureClick(
+    return ComponentGestureClick(
       onTap: onTap ?? () => Navigator.pop(context),
       behavior: HitTestBehavior.opaque,
       child: Center(
