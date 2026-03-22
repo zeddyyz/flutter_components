@@ -10,10 +10,12 @@ class AppThemeData {
     required Color primaryColor,
     required Color secondaryColor,
     String? fontFamily,
+    ColorScheme? colorScheme,
   }) {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
+      colorScheme: colorScheme,
       scaffoldBackgroundColor: scaffoldBackgroundColor,
       primaryColor: primaryColor,
       primaryColorLight: Colors.white,
@@ -214,10 +216,12 @@ class AppThemeData {
     required Color primaryColor,
     required Color secondaryColor,
     String? fontFamily,
+    ColorScheme? colorScheme,
   }) {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
+      colorScheme: colorScheme,
       scaffoldBackgroundColor: scaffoldBackgroundColor,
       primaryColor: primaryColor,
       primaryColorLight: Color.fromARGB(255, 13, 13, 13),
