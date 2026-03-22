@@ -1,3 +1,4 @@
+export 'package:dynamic_grid_view/dynamic_grid_view.dart';
 export 'package:flutter_components/flutter_components.dart';
 
 export 'component_back_button.dart';
