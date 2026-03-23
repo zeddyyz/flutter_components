@@ -3,15 +3,20 @@ import 'package:flutter_components/component_close_button.dart';
 import 'package:flutter_components/components_context_extension.dart';
 
 class ComponentBottomSheetHeader extends StatelessWidget {
-  const ComponentBottomSheetHeader({super.key, required this.title});
+  const ComponentBottomSheetHeader({
+    super.key,
+    required this.title,
+    this.backgroundColor,
+  });
 
   final String title;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: context.defaultPadding, vertical: 8),
-      color: context.bottomSheetTheme.backgroundColor,
+      color: backgroundColor ?? context.bottomSheetTheme.backgroundColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

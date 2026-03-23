@@ -3,6 +3,7 @@ export 'package:flutter_components/flutter_components.dart';
 
 export 'component_back_button.dart';
 export 'component_blurred_app_bar.dart';
+export 'component_bottom_nav_bar.dart';
 export 'component_bottom_sheet_header.dart';
 export 'component_button.dart';
 export 'component_close_button.dart';
