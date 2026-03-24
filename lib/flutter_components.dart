@@ -6,6 +6,7 @@ export 'component_blurred_app_bar.dart';
 export 'component_bottom_nav_bar.dart';
 export 'component_bottom_sheet_header.dart';
 export 'component_button.dart';
+export 'component_calendar.dart';
 export 'component_close_button.dart';
 export 'component_date_picker.dart';
 export 'component_dialog_widget.dart';
