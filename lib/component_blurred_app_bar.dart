@@ -88,7 +88,7 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
 
   @override
   Size get preferredSize => Size.fromHeight(
-    toolbarHeight ?? kToolbarHeight,
+    (toolbarHeight ?? kToolbarHeight) + (bottom?.preferredSize.height ?? 0),
   );
 
   // simulate apple's saturatioon

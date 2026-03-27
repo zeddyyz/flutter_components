@@ -3,7 +3,7 @@ description: "Flutter Components Library"
 homepage: https://github.com/flutter-components/flutter-components
 repository: https://github.com/flutter-components/flutter-components
 publish_to: none
-version: 0.0.5
+version: 0.0.6
 
 environment:
   sdk: ^3.10.7
