@@ -42,7 +42,7 @@ class ComponentCloseButton extends StatelessWidget {
       onTap: onTap ?? () => Navigator.pop(context),
       child: Container(
         height: 34,
-        width: !largeScreen ? 34 : 80,
+        width: !largeScreen ? 34 : 84,
         decoration: BoxDecoration(
           color: bgColor ?? (isLightTheme ? Colors.grey.shade200 : Colors.grey.shade900),
           shape: !largeScreen ? BoxShape.circle : BoxShape.rectangle,
