@@ -27,6 +27,10 @@ class ComponentOnboardingCarousel extends StatefulWidget {
     this.onBeforeAdvanceToNextPage,
     required this.buttonColor,
     this.imagePadding,
+    required this.backgroundColor,
+    required this.screenBorderRadius,
+    required this.imageHeightPercentage,
+    required this.textPadding,
   });
 
   final List<OnboardingPage> pages;
@@ -36,6 +40,10 @@ class ComponentOnboardingCarousel extends StatefulWidget {
   final VoidCallback? onBeforeAdvanceToNextPage;
   final Color buttonColor;
   final EdgeInsets? imagePadding;
+  final Color backgroundColor;
+  final BorderRadiusGeometry screenBorderRadius;
+  final double imageHeightPercentage;
+  final EdgeInsetsGeometry textPadding;
 
   @override
   State<ComponentOnboardingCarousel> createState() => _ComponentOnboardingCarouselState();
@@ -72,9 +80,9 @@ class _ComponentOnboardingCarouselState extends State<ComponentOnboardingCarouse
     final bool isLastPage = _currentPage == pageCount - 1;
 
     return ClipRSuperellipse(
-      borderRadius: AppDecoration.borderRadiusLg,
+      borderRadius: widget.screenBorderRadius,
       child: Scaffold(
-        backgroundColor: context.bottomSheetTheme.backgroundColor,
+        backgroundColor: widget.backgroundColor,
         body: LayoutBuilder(
           builder: (context, bodyConstraints) {
             return PageView.builder(
@@ -86,6 +94,8 @@ class _ComponentOnboardingCarouselState extends State<ComponentOnboardingCarouse
                 return _OnboardingSlideLayout(
                   page: widget.pages[index],
                   imagePadding: widget.imagePadding ?? EdgeInsets.zero,
+                  imageHeightPercentage: widget.imageHeightPercentage,
+                  textPadding: widget.textPadding,
                 );
               },
             );
@@ -108,10 +118,14 @@ class _OnboardingSlideLayout extends StatelessWidget {
   const _OnboardingSlideLayout({
     required this.page,
     required this.imagePadding,
+    required this.imageHeightPercentage,
+    required this.textPadding,
   });
 
   final OnboardingPage page;
   final EdgeInsets imagePadding;
+  final double imageHeightPercentage;
+  final EdgeInsetsGeometry textPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +150,7 @@ class _OnboardingSlideLayout extends StatelessWidget {
   Widget _buildMobileContent(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final double imageHeight = constraints.maxHeight * 0.7;
+        final double imageHeight = constraints.maxHeight * imageHeightPercentage;
 
         return SingleChildScrollView(
           child: ConstrainedBox(
@@ -156,7 +170,7 @@ class _OnboardingSlideLayout extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  padding: textPadding,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
