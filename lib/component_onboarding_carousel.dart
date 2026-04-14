@@ -3,7 +3,7 @@ import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/shared/component_gesture_click.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
 
-/// Single slide in a [PaginatedOnboardingCarousel].
+/// Single slide in a [ComponentOnboardingCarousel].
 class OnboardingPage {
   final String imagePath;
   final String title;
@@ -17,8 +17,8 @@ class OnboardingPage {
 }
 
 /// Full-screen paged onboarding UI with Next / Done actions.
-class PaginatedOnboardingCarousel extends StatefulWidget {
-  const PaginatedOnboardingCarousel({
+class ComponentOnboardingCarousel extends StatefulWidget {
+  const ComponentOnboardingCarousel({
     super.key,
     required this.pages,
     required this.onDone,
@@ -36,10 +36,10 @@ class PaginatedOnboardingCarousel extends StatefulWidget {
   final Color buttonColor;
 
   @override
-  State<PaginatedOnboardingCarousel> createState() => _PaginatedOnboardingCarouselState();
+  State<ComponentOnboardingCarousel> createState() => _ComponentOnboardingCarouselState();
 }
 
-class _PaginatedOnboardingCarouselState extends State<PaginatedOnboardingCarousel> {
+class _ComponentOnboardingCarouselState extends State<ComponentOnboardingCarousel> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
