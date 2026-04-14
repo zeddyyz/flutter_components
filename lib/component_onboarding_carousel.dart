@@ -26,6 +26,7 @@ class ComponentOnboardingCarousel extends StatefulWidget {
     this.doneButtonLabel = 'Done',
     this.onBeforeAdvanceToNextPage,
     required this.buttonColor,
+    this.imagePadding,
   });
 
   final List<OnboardingPage> pages;
@@ -34,6 +35,7 @@ class ComponentOnboardingCarousel extends StatefulWidget {
   final String doneButtonLabel;
   final VoidCallback? onBeforeAdvanceToNextPage;
   final Color buttonColor;
+  final EdgeInsets? imagePadding;
 
   @override
   State<ComponentOnboardingCarousel> createState() => _ComponentOnboardingCarouselState();
@@ -83,6 +85,7 @@ class _ComponentOnboardingCarouselState extends State<ComponentOnboardingCarouse
               itemBuilder: (context, index) {
                 return _OnboardingSlideLayout(
                   page: widget.pages[index],
+                  imagePadding: widget.imagePadding ?? EdgeInsets.zero,
                 );
               },
             );
@@ -102,11 +105,13 @@ class _ComponentOnboardingCarouselState extends State<ComponentOnboardingCarouse
 }
 
 class _OnboardingSlideLayout extends StatelessWidget {
-  final OnboardingPage page;
-
   const _OnboardingSlideLayout({
     required this.page,
+    required this.imagePadding,
   });
+
+  final OnboardingPage page;
+  final EdgeInsets imagePadding;
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +147,7 @@ class _OnboardingSlideLayout extends StatelessWidget {
                   height: imageHeight,
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 44),
+                      padding: imagePadding,
                       child: Image.asset(
                         page.imagePath,
                         fit: BoxFit.contain,
