@@ -54,6 +54,8 @@ extension ContextExtension on BuildContext {
   Color get scaffoldBackgroundColor => theme.scaffoldBackgroundColor;
 
   BottomSheetThemeData get bottomSheetTheme => Theme.of(this).bottomSheetTheme;
+  Color get bottomSheetBackgroundColor => bottomSheetTheme.backgroundColor!;
+  Color get bottomSheetCardColor => isLightMode ? Color(0xffececec) : Color(0xff333335);
 
   Color get iconColor => theme.iconTheme.color ?? primary;
   Color get iconButtonBackgroundColor => isLightMode ? Colors.grey.shade200 : Colors.grey.shade900;

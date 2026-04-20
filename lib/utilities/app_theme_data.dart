@@ -11,6 +11,7 @@ class AppThemeData {
     required Color secondaryColor,
     String? fontFamily,
     ColorScheme? colorScheme,
+    final Color? bottomSheetBackgroundColor,
   }) {
     return ThemeData(
       useMaterial3: true,
@@ -198,9 +199,9 @@ class AppThemeData {
       ),
       splashColor: Colors.black12,
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: Colors.grey.shade50,
+        backgroundColor: bottomSheetBackgroundColor ?? Color(0xfffcfcfc),
         shape: RoundedSuperellipseBorder(
-          borderRadius: AppDecoration.borderRadiusLg,
+          borderRadius: AppDecoration.borderRadiusXl,
         ),
       ),
       listTileTheme: ListTileThemeData(
@@ -217,6 +218,7 @@ class AppThemeData {
     required Color secondaryColor,
     String? fontFamily,
     ColorScheme? colorScheme,
+    final Color? bottomSheetBackgroundColor,
   }) {
     return ThemeData(
       useMaterial3: true,
@@ -403,8 +405,10 @@ class AppThemeData {
       ),
       splashColor: Colors.white10,
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: Color.fromARGB(255, 13, 13, 13),
-        shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusLg),
+        backgroundColor: bottomSheetBackgroundColor ?? Color(0xff1e1e1e),
+        shape: RoundedSuperellipseBorder(
+          borderRadius: AppDecoration.borderRadiusXl,
+        ),
       ),
       listTileTheme: ListTileThemeData(
         dense: false,
