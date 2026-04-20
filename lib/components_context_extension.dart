@@ -40,6 +40,7 @@ extension ContextExtension on BuildContext {
   Color get hint => isLightMode ? Colors.grey : Colors.grey.shade600;
   Color get hintIos => isLightMode ? Color(0xff7e7d82) : Color(0xff9c9ba3);
   Color get hintIntense => isLightMode ? Colors.grey.shade600 : Colors.grey.shade500;
+  Color get hintIntenseIos => isLightMode ? Color(0xff87868c) : Color(0xff9999a0);
 
   Color get cardColor => isLightMode ? Colors.white : const Color.fromARGB(255, 18, 18, 18);
   Color get cardColorIos => isLightMode ? Color(0xffffffff) : Color(0xff1c1c1e);
@@ -55,7 +56,7 @@ extension ContextExtension on BuildContext {
 
   BottomSheetThemeData get bottomSheetTheme => Theme.of(this).bottomSheetTheme;
   Color get bottomSheetBackgroundColor => bottomSheetTheme.backgroundColor!;
-  Color get bottomSheetCardColor => isLightMode ? Color(0xffececec) : Color(0xff333335);
+  Color get bottomSheetCardColor => isLightMode ? Color(0xfffefefe) : Color(0xff2c2c2e);
 
   Color get iconColor => theme.iconTheme.color ?? primary;
   Color get iconButtonBackgroundColor => isLightMode ? Colors.grey.shade200 : Colors.grey.shade900;

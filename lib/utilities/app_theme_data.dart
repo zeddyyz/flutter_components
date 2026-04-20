@@ -199,7 +199,7 @@ class AppThemeData {
       ),
       splashColor: Colors.black12,
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: bottomSheetBackgroundColor ?? Color(0xfffcfcfc),
+        backgroundColor: bottomSheetBackgroundColor ?? Color(0xfff2f2f7),
         shape: RoundedSuperellipseBorder(
           borderRadius: AppDecoration.borderRadiusXl,
         ),
@@ -405,7 +405,7 @@ class AppThemeData {
       ),
       splashColor: Colors.white10,
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: bottomSheetBackgroundColor ?? Color(0xff1e1e1e),
+        backgroundColor: bottomSheetBackgroundColor ?? Color(0xff1c1c1e),
         shape: RoundedSuperellipseBorder(
           borderRadius: AppDecoration.borderRadiusXl,
         ),
