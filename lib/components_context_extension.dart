@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_components/shared/app_screen_size.dart';
 
 extension ContextExtension on BuildContext {
   ThemeData get theme => Theme.of(this);
@@ -26,10 +27,10 @@ extension ContextExtension on BuildContext {
   ColorScheme get colorScheme => theme.colorScheme;
 
   /// Screen Sizes
-  bool get isMobile => viewWidth <= 635;
-  bool get isMediumScreen => viewWidth > 635 && viewWidth <= 920;
-  bool get isLargeScreen => viewWidth > 920 && viewWidth <= 1200;
-  bool get isXLargeScreen => viewWidth > 1200;
+  bool get isMobile => viewWidth <= AppScreenSize.small;
+  bool get isMediumScreen => viewWidth > AppScreenSize.small && viewWidth <= AppScreenSize.medium;
+  bool get isLargeScreen => viewWidth > AppScreenSize.medium && viewWidth <= AppScreenSize.large;
+  bool get isXLargeScreen => viewWidth > AppScreenSize.large;
 
   /// Colors
   Color get primary => isLightMode ? Colors.black : Colors.white;
