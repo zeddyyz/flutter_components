@@ -37,10 +37,13 @@ extension ContextExtension on BuildContext {
 
   Color get secondary => isLightMode ? Colors.grey : Colors.grey.shade700;
 
-  Color get hint => isDarkMode ? Colors.grey.shade600 : Colors.grey;
-  Color get hintIntense => isDarkMode ? Colors.grey.shade500 : Colors.grey.shade600;
+  Color get hint => isLightMode ? Colors.grey : Colors.grey.shade600;
+  Color get hintIos => isLightMode ? Color(0xff7e7d82) : Color(0xff9c9ba3);
+  Color get hintIntense => isLightMode ? Colors.grey.shade600 : Colors.grey.shade500;
 
   Color get cardColor => isLightMode ? Colors.white : const Color.fromARGB(255, 18, 18, 18);
+  Color get cardColorIos => isLightMode ? Color(0xffffffff) : Color(0xff1c1c1e);
+
   Color get borderColor => isLightMode ? Colors.grey.shade200 : Colors.grey.shade900;
   Color get borderColorIntense => isLightMode
       ? Colors.grey.shade300.withValues(alpha: 0.75)

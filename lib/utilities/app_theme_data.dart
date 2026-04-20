@@ -6,7 +6,7 @@ import 'package:flutter_components/utilities/app_decoration.dart';
 class AppThemeData {
   static ThemeData lightTheme({
     required BuildContext context,
-    required Color scaffoldBackgroundColor,
+    Color? scaffoldBackgroundColor,
     required Color primaryColor,
     required Color secondaryColor,
     String? fontFamily,
@@ -16,7 +16,7 @@ class AppThemeData {
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: scaffoldBackgroundColor,
+      scaffoldBackgroundColor: scaffoldBackgroundColor ?? Color(0xfff2f2f7),
       primaryColor: primaryColor,
       primaryColorLight: Colors.white,
       primaryColorDark: Colors.black,
@@ -212,7 +212,7 @@ class AppThemeData {
 
   static ThemeData darkTheme({
     required BuildContext context,
-    required Color scaffoldBackgroundColor,
+    Color? scaffoldBackgroundColor,
     required Color primaryColor,
     required Color secondaryColor,
     String? fontFamily,
@@ -222,7 +222,7 @@ class AppThemeData {
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: scaffoldBackgroundColor,
+      scaffoldBackgroundColor: scaffoldBackgroundColor ?? Color(0xff000000),
       primaryColor: primaryColor,
       primaryColorLight: Color.fromARGB(255, 13, 13, 13),
       primaryColorDark: Colors.white,
