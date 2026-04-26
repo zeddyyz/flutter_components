@@ -17,6 +17,8 @@ class ComponentListTile extends StatefulWidget {
     this.subtitleStyle,
     this.contentPadding,
     this.displayBorder = false,
+    this.borderRadius,
+    this.backgroundColor,
   });
 
   final Widget? leading;
@@ -28,6 +30,8 @@ class ComponentListTile extends StatefulWidget {
   final TextStyle? subtitleStyle;
   final EdgeInsets? contentPadding;
   final bool displayBorder;
+  final BorderRadius? borderRadius;
+  final Color? backgroundColor;
 
   /// A modern list tile with a leading icon, title, subtitle, and trailing icon.
   /// The leading icon is optional, and the title is required.
@@ -58,7 +62,8 @@ class _ComponentListTileState extends State<ComponentListTile> {
       child: Builder(
         builder: (builderContext) {
           // Calculate theme-dependent values
-          final tileColor = widget.isWithinBottomSheet ? null : context.cardColor;
+          final tileColor =
+              widget.backgroundColor ?? (widget.isWithinBottomSheet ? null : context.cardColor);
 
           final borderColor = widget.isSelected
               ? (widget.isSelectedColor ?? builderContext.borderColor)
@@ -87,7 +92,7 @@ class _ComponentListTileState extends State<ComponentListTile> {
               decoration: ShapeDecoration(
                 color: tileColor,
                 shape: RoundedSuperellipseBorder(
-                  borderRadius: AppDecoration.borderRadiusSm,
+                  borderRadius: widget.borderRadius ?? AppDecoration.borderRadiusSm,
                   side: widget.displayBorder ? BorderSide(color: borderColor) : BorderSide.none,
                 ),
               ),
@@ -96,10 +101,10 @@ class _ComponentListTileState extends State<ComponentListTile> {
                 title: widget.title,
                 subtitle: widget.subtitle,
                 trailing: widget.trailing,
-                tileColor: tileColor,
-                shape: RoundedSuperellipseBorder(
-                  borderRadius: AppDecoration.borderRadiusSm,
-                ),
+                // tileColor: tileColor,
+                // shape: RoundedSuperellipseBorder(
+                //   borderRadius: AppDecoration.borderRadiusSm,
+                // ),
                 contentPadding: contentPadding,
                 titleTextStyle: titleStyle,
                 subtitleTextStyle: subtitleStyle,
