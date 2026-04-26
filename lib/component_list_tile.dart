@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_components/component_no_splash_theme.dart';
 import 'package:flutter_components/components_context_extension.dart';
+import 'package:flutter_components/shared/component_gesture_click.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
 
 class ComponentListTile extends StatefulWidget {
@@ -86,32 +88,34 @@ class _ComponentListTileState extends State<ComponentListTile> {
               widget.subtitleStyle ??
               Theme.of(builderContext).textTheme.labelSmall!.copyWith(color: builderContext.hint);
 
-          return MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: Container(
-              decoration: ShapeDecoration(
-                color: tileColor,
-                shape: RoundedSuperellipseBorder(
-                  borderRadius: widget.borderRadius ?? AppDecoration.borderRadiusSm,
-                  side: widget.displayBorder ? BorderSide(color: borderColor) : BorderSide.none,
+          return ComponentGestureClick(
+            onTap: widget.onTap ?? () {},
+            child: ComponentNoSplashTheme(
+              child: Container(
+                decoration: ShapeDecoration(
+                  color: tileColor,
+                  shape: RoundedSuperellipseBorder(
+                    borderRadius: widget.borderRadius ?? AppDecoration.borderRadiusSm,
+                    side: widget.displayBorder ? BorderSide(color: borderColor) : BorderSide.none,
+                  ),
                 ),
-              ),
-              child: ListTile(
-                leading: widget.leading,
-                title: widget.title,
-                subtitle: widget.subtitle,
-                trailing: widget.trailing,
-                // tileColor: tileColor,
-                // shape: RoundedSuperellipseBorder(
-                //   borderRadius: AppDecoration.borderRadiusSm,
-                // ),
-                contentPadding: contentPadding,
-                titleTextStyle: titleStyle,
-                subtitleTextStyle: subtitleStyle,
-                onTap: widget.onTap,
-                splashColor: Colors.transparent,
-                hoverColor: Colors.transparent,
-                focusColor: Colors.transparent,
+                child: ListTile(
+                  leading: widget.leading,
+                  title: widget.title,
+                  subtitle: widget.subtitle,
+                  trailing: widget.trailing,
+                  tileColor: tileColor,
+                  shape: RoundedSuperellipseBorder(
+                    borderRadius: widget.borderRadius ?? AppDecoration.borderRadiusSm,
+                  ),
+                  contentPadding: contentPadding,
+                  titleTextStyle: titleStyle,
+                  subtitleTextStyle: subtitleStyle,
+                  onTap: widget.onTap,
+                  splashColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                ),
               ),
             ),
           );
