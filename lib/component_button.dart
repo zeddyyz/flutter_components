@@ -23,21 +23,23 @@ class ComponentButton extends StatelessWidget {
 
     switch (buttonType) {
       case ButtonType.elevated:
-        return ElevatedButton(onPressed: onPressed, child: child);
+        return ElevatedButton(onPressed: onPressed, style: style, child: child);
       case ButtonType.filled:
-        return FilledButton(onPressed: onPressed, child: child);
+        return FilledButton(onPressed: onPressed, style: style, child: child);
       case ButtonType.light:
         return OutlinedButton(
           onPressed: onPressed,
-          style: OutlinedButton.styleFrom(
-            backgroundColor: isLightTheme ? Colors.grey.shade200 : Colors.grey.shade900,
-            foregroundColor: primaryColor.withValues(alpha: 0.85),
-            side: BorderSide(
-              color: isLightTheme
-                  ? Colors.grey.shade300.withValues(alpha: 0.75)
-                  : Colors.grey.shade800.withValues(alpha: 0.75),
-            ),
-          ),
+          style:
+              style ??
+              OutlinedButton.styleFrom(
+                backgroundColor: isLightTheme ? Colors.grey.shade200 : Colors.grey.shade900,
+                foregroundColor: primaryColor.withValues(alpha: 0.85),
+                side: BorderSide(
+                  color: isLightTheme
+                      ? Colors.grey.shade300.withValues(alpha: 0.75)
+                      : Colors.grey.shade800.withValues(alpha: 0.75),
+                ),
+              ),
           child: child,
         );
       case ButtonType.outlined:
