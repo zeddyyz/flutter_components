@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/shared/component_gesture_click.dart';
 
 class ComponentCloseButton extends StatelessWidget {
@@ -31,11 +32,10 @@ class ComponentCloseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewWidth = MediaQuery.sizeOf(context).width;
-    bool isLightTheme = Theme.of(context).brightness == Brightness.light;
     bool largeScreen = kIsWeb || (viewWidth > 920 && viewWidth <= 1200);
 
     if (isBlurred) {
-      return _buildBlurEffect(context, isLightTheme: isLightTheme);
+      return _buildBlurEffect(context);
     }
 
     return ComponentGestureClick(
@@ -44,7 +44,11 @@ class ComponentCloseButton extends StatelessWidget {
         height: 34,
         width: !largeScreen ? 34 : 86,
         decoration: BoxDecoration(
-          color: bgColor ?? (isLightTheme ? Colors.grey.shade200 : Colors.grey.shade900),
+          color:
+              bgColor ??
+              (context.isLightMode
+                  ? Colors.white.withValues(alpha: 0.8)
+                  : Colors.white.withValues(alpha: 0.1)),
           shape: !largeScreen ? BoxShape.circle : BoxShape.rectangle,
           borderRadius: !largeScreen ? null : stadiumBorderRadius,
         ),
@@ -52,7 +56,7 @@ class ComponentCloseButton extends StatelessWidget {
             ? Icon(
                 Icons.close_rounded,
                 size: 22,
-                color: iconColor ?? (isLightTheme ? Colors.black : Colors.white),
+                color: iconColor ?? (context.primary.withValues(alpha: 0.8)),
               )
             : Row(
                 spacing: 8,
@@ -61,7 +65,7 @@ class ComponentCloseButton extends StatelessWidget {
                   Icon(
                     Icons.close_rounded,
                     size: 22,
-                    color: iconColor ?? (isLightTheme ? Colors.black : Colors.white),
+                    color: iconColor ?? (context.primary.withValues(alpha: 0.8)),
                   ),
                   Text(
                     'Close',
@@ -73,7 +77,7 @@ class ComponentCloseButton extends StatelessWidget {
     );
   }
 
-  Widget _buildBlurEffect(BuildContext context, {required bool isLightTheme}) {
+  Widget _buildBlurEffect(BuildContext context) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
@@ -91,7 +95,7 @@ class ComponentCloseButton extends StatelessWidget {
               decoration: BoxDecoration(
                 color:
                     bgColor?.withValues(alpha: 0.1) ??
-                    (isLightTheme
+                    (context.isLightMode
                         ? Colors.grey.shade200
                         : Colors.grey.shade900.withValues(alpha: 0.1)),
                 shape: BoxShape.circle,
@@ -99,7 +103,7 @@ class ComponentCloseButton extends StatelessWidget {
               child: Icon(
                 Icons.close_rounded,
                 size: 22,
-                color: iconColor ?? (isLightTheme ? Colors.black : Colors.white),
+                color: iconColor ?? (context.primary.withValues(alpha: 0.8)),
               ),
             ),
           ),
