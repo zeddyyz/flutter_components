@@ -32,7 +32,9 @@ class ComponentButton extends StatelessWidget {
           style:
               style ??
               OutlinedButton.styleFrom(
-                backgroundColor: isLightTheme ? Colors.grey.shade200 : Colors.grey.shade900,
+                backgroundColor: isLightTheme
+                    ? Colors.grey.shade300.withValues(alpha: 0.7)
+                    : Colors.grey.shade900,
                 foregroundColor: primaryColor.withValues(alpha: 0.85),
                 side: BorderSide(
                   color: isLightTheme
