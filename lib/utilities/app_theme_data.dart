@@ -156,7 +156,7 @@ class AppThemeData {
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.all(primaryColor),
           foregroundColor: WidgetStateProperty.all(Colors.white),
-          fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 50 : 54)),
+          fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
           textStyle: WidgetStatePropertyAll(
             TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
           ),
@@ -170,7 +170,7 @@ class AppThemeData {
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.all(const Color.fromRGBO(12, 12, 12, 1.0)),
           foregroundColor: WidgetStateProperty.all(Colors.white),
-          fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 50 : 54)),
+          fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
           textStyle: WidgetStatePropertyAll(
             TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
           ),
@@ -184,7 +184,7 @@ class AppThemeData {
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.all(scaffoldBackgroundColor),
           foregroundColor: WidgetStateProperty.all(primaryColor),
-          fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 50 : 54)),
+          fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
           textStyle: WidgetStatePropertyAll(
             TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
           ),
@@ -194,6 +194,19 @@ class AppThemeData {
               borderRadius: AppDecoration.borderRadiusStadium,
               side: BorderSide(color: primaryColor, width: 1.5),
             ),
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.all(primaryColor),
+          backgroundColor: WidgetStateProperty.all(Colors.transparent),
+          textStyle: WidgetStatePropertyAll(
+            TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
+          ),
+          splashFactory: NoSplash.splashFactory,
+          shape: WidgetStateProperty.all(
+            RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
           ),
         ),
       ),
@@ -362,7 +375,7 @@ class AppThemeData {
           backgroundColor: WidgetStateProperty.all(primaryColor),
           foregroundColor: WidgetStateProperty.all(Colors.white),
           iconColor: WidgetStateProperty.all(Colors.white),
-          fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 50 : 54)),
+          fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
           textStyle: WidgetStatePropertyAll(
             TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
           ),
@@ -376,7 +389,7 @@ class AppThemeData {
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.all(const Color.fromRGBO(245, 245, 245, 1.0)),
           foregroundColor: WidgetStateProperty.all(Colors.black),
-          fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 50 : 54)),
+          fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
           textStyle: WidgetStatePropertyAll(
             TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
           ),
@@ -390,7 +403,7 @@ class AppThemeData {
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.all(scaffoldBackgroundColor),
           foregroundColor: WidgetStateProperty.all(Colors.white),
-          fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 50 : 54)),
+          fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
           textStyle: WidgetStatePropertyAll(
             TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
           ),
@@ -401,6 +414,19 @@ class AppThemeData {
             ),
           ),
           splashFactory: NoSplash.splashFactory,
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.all(primaryColor),
+          backgroundColor: WidgetStateProperty.all(Colors.transparent),
+          textStyle: WidgetStatePropertyAll(
+            TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
+          ),
+          splashFactory: NoSplash.splashFactory,
+          shape: WidgetStateProperty.all(
+            RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
+          ),
         ),
       ),
       splashColor: Colors.white10,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_components/components_context_extension.dart';
 
 import 'shared/enums.dart';
 
@@ -18,9 +19,6 @@ class ComponentButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isLightTheme = Theme.of(context).brightness == Brightness.light;
-    final primaryColor = isLightTheme ? Colors.black : Colors.white;
-
     switch (buttonType) {
       case ButtonType.elevated:
         return ElevatedButton(onPressed: onPressed, style: style, child: child);
@@ -32,12 +30,12 @@ class ComponentButton extends StatelessWidget {
           style:
               style ??
               OutlinedButton.styleFrom(
-                backgroundColor: isLightTheme
+                backgroundColor: context.isLightMode
                     ? Colors.grey.shade300.withValues(alpha: 0.7)
                     : Colors.grey.shade900,
-                foregroundColor: primaryColor.withValues(alpha: 0.85),
+                foregroundColor: context.primary.withValues(alpha: 0.85),
                 side: BorderSide(
-                  color: isLightTheme
+                  color: context.isLightMode
                       ? Colors.grey.shade300.withValues(alpha: 0.75)
                       : Colors.grey.shade800.withValues(alpha: 0.75),
                 ),
