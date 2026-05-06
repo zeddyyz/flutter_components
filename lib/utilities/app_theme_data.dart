@@ -53,6 +53,7 @@ class AppThemeData {
           borderRadius: AppDecoration.borderRadiusLg,
         ),
       ),
+      fontFamily: fontFamily,
       textTheme: TextTheme(
         displayLarge: TextStyle(
           color: Colors.black,
@@ -271,6 +272,7 @@ class AppThemeData {
         margin: AppDecoration.spaceZero,
         shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusLg),
       ),
+      fontFamily: fontFamily,
       textTheme: TextTheme(
         displayLarge: TextStyle(
           color: Colors.white,
