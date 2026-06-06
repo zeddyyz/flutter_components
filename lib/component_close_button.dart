@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/shared/component_gesture_click.dart';
+import 'package:flutter_components/utilities/app_decoration.dart';
 
 class ComponentCloseButton extends StatelessWidget {
   const ComponentCloseButton({
@@ -82,28 +83,32 @@ class ComponentCloseButton extends StatelessWidget {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: onTap ?? () => Navigator.pop(context),
-        child: ClipRRect(
-          borderRadius: stadiumBorderRadius,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 10,
-              sigmaY: 10,
-            ),
-            child: Container(
-              height: 34,
-              width: 34,
-              decoration: BoxDecoration(
-                color:
-                    bgColor?.withValues(alpha: 0.1) ??
-                    (context.isLightMode
-                        ? Colors.grey.shade200
-                        : Colors.grey.shade900.withValues(alpha: 0.1)),
-                shape: BoxShape.circle,
+        child: RepaintBoundary(
+          child: ClipRRect(
+            borderRadius: AppDecoration.borderRadiusStadium,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 5,
+                sigmaY: 5,
               ),
-              child: Icon(
-                Icons.close_rounded,
-                size: 22,
-                color: iconColor ?? (context.primary.withValues(alpha: 0.8)),
+              child: Container(
+                height: 36,
+                width: 36,
+                decoration: BoxDecoration(
+                  color:
+                      bgColor?.withValues(alpha: 0.5) ??
+                      context.iconButtonBackgroundColor.withValues(alpha: 0.5),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: context.isLightMode ? context.borderColorIntense : context.borderColor,
+                    width: 1,
+                  ),
+                ),
+                child: Icon(
+                  Icons.close_rounded,
+                  size: context.defaultIconSize,
+                  color: iconColor ?? context.primary,
+                ),
               ),
             ),
           ),

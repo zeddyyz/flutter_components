@@ -214,8 +214,12 @@ class AppThemeData {
       splashColor: Colors.black12,
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: bottomSheetBackgroundColor ?? Color(0xfff2f2f7),
+        shadowColor: Colors.black45,
         shape: RoundedSuperellipseBorder(
-          borderRadius: AppDecoration.borderRadiusXl,
+          borderRadius: BorderRadius.only(
+            topLeft: AppDecoration.iOSModalRadius,
+            topRight: AppDecoration.iOSModalRadius,
+          ),
         ),
       ),
       listTileTheme: ListTileThemeData(
@@ -434,8 +438,12 @@ class AppThemeData {
       splashColor: Colors.white10,
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: bottomSheetBackgroundColor ?? Color(0xff1c1c1e),
+        shadowColor: Colors.black54,
         shape: RoundedSuperellipseBorder(
-          borderRadius: AppDecoration.borderRadiusXl,
+          borderRadius: BorderRadius.only(
+            topLeft: AppDecoration.iOSModalRadius,
+            topRight: AppDecoration.iOSModalRadius,
+          ),
         ),
       ),
       listTileTheme: ListTileThemeData(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_components/component_close_button.dart';
+import 'package:flutter_components/utilities/app_decoration.dart';
 
 /// Shows either a modal bottom sheet (on small screens) or a dialog (on larger screens)
 class ComponentResponsiveModal {
@@ -35,14 +36,16 @@ class ComponentResponsiveModal {
         context: context,
         useRootNavigator: useRootNavigator,
         barrierDismissible: barrierDismissible,
-        barrierColor: isLightMode ? Colors.black54 : Colors.black87,
+        barrierColor: isLightMode ? Colors.black45 : Colors.black54,
         builder: (BuildContext dialogContext) {
           return Dialog(
             backgroundColor: bgColor,
             shadowColor: Colors.transparent,
-            shape: RoundedSuperellipseBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedSuperellipseBorder(
+              borderRadius: AppDecoration.iOSModalBorderRadius,
+            ),
             child: ClipRSuperellipse(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: AppDecoration.iOSModalBorderRadius,
               child: Container(
                 constraints:
                     constraints ?? BoxConstraints(maxWidth: 560, maxHeight: viewHeight * 0.8),
@@ -74,7 +77,13 @@ class ComponentResponsiveModal {
         isScrollControlled: true,
         enableDrag: barrierDismissible,
         backgroundColor: bgColor,
-        shape: RoundedSuperellipseBorder(borderRadius: BorderRadius.circular(16)),
+        barrierColor: isLightMode ? Colors.black45 : Colors.black54,
+        shape: RoundedSuperellipseBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: AppDecoration.iOSModalRadius,
+            topRight: AppDecoration.iOSModalRadius,
+          ),
+        ),
         constraints:
             constraints ?? BoxConstraints(minHeight: viewHeight * 0.3, maxHeight: viewHeight * 0.8),
         builder: (BuildContext bottomSheetContext) {
@@ -85,7 +94,7 @@ class ComponentResponsiveModal {
                 vertical: MediaQuery.of(context).padding.bottom,
               ),
               child: ClipRSuperellipse(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppDecoration.iOSModalBorderRadius,
                 child: Scaffold(
                   appBar: AppBar(
                     title: Padding(padding: const EdgeInsets.only(left: 8), child: Text(title)),
@@ -104,7 +113,7 @@ class ComponentResponsiveModal {
             );
           }
           return ClipRSuperellipse(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            borderRadius: AppDecoration.iOSModalBorderRadius,
             child: Scaffold(
               appBar: AppBar(
                 title: Padding(padding: const EdgeInsets.only(left: 8), child: Text(title)),

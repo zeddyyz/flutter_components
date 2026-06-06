@@ -1,1 +1,1 @@
-enum ButtonType { filled, elevated, light, outlined, text }
+enum ButtonType { filled, elevated, light, outlined, text, danger }

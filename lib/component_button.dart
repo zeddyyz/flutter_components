@@ -43,9 +43,37 @@ class ComponentButton extends StatelessWidget {
           child: child,
         );
       case ButtonType.outlined:
-        return OutlinedButton(onPressed: onPressed, style: style, child: child);
+        return OutlinedButton(
+          onPressed: onPressed,
+          style:
+              style ??
+              OutlinedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                foregroundColor: context.primary,
+                side: BorderSide(
+                  color: context.borderColorIntense,
+                ),
+              ),
+          child: child,
+        );
       case ButtonType.text:
-        return TextButton(onPressed: onPressed, style: style, child: child);
+        return TextButton(
+          onPressed: onPressed,
+          style: style,
+          child: child,
+        );
+      case ButtonType.danger:
+        return OutlinedButton(
+          onPressed: onPressed,
+          style: OutlinedButton.styleFrom(
+            backgroundColor: Colors.red.withValues(alpha: 0.4),
+            foregroundColor: context.primary.withValues(alpha: 0.85),
+            side: const BorderSide(
+              color: Colors.red,
+            ),
+          ),
+          child: child,
+        );
     }
   }
 }
