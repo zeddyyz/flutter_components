@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_components/component_back_button.dart';
+import 'package:flutter_components/shared/fade_mask_painter.dart';
 
 // https://github.com/BlueBubblesApp/bluebubbles-app/blob/zach%2Ffeat%2Ftrue-foreground-service/lib%2Fapp%2Flayouts%2Fconversation_view%2Fwidgets%2Fheader%2Fcupertino_header.dart#L27-L52
 
@@ -120,49 +121,119 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
     final shouldShowLeading =
         automaticallyImplyLeading && (leading != null || ModalRoute.of(context)?.canPop == true);
 
+    final resolvedBackgroundColor = backgroundColor ?? defaultBackgroundColor;
+
+    final resolvedSystemOverlayStyle =
+        systemOverlayStyle ??
+        SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: isLightTheme ? Brightness.dark : Brightness.light,
+          statusBarBrightness: isLightTheme ? Brightness.light : Brightness.dark,
+          systemNavigationBarIconBrightness: isLightTheme ? Brightness.dark : Brightness.light,
+          systemNavigationBarColor: Colors.transparent,
+          systemNavigationBarDividerColor: Colors.transparent,
+        );
+
     return ClipRect(
       child: RepaintBoundary(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
-          // filter: ImageFilter.compose(
-          //   outer: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-          //   inner: ColorFilter.matrix(
-          //     context.isLightMode ? lightMatrix : darkMatrix,
-          //   ),
-          // ),
-          child: AppBar(
-            title: title,
-            titleSpacing: titleSpacing,
-            leadingWidth: leadingWidth,
-            leading: shouldShowLeading
-                ? (leading ?? ComponentBackButton(onTap: onBackButtonTap))
-                : null,
-            actions: actions,
-            actionsPadding: const EdgeInsets.only(right: 6),
-            centerTitle: centerTitle,
-            backgroundColor: backgroundColor ?? defaultBackgroundColor,
-            // backgroundColor: Colors.transparent,
-            foregroundColor: foregroundColor ?? defaultForegroundColor,
-            elevation: elevation,
-            scrolledUnderElevation: scrolledUnderElevation,
-            automaticallyImplyLeading: false,
-            toolbarHeight: toolbarHeight ?? kToolbarHeight,
-            systemOverlayStyle:
-                systemOverlayStyle ??
-                SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
-                  statusBarIconBrightness: isLightTheme ? Brightness.dark : Brightness.light,
-                  statusBarBrightness: isLightTheme ? Brightness.light : Brightness.dark,
-                  systemNavigationBarIconBrightness: isLightTheme
-                      ? Brightness.dark
-                      : Brightness.light,
-                  systemNavigationBarColor: Colors.transparent,
-                  systemNavigationBarDividerColor: Colors.transparent,
+        child: Stack(
+          children: [
+            // Backdrop blur that fades out at the bottom edge so it ramps down
+            // smoothly instead of ending in a hard line, mirroring the bottom
+            // tab bar's faded blur. The status bar edge stays at full blur.
+            Positioned.fill(
+              child: RepaintBoundary(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                  child: const CustomPaint(
+                    painter: FadeMaskPainter(fadeSize: 8, isTopEdge: false),
+                  ),
                 ),
-            bottom: bottom,
-          ),
+              ),
+            ),
+            // Background tint that fades from opaque at the top (status bar)
+            // to transparent at the bottom edge.
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      resolvedBackgroundColor,
+                      resolvedBackgroundColor.withValues(alpha: 0.0),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            AppBar(
+              title: title,
+              titleSpacing: titleSpacing,
+              leadingWidth: leadingWidth,
+              leading: shouldShowLeading
+                  ? (leading ?? ComponentBackButton(onTap: onBackButtonTap))
+                  : null,
+              actions: actions,
+              actionsPadding: const EdgeInsets.only(right: 6),
+              centerTitle: centerTitle,
+              backgroundColor: Colors.transparent,
+              foregroundColor: foregroundColor ?? defaultForegroundColor,
+              elevation: elevation,
+              scrolledUnderElevation: scrolledUnderElevation,
+              automaticallyImplyLeading: false, // We handle this manually
+              toolbarHeight: toolbarHeight ?? kToolbarHeight,
+              systemOverlayStyle: resolvedSystemOverlayStyle,
+              bottom: bottom,
+            ),
+          ],
         ),
       ),
     );
+
+    // return ClipRect(
+    //   child: RepaintBoundary(
+    //     child: BackdropFilter(
+    //       filter: ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
+    //       // filter: ImageFilter.compose(
+    //       //   outer: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+    //       //   inner: ColorFilter.matrix(
+    //       //     context.isLightMode ? lightMatrix : darkMatrix,
+    //       //   ),
+    //       // ),
+    //       child: AppBar(
+    //         title: title,
+    //         titleSpacing: titleSpacing,
+    //         leadingWidth: leadingWidth,
+    //         leading: shouldShowLeading
+    //             ? (leading ?? ComponentBackButton(onTap: onBackButtonTap))
+    //             : null,
+    //         actions: actions,
+    //         actionsPadding: const EdgeInsets.only(right: 6),
+    //         centerTitle: centerTitle,
+    //         backgroundColor: backgroundColor ?? defaultBackgroundColor,
+    //         // backgroundColor: Colors.transparent,
+    //         foregroundColor: foregroundColor ?? defaultForegroundColor,
+    //         elevation: elevation,
+    //         scrolledUnderElevation: scrolledUnderElevation,
+    //         automaticallyImplyLeading: false,
+    //         toolbarHeight: toolbarHeight ?? kToolbarHeight,
+    //         systemOverlayStyle:
+    //             systemOverlayStyle ??
+    //             SystemUiOverlayStyle(
+    //               statusBarColor: Colors.transparent,
+    //               statusBarIconBrightness: isLightTheme ? Brightness.dark : Brightness.light,
+    //               statusBarBrightness: isLightTheme ? Brightness.light : Brightness.dark,
+    //               systemNavigationBarIconBrightness: isLightTheme
+    //                   ? Brightness.dark
+    //                   : Brightness.light,
+    //               systemNavigationBarColor: Colors.transparent,
+    //               systemNavigationBarDividerColor: Colors.transparent,
+    //             ),
+    //         bottom: bottom,
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_components/components_context_extension.dart';
+import 'package:flutter_components/shared/fade_mask_painter.dart';
 
 /// Set both:
 ///
@@ -56,7 +57,7 @@ class ComponentBottomNavBar extends StatelessWidget {
                         // See: https://gist.github.com/flar/e6258443da95ae0815a593959f5a701b
                         Positioned.fill(
                           child: CustomPaint(
-                            painter: _TopEdgeFadeMaskPainter(fadeSize: backgroundFadeSize),
+                            painter: FadeMaskPainter(fadeSize: backgroundFadeSize),
                           ),
                         ),
                         Positioned.fill(
@@ -157,42 +158,4 @@ class ComponentBottomNavBar extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Masks the alpha of a [BackdropFilter]'s blur so its top edge fades in
-/// smoothly. Drawn with [BlendMode.dstIn] inside the filter's child, the
-/// blurred rect ([TileMode.decal]) keeps the backdrop blur only where the
-/// mask has alpha, producing a soft ramp instead of a hard cutoff line.
-///
-/// The rect is inset by [fadeSize] at the top (the visible ramp) and extended
-/// past the bottom so the bottom edge remains at full blur.
-class _TopEdgeFadeMaskPainter extends CustomPainter {
-  const _TopEdgeFadeMaskPainter({required this.fadeSize});
-
-  final double fadeSize;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint maskPaint = Paint()
-      ..imageFilter = ImageFilter.blur(
-        sigmaX: fadeSize,
-        sigmaY: fadeSize,
-        tileMode: TileMode.decal,
-      )
-      ..blendMode = BlendMode.dstIn
-      // Only the alpha channel is used by dstIn; the color is irrelevant.
-      ..color = const Color(0xFF000000);
-
-    final Rect rect = Rect.fromLTRB(
-      0,
-      fadeSize,
-      size.width,
-      size.height + fadeSize,
-    );
-    canvas.drawRect(rect, maskPaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant _TopEdgeFadeMaskPainter oldDelegate) =>
-      oldDelegate.fadeSize != fadeSize;
 }
