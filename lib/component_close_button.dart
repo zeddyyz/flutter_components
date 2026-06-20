@@ -42,8 +42,8 @@ class ComponentCloseButton extends StatelessWidget {
     return ComponentGestureClick(
       onTap: onTap ?? () => Navigator.pop(context),
       child: Container(
-        height: 34,
-        width: !largeScreen ? 34 : 86,
+        height: 38,
+        width: !largeScreen ? 38 : 86,
         decoration: BoxDecoration(
           color:
               bgColor ??
@@ -56,7 +56,7 @@ class ComponentCloseButton extends StatelessWidget {
         child: !largeScreen
             ? Icon(
                 Icons.close_rounded,
-                size: 22,
+                size: 24,
                 color: iconColor ?? (context.primary.withValues(alpha: 0.8)),
               )
             : Row(
@@ -65,7 +65,7 @@ class ComponentCloseButton extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.close_rounded,
-                    size: 22,
+                    size: 16,
                     color: iconColor ?? (context.primary.withValues(alpha: 0.8)),
                   ),
                   Text(
@@ -92,8 +92,8 @@ class ComponentCloseButton extends StatelessWidget {
                 sigmaY: 5,
               ),
               child: Container(
-                height: 36,
-                width: 36,
+                height: 38,
+                width: 38,
                 decoration: BoxDecoration(
                   color:
                       bgColor?.withValues(alpha: 0.5) ??
@@ -106,7 +106,7 @@ class ComponentCloseButton extends StatelessWidget {
                 ),
                 child: Icon(
                   Icons.close_rounded,
-                  size: context.defaultIconSize,
+                  size: 24,
                   color: iconColor ?? context.primary,
                 ),
               ),

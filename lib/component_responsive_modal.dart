@@ -1,6 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_components/component_blurred_app_bar.dart';
 import 'package:flutter_components/component_close_button.dart';
+import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
+
+const double kModalToolbarHeight = 65;
 
 /// Shows either a modal bottom sheet (on small screens) or a dialog (on larger screens)
 class ComponentResponsiveModal {
@@ -129,6 +134,192 @@ class ComponentResponsiveModal {
                   : builder(bottomSheetContext, true),
             ),
           );
+        },
+      );
+    }
+  }
+
+  static Future<T?> showWithoutScaffold<T>({
+    required BuildContext context,
+    required String title,
+    required Widget Function(BuildContext context) builder,
+    BoxConstraints? constraints,
+    bool isScrollable = true,
+    bool useRootNavigator = true,
+    bool barrierDismissible = true,
+    bool float = false,
+    AnimationStyle? animationStyle,
+    List<Widget>? actions,
+  }) {
+    // Use MediaQuery to determine if we should show a dialog or bottom sheet
+    final isLargeScreen = !context.isMobile;
+
+    Widget buildDialogWidget(BuildContext dialogContext) {
+      return Dialog(
+        backgroundColor: context.bottomSheetTheme.backgroundColor,
+        shadowColor: Colors.transparent,
+        elevation: 8,
+        insetAnimationCurve: Curves.ease,
+        insetAnimationDuration: const Duration(milliseconds: 400),
+        shape: RoundedSuperellipseBorder(
+          borderRadius: AppDecoration.iOSModalBorderRadius,
+          side: context.isLightMode ? BorderSide.none : BorderSide(color: context.borderColor),
+        ),
+        constraints:
+            constraints ?? BoxConstraints(maxWidth: 560, maxHeight: context.viewHeight * 0.8),
+        child: ClipRSuperellipse(
+          borderRadius: AppDecoration.iOSModalBorderRadius,
+          child: Scaffold(
+            extendBodyBehindAppBar: true,
+            backgroundColor: context.bottomSheetTheme.backgroundColor,
+            appBar: ComponentBlurredAppBar(
+              context: context,
+              borderRadius: const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
+              toolbarHeight: kIsWeb ? kModalToolbarHeight : kToolbarHeight,
+              actions: actions,
+              leading: const Row(
+                mainAxisSize: .min,
+                mainAxisAlignment: .end,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 2),
+                    child: ComponentCloseButton.blurred(),
+                  ),
+                ],
+              ),
+              title: Text(title),
+              centerTitle: true,
+              backgroundColor: context.bottomSheetTheme.backgroundColor,
+            ),
+            body: builder(dialogContext),
+          ),
+        ),
+      );
+      // return Dialog(
+      //   backgroundColor: context.bottomSheetTheme.backgroundColor,
+      //   shadowColor: Colors.transparent,
+      //   shape: RoundedSuperellipseBorder(
+      //     borderRadius: kIosModalBorderRadius,
+      //   ),
+      //   constraints:
+      //       constraints ?? BoxConstraints(maxWidth: 560, maxHeight: context.viewHeight * 0.8),
+      //   child: ClipRSuperellipse(
+      //     borderRadius: kIosModalBorderRadius,
+      //     child: Column(
+      //       crossAxisAlignment: .start,
+      //       children: [
+      //         const SizedBox(height: 8),
+      //         BottomSheetHeader(title: title),
+      //         Expanded(
+      //           child: builder(dialogContext),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // );
+    }
+
+    if (isLargeScreen) {
+      // Show as dialog on larger screens
+      return showGeneralDialog<T>(
+        context: context,
+        useRootNavigator: useRootNavigator,
+        barrierLabel: '',
+        barrierDismissible: barrierDismissible,
+        barrierColor: context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7),
+        transitionDuration: const Duration(milliseconds: 400),
+        transitionBuilder: (context, anim1, anim2, child) {
+          final tween = Tween<Offset>(
+            begin: const Offset(0.0, 1.0),
+            end: Offset.zero,
+          );
+
+          return SlideTransition(
+            position: anim1.drive(
+              tween.chain(
+                CurveTween(
+                  curve: Curves.ease,
+                ),
+              ),
+            ),
+            child: child,
+          );
+        },
+        pageBuilder: (context, animation, secondaryAnimation) => buildDialogWidget(context),
+      );
+    } else {
+      // Show as bottom sheet on smaller screens
+      return showModalBottomSheet<T>(
+        context: context,
+        useRootNavigator: useRootNavigator,
+        useSafeArea: true,
+        isScrollControlled: isScrollable,
+        enableDrag: barrierDismissible,
+        isDismissible: barrierDismissible,
+        backgroundColor: float ? Colors.transparent : context.bottomSheetTheme.backgroundColor,
+        barrierColor: context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7),
+        shape: RoundedSuperellipseBorder(
+          borderRadius: float
+              ? AppDecoration.iOSModalBorderRadius
+              : const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
+        ),
+        sheetAnimationStyle: animationStyle,
+        constraints: constraints ?? const BoxConstraints.expand(),
+        builder: (BuildContext bottomSheetContext) {
+          return Container(
+            margin: float
+                ? EdgeInsets.only(
+                    left: 12,
+                    right: 12,
+                    bottom: context.mediaQueryPadding.bottom,
+                  )
+                : EdgeInsets.zero,
+            child: ClipRSuperellipse(
+              borderRadius: float
+                  ? AppDecoration.iOSModalBorderRadius
+                  : const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
+              child: Scaffold(
+                extendBodyBehindAppBar: true,
+                backgroundColor: context.bottomSheetTheme.backgroundColor,
+                appBar: ComponentBlurredAppBar(
+                  context: context,
+                  borderRadius: const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
+                  toolbarHeight: kModalToolbarHeight,
+                  actions: actions,
+                  leading: const Row(
+                    mainAxisSize: .min,
+                    mainAxisAlignment: .center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 12),
+                        child: ComponentCloseButton.blurred(),
+                      ),
+                    ],
+                  ),
+                  title: Text(title),
+                  centerTitle: true,
+                  backgroundColor: context.bottomSheetTheme.backgroundColor,
+                ),
+                body: builder(bottomSheetContext),
+              ),
+            ),
+          );
+
+          // return ClipRSuperellipse(
+          //   borderRadius: float
+          //       ? kIosModalBorderRadius
+          //       : const BorderRadius.vertical(top: kRadiusIosModal),
+          //   child: Column(
+          //     crossAxisAlignment: .start,
+          //     children: [
+          //       const SizedBox(height: 8),
+          //       BottomSheetHeader(title: title),
+          //       Expanded(
+          //         child: builder(bottomSheetContext),
+          //       ),
+          //     ],
+          //   ),
+          // );
         },
       );
     }
