@@ -23,12 +23,14 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
     this.automaticallyImplyLeading = true,
     this.toolbarHeight,
     this.systemOverlayStyle,
-    this.sigmaX = 15,
-    this.sigmaY = 15,
+    this.sigmaX = 12,
+    this.sigmaY = 12,
     this.backgroundOpacity = 0.6,
     this.onBackButtonTap,
     this.bottom,
     this.titleSpacing,
+    this.borderRadius,
+    this.fadeSize = 8,
   });
 
   final BuildContext context;
@@ -87,6 +89,15 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
   /// Custom callback for back button tap
   final VoidCallback? onBackButtonTap;
 
+  /// Optional rounded clip for the blurred header. Provide a top-only radius
+  /// when this app bar sits at the top of a modal sheet so the [BackdropFilter]
+  /// is clipped to the sheet's rounded corners (a [BackdropFilter] ignores
+  /// ancestor rounded clips). Defaults to a plain rectangular clip.
+  final BorderRadius? borderRadius;
+
+  /// The size of the fade mask
+  final double fadeSize;
+
   @override
   Size get preferredSize => Size.fromHeight(
     (toolbarHeight ?? kToolbarHeight) + (bottom?.preferredSize.height ?? 0),
@@ -123,18 +134,31 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
 
     final resolvedBackgroundColor = backgroundColor ?? defaultBackgroundColor;
 
-    final resolvedSystemOverlayStyle =
-        systemOverlayStyle ??
-        SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: isLightTheme ? Brightness.dark : Brightness.light,
-          statusBarBrightness: isLightTheme ? Brightness.light : Brightness.dark,
-          systemNavigationBarIconBrightness: isLightTheme ? Brightness.dark : Brightness.light,
-          systemNavigationBarColor: Colors.transparent,
-          systemNavigationBarDividerColor: Colors.transparent,
-        );
+    final resolvedToolbarHeight =
+        toolbarHeight ?? (borderRadius != null ? kToolbarHeight + 10 : kToolbarHeight);
 
-    return ClipRect(
+    return _buildBlurAppBar(
+      context,
+      centerTitle: centerTitle ?? false,
+      resolvedBackgroundColor: resolvedBackgroundColor,
+      shouldShowLeading: shouldShowLeading,
+      defaultForegroundColor: defaultForegroundColor,
+      resolvedToolbarHeight: resolvedToolbarHeight,
+      isLightTheme: isLightTheme,
+    );
+  }
+
+  Widget _buildBlurAppBar(
+    BuildContext context, {
+    required bool centerTitle,
+    required Color resolvedBackgroundColor,
+    required bool shouldShowLeading,
+    required Color defaultForegroundColor,
+    required double resolvedToolbarHeight,
+    required bool isLightTheme,
+  }) {
+    return _ClippedHeader(
+      borderRadius: borderRadius,
       child: RepaintBoundary(
         child: Stack(
           children: [
@@ -144,9 +168,9 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
             Positioned.fill(
               child: RepaintBoundary(
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                  child: const CustomPaint(
-                    painter: FadeMaskPainter(fadeSize: 8, isTopEdge: false),
+                  filter: ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
+                  child: CustomPaint(
+                    painter: FadeMaskPainter(fadeSize: fadeSize, isTopEdge: false),
                   ),
                 ),
               ),
@@ -182,58 +206,43 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
               elevation: elevation,
               scrolledUnderElevation: scrolledUnderElevation,
               automaticallyImplyLeading: false, // We handle this manually
-              toolbarHeight: toolbarHeight ?? kToolbarHeight,
-              systemOverlayStyle: resolvedSystemOverlayStyle,
+              toolbarHeight: resolvedToolbarHeight,
+              systemOverlayStyle:
+                  systemOverlayStyle ??
+                  SystemUiOverlayStyle(
+                    statusBarColor: Colors.transparent,
+                    statusBarIconBrightness: isLightTheme ? Brightness.dark : Brightness.light,
+                    statusBarBrightness: isLightTheme ? Brightness.light : Brightness.dark,
+                    systemNavigationBarIconBrightness: isLightTheme
+                        ? Brightness.dark
+                        : Brightness.light,
+                    systemNavigationBarColor: Colors.transparent,
+                    systemNavigationBarDividerColor: Colors.transparent,
+                  ),
               bottom: bottom,
             ),
           ],
         ),
       ),
     );
+  }
+}
 
-    // return ClipRect(
-    //   child: RepaintBoundary(
-    //     child: BackdropFilter(
-    //       filter: ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
-    //       // filter: ImageFilter.compose(
-    //       //   outer: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-    //       //   inner: ColorFilter.matrix(
-    //       //     context.isLightMode ? lightMatrix : darkMatrix,
-    //       //   ),
-    //       // ),
-    //       child: AppBar(
-    //         title: title,
-    //         titleSpacing: titleSpacing,
-    //         leadingWidth: leadingWidth,
-    //         leading: shouldShowLeading
-    //             ? (leading ?? ComponentBackButton(onTap: onBackButtonTap))
-    //             : null,
-    //         actions: actions,
-    //         actionsPadding: const EdgeInsets.only(right: 6),
-    //         centerTitle: centerTitle,
-    //         backgroundColor: backgroundColor ?? defaultBackgroundColor,
-    //         // backgroundColor: Colors.transparent,
-    //         foregroundColor: foregroundColor ?? defaultForegroundColor,
-    //         elevation: elevation,
-    //         scrolledUnderElevation: scrolledUnderElevation,
-    //         automaticallyImplyLeading: false,
-    //         toolbarHeight: toolbarHeight ?? kToolbarHeight,
-    //         systemOverlayStyle:
-    //             systemOverlayStyle ??
-    //             SystemUiOverlayStyle(
-    //               statusBarColor: Colors.transparent,
-    //               statusBarIconBrightness: isLightTheme ? Brightness.dark : Brightness.light,
-    //               statusBarBrightness: isLightTheme ? Brightness.light : Brightness.dark,
-    //               systemNavigationBarIconBrightness: isLightTheme
-    //                   ? Brightness.dark
-    //                   : Brightness.light,
-    //               systemNavigationBarColor: Colors.transparent,
-    //               systemNavigationBarDividerColor: Colors.transparent,
-    //             ),
-    //         bottom: bottom,
-    //       ),
-    //     ),
-    //   ),
-    // );
+/// Clips the blurred header to either a plain rectangle (default) or a rounded
+/// superellipse when a [borderRadius] is supplied. The clip forces a layer
+/// boundary so the inner [BackdropFilter] is constrained to the rounded
+/// corners instead of painting into them.
+class _ClippedHeader extends StatelessWidget {
+  const _ClippedHeader({required this.child, this.borderRadius});
+
+  final Widget child;
+  final BorderRadius? borderRadius;
+
+  @override
+  Widget build(BuildContext context) {
+    if (borderRadius == null) {
+      return ClipRect(child: child);
+    }
+    return ClipRSuperellipse(borderRadius: borderRadius!, child: child);
   }
 }

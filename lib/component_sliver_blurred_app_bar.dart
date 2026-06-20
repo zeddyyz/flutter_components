@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_components/component_back_button.dart';
+import 'package:flutter_components/shared/fade_mask_painter.dart';
 
 class ComponentSliverBlurredAppBar extends StatelessWidget {
   const ComponentSliverBlurredAppBar({
@@ -19,8 +20,8 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
     this.automaticallyImplyLeading = true,
     this.toolbarHeight,
     this.systemOverlayStyle,
-    this.sigmaX = 15,
-    this.sigmaY = 15,
+    this.sigmaX = 12,
+    this.sigmaY = 12,
     this.backgroundOpacity = 0.6,
     this.onBackButtonTap,
     this.bottom,
@@ -34,6 +35,7 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
     this.onStretchTrigger,
     this.forceElevated = false,
     this.clipBehavior,
+    this.borderRadius,
   });
 
   final BuildContext context;
@@ -116,6 +118,9 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
   /// The content will be clipped (or not) according to this option
   final Clip? clipBehavior;
 
+  /// The border radius of the app bar shape
+  final BorderRadius? borderRadius;
+
   @override
   Widget build(BuildContext context) {
     bool isLightTheme = Theme.of(context).brightness == Brightness.light;
@@ -130,6 +135,8 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
     final shouldShowLeading =
         automaticallyImplyLeading && (leading != null || ModalRoute.of(context)?.canPop == true);
 
+    final resolvedBackgroundColor = backgroundColor ?? defaultBackgroundColor;
+
     return SliverAppBar(
       title: title,
       leading: shouldShowLeading ? (leading ?? ComponentBackButton(onTap: onBackButtonTap)) : null,
@@ -139,7 +146,7 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
       foregroundColor: foregroundColor ?? defaultForegroundColor,
       elevation: elevation,
       scrolledUnderElevation: scrolledUnderElevation,
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: false, // We handle this manually
       toolbarHeight: toolbarHeight ?? kToolbarHeight,
       systemOverlayStyle:
           systemOverlayStyle ??
@@ -153,32 +160,45 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
           ),
       bottom: bottom,
       expandedHeight: expandedHeight,
-      flexibleSpace: flexibleSpace != null
-          ? ClipRect(
-              child: RepaintBoundary(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: backgroundColor ?? defaultBackgroundColor,
-                    ),
-                    child: flexibleSpace,
-                  ),
-                ),
-              ),
-            )
-          : ClipRect(
-              child: RepaintBoundary(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: backgroundColor ?? defaultBackgroundColor,
+      flexibleSpace: ClipRect(
+        child: RepaintBoundary(
+          child: Stack(
+            children: [
+              // Backdrop blur that fades out at the bottom edge so it ramps
+              // down smoothly instead of ending in a hard line, mirroring the
+              // bottom tab bar's faded blur. The status bar edge stays at full
+              // blur.
+              Positioned.fill(
+                child: RepaintBoundary(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
+                    child: const CustomPaint(
+                      painter: FadeMaskPainter(fadeSize: 8, isTopEdge: false),
                     ),
                   ),
                 ),
               ),
-            ),
+              // Background tint that fades from opaque at the top (status bar)
+              // to transparent at the bottom edge.
+              Positioned.fill(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        resolvedBackgroundColor,
+                        resolvedBackgroundColor.withValues(alpha: 0.0),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              if (flexibleSpace != null) Positioned.fill(child: flexibleSpace!),
+            ],
+          ),
+        ),
+      ),
       pinned: pinned,
       floating: floating,
       snap: snap,
@@ -187,6 +207,9 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
       onStretchTrigger: onStretchTrigger,
       forceElevated: forceElevated,
       clipBehavior: clipBehavior,
+      shape: RoundedSuperellipseBorder(
+        borderRadius: borderRadius ?? BorderRadius.zero,
+      ),
     );
   }
 }
