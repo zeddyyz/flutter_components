@@ -131,6 +131,183 @@ extension ContextExtension on BuildContext {
   /// Padding for screens
   double topPadding(double value) => value + MediaQuery.paddingOf(this).top + 20;
   double get bottomPadding => MediaQuery.paddingOf(this).bottom + 80;
+
+  String? get _fontFamily => textTheme.labelSmall?.fontFamily;
+
+  TextStyle get labelLight => TextStyle(
+    color: primary,
+    fontSize: 11,
+    fontWeight: FontWeight.w400,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get labelMedium => TextStyle(
+    color: primary,
+    fontSize: 11,
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get labelHeavy => TextStyle(
+    color: primary,
+    fontSize: 11,
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get labelBold => TextStyle(
+    color: primary,
+    fontSize: 11,
+    fontWeight: FontWeight.w700,
+    fontFamily: _fontFamily,
+  );
+
+  TextStyle get bodyLight => TextStyle(
+    color: primary,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get bodyMedium => TextStyle(
+    color: primary,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get bodyHeavy => TextStyle(
+    color: primary,
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get bodyBold => TextStyle(
+    color: primary,
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+    fontFamily: _fontFamily,
+  );
+
+  TextStyle get body2Light => TextStyle(
+    color: primary,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get body2Medium => TextStyle(
+    color: primary,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get body2Heavy => TextStyle(
+    color: primary,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get body2Bold => TextStyle(
+    color: primary,
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    fontFamily: _fontFamily,
+  );
+
+  TextStyle get body3Light => TextStyle(
+    color: primary,
+    fontSize: 18,
+    fontWeight: FontWeight.w400,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get body3Medium => TextStyle(
+    color: primary,
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get body3Heavy => TextStyle(
+    color: primary,
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get body3Bold => TextStyle(
+    color: primary,
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    fontFamily: _fontFamily,
+  );
+
+  TextStyle get body4Light => TextStyle(
+    color: primary,
+    fontSize: 20,
+    fontWeight: FontWeight.w400,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get body4Medium => TextStyle(
+    color: primary,
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get body4Heavy => TextStyle(
+    color: primary,
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get body4Bold => TextStyle(
+    color: primary,
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    fontFamily: _fontFamily,
+  );
+
+  TextStyle get headlineLight => TextStyle(
+    color: primary,
+    fontSize: 22,
+    fontWeight: FontWeight.w400,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get headlineMedium => TextStyle(
+    color: primary,
+    fontSize: 22,
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get headlineHeavy => TextStyle(
+    color: primary,
+    fontSize: 22,
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get headlineBold => TextStyle(
+    color: primary,
+    fontSize: 22,
+    fontWeight: FontWeight.w700,
+    fontFamily: _fontFamily,
+  );
+
+  TextStyle get displayLight => TextStyle(
+    color: primary,
+    fontSize: 24,
+    fontWeight: FontWeight.w400,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get displayMedium => TextStyle(
+    color: primary,
+    fontSize: 24,
+    fontWeight: FontWeight.w500,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get displayHeavy => TextStyle(
+    color: primary,
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
+    fontFamily: _fontFamily,
+  );
+  TextStyle get displayBold => TextStyle(
+    color: primary,
+    fontSize: 24,
+    fontWeight: FontWeight.w700,
+    fontFamily: _fontFamily,
+  );
 }
 
 /// Allows you to insert widgets inside a CustomScrollView
