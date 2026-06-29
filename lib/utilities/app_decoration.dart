@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_components/components_context_extension.dart';
 
 class AppDecoration {
   static const spaceZero = EdgeInsets.zero;
@@ -18,4 +19,24 @@ class AppDecoration {
   static const radius2xl = Radius.circular(24);
   static const radiusStadium = Radius.circular(40);
   static const iOSModalRadius = Radius.circular(32);
+
+  static AnimationStyle get smoothSheetAnimationStyle => const AnimationStyle(
+    duration: Duration(milliseconds: 400),
+    curve: Curves.easeIn,
+    reverseDuration: Duration(milliseconds: 300),
+    reverseCurve: Curves.fastEaseInToSlowEaseOut,
+  );
+
+  /// Determines the number of columns for masonry grid based on screen width
+  static int getMasonryGridColumnCount(BuildContext context) {
+    final double width = MediaQuery.sizeOf(context).width;
+
+    // For mobile, use 1 column
+    if (context.isMobile) return 1;
+
+    // For tablets, adapt based on width
+    if (width < 800) return 1;
+    if (width < 1200) return 2;
+    return 3; // For very large screens
+  }
 }

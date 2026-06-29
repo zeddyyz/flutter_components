@@ -199,7 +199,7 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
                   ? (leading ?? ComponentBackButton(onTap: onBackButtonTap))
                   : null,
               actions: actions,
-              actionsPadding: const EdgeInsets.only(right: 6),
+              actionsPadding: const EdgeInsets.only(right: 12),
               centerTitle: centerTitle,
               backgroundColor: Colors.transparent,
               foregroundColor: foregroundColor ?? defaultForegroundColor,
