@@ -11,7 +11,7 @@ class ComponentDialogWidget extends StatelessWidget {
     this.height,
     this.icon,
     required this.title,
-    required this.description,
+    this.description,
     this.content,
     required this.confirmText,
     required this.cancelText,
@@ -24,7 +24,7 @@ class ComponentDialogWidget extends StatelessWidget {
   final double? height;
   final Widget? icon;
   final String title;
-  final String description;
+  final String? description;
   final Widget? content;
   final String confirmText;
   final String cancelText;
@@ -38,7 +38,7 @@ class ComponentDialogWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedSuperellipseBorder(
-        borderRadius: AppDecoration.borderRadius2xl,
+        borderRadius: AppDecoration.iOSModalBorderRadius,
       ),
       elevation: 8,
       backgroundColor: Colors.transparent,
@@ -46,65 +46,47 @@ class ComponentDialogWidget extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: Container(
           height: height,
-          width: context.isMobile ? null : 400,
+          width: context.isMobile ? null : 450,
           decoration: ShapeDecoration(
-            color: context.isLightMode
-                ? Colors.white.withValues(alpha: 0.8)
-                : const Color.fromARGB(255, 27, 27, 27),
+            color: context.isLightMode ? Colors.white : const Color.fromARGB(255, 27, 27, 27),
             shape: RoundedSuperellipseBorder(
-              borderRadius: AppDecoration.borderRadius2xl,
+              borderRadius: AppDecoration.iOSModalBorderRadius,
               side: BorderSide(
-                color: context.borderColorIntense,
+                color: context.borderColor,
               ),
             ),
           ),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 24,
-          ).copyWith(bottom: 16),
+          padding: EdgeInsets.all(context.defaultPadding + 8),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (icon != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Row(
-                    spacing: 20,
-                    children: [
-                      icon!,
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
+                Row(
+                  spacing: 20,
+                  children: [
+                    icon!,
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 )
               else
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Text(
-                  description,
+              const SizedBox(height: 24),
+              if (description != null)
+                Text(
+                  description!,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
-              ),
-              if (content != null) ...[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
-                  child: content!,
-                ),
-              ],
-              if (!kIsWeb) const SizedBox(height: 24) else const Spacer(),
+              ?content,
+              const Spacer(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -118,7 +100,7 @@ class ComponentDialogWidget extends StatelessWidget {
                         isDestructive ? Colors.red : Theme.of(context).primaryColor,
                       ),
                       fixedSize: WidgetStateProperty.all(
-                        Size(double.infinity, context.adaptiveSize(48)),
+                        const Size(double.infinity, kIsWeb ? 54 : 50),
                       ),
                       shape: WidgetStateProperty.all(
                         RoundedSuperellipseBorder(
@@ -129,7 +111,7 @@ class ComponentDialogWidget extends StatelessWidget {
                     child: Text(
                       confirmText,
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: isDestructive ? Colors.white : Colors.white,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -142,10 +124,9 @@ class ComponentDialogWidget extends StatelessWidget {
                           context.isLightMode
                               ? Colors.grey.withValues(alpha: 0.15)
                               : const Color.fromARGB(255, 43, 42, 42),
-                          // : const Color(0xff2e2e2e),
                         ),
                         fixedSize: WidgetStateProperty.all(
-                          Size(double.infinity, context.adaptiveSize(48)),
+                          const Size(double.infinity, kIsWeb ? 54 : 50),
                         ),
                         shape: WidgetStateProperty.all(
                           RoundedSuperellipseBorder(
@@ -162,9 +143,7 @@ class ComponentDialogWidget extends StatelessWidget {
                         cancelText,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-                    )
-                  else
-                    const SizedBox(height: 2),
+                    ),
                 ],
               ),
             ],
