@@ -132,7 +132,7 @@ extension ContextExtension on BuildContext {
   double topPadding(double value) => value + MediaQuery.paddingOf(this).top + 20;
   double get bottomPadding => MediaQuery.paddingOf(this).bottom + 80;
 
-  String? get _fontFamily => textTheme.labelSmall?.fontFamily;
+  String? get _fontFamily => textTheme.bodySmall!.fontFamily!;
 
   TextStyle get labelLight => TextStyle(
     color: primary,

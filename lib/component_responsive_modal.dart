@@ -153,7 +153,6 @@ class ComponentResponsiveModal {
   }) {
     // Use MediaQuery to determine if we should show a dialog or bottom sheet
     final isLargeScreen = !context.isMobile;
-    final titleTextStyle = context.body2Heavy;
 
     Widget buildDialogWidget(BuildContext dialogContext) {
       return Dialog(
@@ -188,7 +187,7 @@ class ComponentResponsiveModal {
                   ),
                 ],
               ),
-              title: Text(title, style: titleTextStyle),
+              title: Text(title, style: context.body2Heavy),
               centerTitle: true,
               backgroundColor: context.bottomSheetTheme.backgroundColor,
             ),
@@ -299,7 +298,7 @@ class ComponentResponsiveModal {
                   ),
                   title: Text(
                     title,
-                    style: titleTextStyle,
+                    style: context.body2Heavy,
                   ),
                   centerTitle: true,
                   backgroundColor: context.bottomSheetTheme.backgroundColor,
