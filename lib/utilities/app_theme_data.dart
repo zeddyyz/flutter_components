@@ -437,7 +437,8 @@ class AppThemeData {
       ),
       splashColor: Colors.white10,
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: bottomSheetBackgroundColor ?? Color(0xff1c1b1d),
+        // backgroundColor: bottomSheetBackgroundColor ?? Color(0xff1c1b1d),
+        backgroundColor: bottomSheetBackgroundColor ?? Color.fromARGB(255, 15, 15, 15),
         shadowColor: Colors.black54,
         shape: RoundedSuperellipseBorder(
           borderRadius: BorderRadius.only(

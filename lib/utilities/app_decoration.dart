@@ -9,6 +9,7 @@ class AppDecoration {
   static var borderRadiusLg = BorderRadius.circular(16);
   static var borderRadiusXl = BorderRadius.circular(20);
   static var borderRadius2xl = BorderRadius.circular(24);
+  static var borderRadiusCard = BorderRadius.circular(24);
   static var borderRadiusStadium = BorderRadius.circular(40);
   static var iOSModalBorderRadius = BorderRadius.circular(32);
 
@@ -17,6 +18,7 @@ class AppDecoration {
   static const radiusLg = Radius.circular(16);
   static const radiusXl = Radius.circular(20);
   static const radius2xl = Radius.circular(24);
+  static const radiusCard = Radius.circular(24);
   static const radiusStadium = Radius.circular(40);
   static const iOSModalRadius = Radius.circular(32);
 

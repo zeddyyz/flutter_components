@@ -1,6 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_components/components_context_extension.dart';
+import 'package:flutter/widget_previews.dart';
+import 'package:flutter_components/flutter_components.dart';
+
+@MultiBrightnessPreview()
+Widget componentTextFieldPreview() {
+  return ComponentTextField(
+    controller: TextEditingController(),
+    hintText: "ComponentTextField",
+    icon: Icon(Icons.search),
+    isError: false,
+  );
+}
+
+final class MultiBrightnessPreview extends MultiPreview {
+  const MultiBrightnessPreview();
+
+  @override
+  List<Preview> get previews => const [
+    Preview(
+      group: 'Brightness',
+      name: 'Example - light',
+      brightness: Brightness.light,
+    ),
+    Preview(
+      group: 'Brightness',
+      name: 'Example - dark',
+      brightness: Brightness.dark,
+    ),
+  ];
+}
 
 class ComponentTextField extends StatelessWidget {
   const ComponentTextField({
@@ -16,6 +45,8 @@ class ComponentTextField extends StatelessWidget {
     this.prefixText,
     this.isFilled = false,
     this.inputFormatters,
+    this.backgroundColor,
+    this.isError = false,
   });
 
   final TextEditingController controller;
@@ -29,11 +60,13 @@ class ComponentTextField extends StatelessWidget {
   final String? prefixText;
   final bool isFilled;
   final List<TextInputFormatter>? inputFormatters;
+  final Color? backgroundColor;
+  final bool isError;
 
   @override
   Widget build(BuildContext context) {
     final Color primaryColor = context.primary;
-    final Color fillColor = context.cardColor;
+    final Color fillColor = backgroundColor ?? context.cardColor;
     final TextStyle style = context.theme.textTheme.bodyLarge ?? const TextStyle(fontSize: 16);
 
     return TextFormField(
