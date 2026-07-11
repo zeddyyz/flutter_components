@@ -159,7 +159,11 @@ class AppThemeData {
           foregroundColor: WidgetStateProperty.all(Colors.white),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
           textStyle: WidgetStatePropertyAll(
-            TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
+            TextStyle(
+              fontSize: context.isMobile ? 16 : 19,
+              fontWeight: FontWeight.w600,
+              fontFamily: fontFamily,
+            ),
           ),
           splashFactory: NoSplash.splashFactory,
           shape: WidgetStateProperty.all(
@@ -173,7 +177,11 @@ class AppThemeData {
           foregroundColor: WidgetStateProperty.all(Colors.white),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
           textStyle: WidgetStatePropertyAll(
-            TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
+            TextStyle(
+              fontSize: context.isMobile ? 16 : 19,
+              fontWeight: FontWeight.w600,
+              fontFamily: fontFamily,
+            ),
           ),
           splashFactory: NoSplash.splashFactory,
           shape: WidgetStateProperty.all(
@@ -187,7 +195,11 @@ class AppThemeData {
           foregroundColor: WidgetStateProperty.all(primaryColor),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
           textStyle: WidgetStatePropertyAll(
-            TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
+            TextStyle(
+              fontSize: context.isMobile ? 16 : 19,
+              fontWeight: FontWeight.w600,
+              fontFamily: fontFamily,
+            ),
           ),
           splashFactory: NoSplash.splashFactory,
           shape: WidgetStateProperty.all(
@@ -203,7 +215,11 @@ class AppThemeData {
           foregroundColor: WidgetStateProperty.all(primaryColor),
           backgroundColor: WidgetStateProperty.all(Colors.transparent),
           textStyle: WidgetStatePropertyAll(
-            TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
+            TextStyle(
+              fontSize: context.isMobile ? 16 : 19,
+              fontWeight: FontWeight.w600,
+              fontFamily: fontFamily,
+            ),
           ),
           splashFactory: NoSplash.splashFactory,
           shape: WidgetStateProperty.all(
@@ -213,7 +229,8 @@ class AppThemeData {
       ),
       splashColor: Colors.black12,
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: bottomSheetBackgroundColor ?? Color(0xfff2f2f7),
+        // backgroundColor: bottomSheetBackgroundColor ?? Color(0xfff2f2f7),
+        backgroundColor: bottomSheetBackgroundColor ?? Colors.grey.shade50,
         shadowColor: Colors.black45,
         shape: RoundedSuperellipseBorder(
           borderRadius: BorderRadius.only(
@@ -383,7 +400,11 @@ class AppThemeData {
           iconColor: WidgetStateProperty.all(Colors.white),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
           textStyle: WidgetStatePropertyAll(
-            TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
+            TextStyle(
+              fontSize: context.isMobile ? 16 : 19,
+              fontWeight: FontWeight.w600,
+              fontFamily: fontFamily,
+            ),
           ),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
@@ -397,7 +418,11 @@ class AppThemeData {
           foregroundColor: WidgetStateProperty.all(Colors.black),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
           textStyle: WidgetStatePropertyAll(
-            TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
+            TextStyle(
+              fontSize: context.isMobile ? 16 : 19,
+              fontWeight: FontWeight.w600,
+              fontFamily: fontFamily,
+            ),
           ),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
@@ -411,7 +436,11 @@ class AppThemeData {
           foregroundColor: WidgetStateProperty.all(Colors.white),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
           textStyle: WidgetStatePropertyAll(
-            TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
+            TextStyle(
+              fontSize: context.isMobile ? 16 : 19,
+              fontWeight: FontWeight.w600,
+              fontFamily: fontFamily,
+            ),
           ),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(
@@ -427,7 +456,11 @@ class AppThemeData {
           foregroundColor: WidgetStateProperty.all(primaryColor),
           backgroundColor: WidgetStateProperty.all(Colors.transparent),
           textStyle: WidgetStatePropertyAll(
-            TextStyle(fontSize: context.isMobile ? 16 : 19, fontWeight: FontWeight.w600),
+            TextStyle(
+              fontSize: context.isMobile ? 16 : 19,
+              fontWeight: FontWeight.w600,
+              fontFamily: fontFamily,
+            ),
           ),
           splashFactory: NoSplash.splashFactory,
           shape: WidgetStateProperty.all(
