@@ -139,6 +139,7 @@ class ComponentResponsiveModal {
     }
   }
 
+  /// - [animationStyle] defaults to `AppDecoration.smoothSheetAnimationStyle`
   static Future<T?> showWithoutScaffold<T>({
     required BuildContext context,
     required String title,
@@ -263,7 +264,7 @@ class ComponentResponsiveModal {
               ? AppDecoration.iOSModalBorderRadius
               : const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
         ),
-        sheetAnimationStyle: animationStyle,
+        sheetAnimationStyle: animationStyle ?? AppDecoration.smoothSheetAnimationStyle,
         constraints: constraints ?? const BoxConstraints.expand(),
         builder: (BuildContext bottomSheetContext) {
           return Container(
