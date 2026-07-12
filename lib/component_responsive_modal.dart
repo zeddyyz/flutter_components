@@ -170,29 +170,33 @@ class ComponentResponsiveModal {
             constraints ?? BoxConstraints(maxWidth: 560, maxHeight: context.viewHeight * 0.8),
         child: ClipRSuperellipse(
           borderRadius: AppDecoration.iOSModalBorderRadius,
-          child: Scaffold(
-            extendBodyBehindAppBar: true,
-            backgroundColor: context.bottomSheetTheme.backgroundColor,
-            appBar: ComponentBlurredAppBar(
-              context: context,
-              borderRadius: const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
-              toolbarHeight: kIsWeb ? kModalToolbarHeight : kToolbarHeight,
-              actions: actions,
-              leading: const Row(
-                mainAxisSize: .min,
-                mainAxisAlignment: .end,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 2),
-                    child: ComponentCloseButton.blurred(),
-                  ),
-                ],
-              ),
-              title: Text(title, style: context.body2Heavy),
-              centerTitle: true,
+          child: MediaQuery.removePadding(
+            context: dialogContext,
+            removeTop: true,
+            child: Scaffold(
+              extendBodyBehindAppBar: true,
               backgroundColor: context.bottomSheetTheme.backgroundColor,
+              appBar: ComponentBlurredAppBar(
+                context: context,
+                borderRadius: const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
+                toolbarHeight: kIsWeb ? kModalToolbarHeight : kToolbarHeight,
+                actions: actions,
+                leading: const Row(
+                  mainAxisSize: .min,
+                  mainAxisAlignment: .end,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(right: 2),
+                      child: ComponentCloseButton.blurred(),
+                    ),
+                  ],
+                ),
+                title: Text(title, style: context.body2Heavy),
+                centerTitle: true,
+                backgroundColor: context.bottomSheetTheme.backgroundColor,
+              ),
+              body: builder(dialogContext),
             ),
-            body: builder(dialogContext),
           ),
         ),
       );
