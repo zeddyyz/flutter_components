@@ -170,7 +170,7 @@ class ComponentResponsiveModal {
             constraints ?? BoxConstraints(maxWidth: 560, maxHeight: context.viewHeight * 0.8),
         child: ClipRSuperellipse(
           borderRadius: AppDecoration.iOSModalBorderRadius,
-          child: MediaQuery.removePadding(
+          child: MediaQuery.removeViewPadding(
             context: dialogContext,
             removeTop: true,
             child: Scaffold(
