@@ -272,46 +272,54 @@ class ComponentResponsiveModal {
         sheetAnimationStyle: animationStyle ?? AppDecoration.smoothSheetAnimationStyle,
         constraints: constraints ?? const BoxConstraints.expand(),
         builder: (BuildContext bottomSheetContext) {
-          return Container(
-            margin: float
-                ? EdgeInsets.only(
-                    left: 12,
-                    right: 12,
-                    bottom: context.mediaQueryPadding.bottom,
-                  )
-                : EdgeInsets.zero,
-            child: ClipRSuperellipse(
-              borderRadius: float
-                  ? AppDecoration.iOSModalBorderRadius
-                  : const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
-              child: Scaffold(
-                extendBodyBehindAppBar: true,
-                backgroundColor: context.bottomSheetTheme.backgroundColor,
-                appBar: ComponentBlurredAppBar(
-                  context: context,
-                  borderRadius: const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
-                  toolbarHeight: kModalToolbarHeight,
-                  actions: actions,
-                  leading: Row(
-                    mainAxisSize: .min,
-                    mainAxisAlignment: .start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 14),
-                        child: ComponentCloseButton.blurred(
-                          bgColor: context.bottomSheetCardColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                  title: Text(
-                    title,
-                    style: context.body2Heavy,
-                  ),
-                  centerTitle: true,
+          // Slide the entire sheet above the keyboard instead of letting the
+          // inner Scaffold shrink its body (which would hide focused fields).
+          final double keyboardInset = MediaQuery.viewInsetsOf(bottomSheetContext).bottom;
+
+          return Padding(
+            padding: EdgeInsets.only(bottom: keyboardInset),
+            child: Container(
+              margin: float
+                  ? EdgeInsets.only(
+                      left: 12,
+                      right: 12,
+                      bottom: context.mediaQueryPadding.bottom,
+                    )
+                  : EdgeInsets.zero,
+              child: ClipRSuperellipse(
+                borderRadius: float
+                    ? AppDecoration.iOSModalBorderRadius
+                    : const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
+                child: Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  extendBodyBehindAppBar: true,
                   backgroundColor: context.bottomSheetTheme.backgroundColor,
+                  appBar: ComponentBlurredAppBar(
+                    context: context,
+                    borderRadius: const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
+                    toolbarHeight: kModalToolbarHeight,
+                    actions: actions,
+                    leading: Row(
+                      mainAxisSize: .min,
+                      mainAxisAlignment: .start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 14),
+                          child: ComponentCloseButton.blurred(
+                            bgColor: context.bottomSheetCardColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    title: Text(
+                      title,
+                      style: context.body2Heavy,
+                    ),
+                    centerTitle: true,
+                    backgroundColor: context.bottomSheetTheme.backgroundColor,
+                  ),
+                  body: builder(bottomSheetContext),
                 ),
-                body: builder(bottomSheetContext),
               ),
             ),
           );
