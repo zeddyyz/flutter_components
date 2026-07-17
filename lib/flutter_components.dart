@@ -24,6 +24,7 @@ export 'component_tab_bar.dart';
 export 'component_text_field.dart';
 export 'components_context_extension.dart';
 export 'shared/app_screen_size.dart';
+export 'shared/component_clipped_header.dart';
 export 'shared/component_gesture_click.dart';
 export 'shared/enums.dart';
 export 'utilities/alert_snackbar.dart';

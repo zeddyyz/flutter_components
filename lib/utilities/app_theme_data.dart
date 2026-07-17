@@ -230,7 +230,7 @@ class AppThemeData {
       splashColor: Colors.black12,
       bottomSheetTheme: BottomSheetThemeData(
         // backgroundColor: bottomSheetBackgroundColor ?? Color(0xfff2f2f7),
-        backgroundColor: bottomSheetBackgroundColor ?? Colors.grey.shade50,
+        backgroundColor: bottomSheetBackgroundColor ?? Color(0xfff2f2f7),
         shadowColor: Colors.black45,
         shape: RoundedSuperellipseBorder(
           borderRadius: BorderRadius.only(
@@ -445,7 +445,7 @@ class AppThemeData {
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(
               borderRadius: AppDecoration.borderRadiusStadium,
-              side: BorderSide(color: primaryColor, width: 1.5),
+              side: BorderSide(color: primaryColor),
             ),
           ),
           splashFactory: NoSplash.splashFactory,
@@ -471,7 +471,7 @@ class AppThemeData {
       splashColor: Colors.white10,
       bottomSheetTheme: BottomSheetThemeData(
         // backgroundColor: bottomSheetBackgroundColor ?? Color(0xff1c1b1d),
-        backgroundColor: bottomSheetBackgroundColor ?? Color.fromARGB(255, 15, 15, 15),
+        backgroundColor: bottomSheetBackgroundColor ?? Color(0xff1c1c1e),
         shadowColor: Colors.black54,
         shape: RoundedSuperellipseBorder(
           borderRadius: BorderRadius.only(

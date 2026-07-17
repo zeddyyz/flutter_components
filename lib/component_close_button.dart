@@ -92,21 +92,15 @@ class ComponentCloseButton extends StatelessWidget {
                 sigmaY: 5,
               ),
               child: Container(
-                height: 38,
-                width: 38,
+                height: 40,
+                width: 40,
                 decoration: BoxDecoration(
-                  color:
-                      bgColor?.withValues(alpha: 0.5) ??
-                      context.iconButtonBackgroundColor.withValues(alpha: 0.5),
+                  color: bgColor ?? context.iconButtonBackgroundColor.withValues(alpha: 0.5),
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: context.isLightMode ? context.borderColorIntense : context.borderColor,
-                    width: 1,
-                  ),
                 ),
                 child: Icon(
                   Icons.close_rounded,
-                  size: 24,
+                  size: 26,
                   color: iconColor ?? context.primary,
                 ),
               ),

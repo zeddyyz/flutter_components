@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_components/component_no_splash_theme.dart';
 import 'package:flutter_components/components_context_extension.dart';
-import 'package:flutter_components/shared/component_gesture_click.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
 
 class ComponentListTile extends StatefulWidget {
@@ -64,14 +63,16 @@ class _ComponentListTileState extends State<ComponentListTile> {
       child: Builder(
         builder: (builderContext) {
           // Calculate theme-dependent values
-          final tileColor =
-              widget.backgroundColor ?? (widget.isWithinBottomSheet ? null : context.cardColor);
+          final tileColor = widget.isWithinBottomSheet
+              ? context.bottomSheetCardColor
+              : context.cardColor;
 
           final borderColor = widget.isSelected
-              ? (widget.isSelectedColor ?? builderContext.borderColor)
-              : (widget.isWithinBottomSheet
-                    ? builderContext.borderColorIntense
-                    : Colors.transparent);
+              ? (widget.isSelectedColor ??
+                    (widget.isWithinBottomSheet
+                        ? builderContext.borderColorIntense
+                        : builderContext.borderColor))
+              : Colors.transparent;
 
           final contentPadding =
               widget.contentPadding ??
@@ -83,40 +84,32 @@ class _ComponentListTileState extends State<ComponentListTile> {
                 },
               );
 
-          final titleStyle = widget.titleStyle ?? Theme.of(builderContext).textTheme.bodySmall;
+          final titleStyle = widget.titleStyle ?? builderContext.textTheme.bodySmall;
           final subtitleStyle =
               widget.subtitleStyle ??
-              Theme.of(builderContext).textTheme.labelSmall!.copyWith(color: builderContext.hint);
+              builderContext.textTheme.labelSmall!.copyWith(color: builderContext.hint);
 
-          return ComponentGestureClick(
-            onTap: widget.onTap ?? () {},
-            child: ComponentNoSplashTheme(
-              child: Container(
-                decoration: ShapeDecoration(
-                  color: tileColor,
-                  shape: RoundedSuperellipseBorder(
-                    borderRadius: widget.borderRadius ?? AppDecoration.borderRadiusSm,
-                    side: widget.displayBorder ? BorderSide(color: borderColor) : BorderSide.none,
-                  ),
-                ),
-                child: ListTile(
-                  leading: widget.leading,
-                  title: widget.title,
-                  subtitle: widget.subtitle,
-                  trailing: widget.trailing,
-                  tileColor: tileColor,
-                  shape: RoundedSuperellipseBorder(
-                    borderRadius: widget.borderRadius ?? AppDecoration.borderRadiusSm,
-                  ),
-                  contentPadding: contentPadding,
-                  titleTextStyle: titleStyle,
-                  subtitleTextStyle: subtitleStyle,
-                  onTap: widget.onTap,
-                  splashColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                ),
+          return ComponentNoSplashTheme(
+            child: ListTile(
+              leading: widget.leading,
+              title: widget.title,
+              subtitle: widget.subtitle,
+              trailing: widget.trailing,
+              tileColor: tileColor,
+              shape: RoundedSuperellipseBorder(
+                borderRadius: widget.borderRadius ?? AppDecoration.borderRadiusSm,
+                side: widget.displayBorder ? BorderSide(color: borderColor) : BorderSide.none,
               ),
+              contentPadding: contentPadding,
+              titleTextStyle: titleStyle,
+              subtitleTextStyle: subtitleStyle,
+              onTap: widget.onTap,
+              splashColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              mouseCursor: widget.onTap != null
+                  ? SystemMouseCursors.click
+                  : SystemMouseCursors.none,
             ),
           );
         },

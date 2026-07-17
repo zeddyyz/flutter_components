@@ -7,7 +7,7 @@ import 'package:flutter_components/flutter_components.dart';
 Widget componentTextFieldPreview() {
   return ComponentTextField(
     controller: TextEditingController(),
-    hintText: "ComponentTextField",
+    hintText: "Enter something...",
     icon: Icon(Icons.search),
     isError: false,
   );
@@ -47,6 +47,7 @@ class ComponentTextField extends StatelessWidget {
     this.inputFormatters,
     this.backgroundColor,
     this.isError = false,
+    this.borderRadius,
   });
 
   final TextEditingController controller;
@@ -62,6 +63,7 @@ class ComponentTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final Color? backgroundColor;
   final bool isError;
+  final double? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -94,28 +96,28 @@ class ComponentTextField extends StatelessWidget {
             color: primaryColor.withValues(alpha: 0.1),
             width: 1,
           ),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(borderRadius ?? 16),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: primaryColor.withValues(alpha: 0.6),
             width: 1,
           ),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(borderRadius ?? 12),
         ),
         errorBorder: OutlineInputBorder(
           borderSide: const BorderSide(
             color: Colors.redAccent,
             width: 1,
           ),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(borderRadius ?? 16),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderSide: const BorderSide(
             color: Colors.redAccent,
             width: 1.5,
           ),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(borderRadius ?? 12),
         ),
         prefixIcon: Container(
           decoration: BoxDecoration(

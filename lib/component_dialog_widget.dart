@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
@@ -46,9 +45,11 @@ class ComponentDialogWidget extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: Container(
           height: height,
-          width: context.isMobile ? null : 450,
+          width: context.isMobile ? null : 400,
           decoration: ShapeDecoration(
-            color: context.isLightMode ? Colors.white : const Color.fromARGB(255, 27, 27, 27),
+            color: context.isLightMode
+                ? Colors.white.withValues(alpha: 0.8)
+                : const Color.fromARGB(255, 27, 27, 27),
             shape: RoundedSuperellipseBorder(
               borderRadius: AppDecoration.iOSModalBorderRadius,
               side: BorderSide(
@@ -56,34 +57,46 @@ class ComponentDialogWidget extends StatelessWidget {
               ),
             ),
           ),
-          padding: EdgeInsets.all(context.defaultPadding + 8),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 24,
+          ).copyWith(bottom: 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (icon != null)
-                Row(
-                  spacing: 20,
-                  children: [
-                    icon!,
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: Theme.of(context).textTheme.titleMedium,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Row(
+                    spacing: 20,
+                    children: [
+                      icon!,
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 )
               else
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                 ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               if (description != null)
-                Text(
-                  description!,
-                  style: Theme.of(context).textTheme.titleSmall,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    description!,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
                 ),
               ?content,
               const Spacer(),
@@ -100,7 +113,7 @@ class ComponentDialogWidget extends StatelessWidget {
                         isDestructive ? Colors.red : Theme.of(context).primaryColor,
                       ),
                       fixedSize: WidgetStateProperty.all(
-                        const Size(double.infinity, kIsWeb ? 54 : 50),
+                        const Size(double.infinity, 50),
                       ),
                       shape: WidgetStateProperty.all(
                         RoundedSuperellipseBorder(
@@ -126,7 +139,7 @@ class ComponentDialogWidget extends StatelessWidget {
                               : const Color.fromARGB(255, 43, 42, 42),
                         ),
                         fixedSize: WidgetStateProperty.all(
-                          const Size(double.infinity, kIsWeb ? 54 : 50),
+                          const Size(double.infinity, 50),
                         ),
                         shape: WidgetStateProperty.all(
                           RoundedSuperellipseBorder(

@@ -17,7 +17,7 @@ class ComponentGestureClick extends StatelessWidget {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        behavior: behavior,
+        behavior: behavior ?? HitTestBehavior.opaque,
         onTap: onTap,
         child: child,
       ),

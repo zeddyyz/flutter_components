@@ -4,12 +4,14 @@ import 'package:flutter_components/components_context_extension.dart';
 class ComponentDatePicker extends StatefulWidget {
   const ComponentDatePicker({
     super.key,
+    required this.constraints,
     required this.initialDate,
     required this.firstDate,
     required this.lastDate,
     required this.onDateSelected,
   });
 
+  final BoxConstraints constraints;
   final DateTime initialDate;
   final DateTime firstDate;
   final DateTime lastDate;
@@ -52,132 +54,139 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-      decoration: BoxDecoration(
-        color: context.scaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: context.borderColor, width: 1),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Month navigation
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: Icon(Icons.chevron_left, color: context.primary),
-                onPressed: _previousMonth,
-                style: ButtonStyle(
-                  shape: WidgetStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: context.borderColor),
-                    ),
-                  ),
-                ),
-              ),
-              Text(
-                '${_getMonthName(_currentMonth.month)} ${_currentMonth.year}',
-                style: TextStyle(color: context.primary, fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              IconButton(
-                icon: Icon(Icons.chevron_right, color: context.primary),
-                onPressed: _nextMonth,
-                style: ButtonStyle(
-                  shape: WidgetStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: context.borderColor),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          // Weekdays header
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: _weekdays
-                .map(
-                  (day) => SizedBox(
-                    width: 36,
-                    child: Text(
-                      day,
-                      style: const TextStyle(color: Colors.grey),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
-          const SizedBox(height: 8),
-
-          // Calendar grid
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 7,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-            ),
-            itemCount: _calculateRequiredGridCells(),
-            itemBuilder: (context, index) {
-              final int day = index + 1 - _getFirstDayOffset();
-              if (day < 1 || day > _getDaysInMonth(_currentMonth.year, _currentMonth.month)) {
-                return const SizedBox();
-              }
-
-              final DateTime date = DateTime(_currentMonth.year, _currentMonth.month, day);
-              final bool isSelected =
-                  _selectedDate.year == date.year &&
-                  _selectedDate.month == date.month &&
-                  _selectedDate.day == date.day;
-
-              return GestureDetector(
-                onTap: () => _selectDate(date),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: isSelected ? context.borderColor : Colors.transparent,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      day.toString(),
-                      style: TextStyle(
-                        color: isSelected ? context.primary : context.primary,
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+    return ConstrainedBox(
+      constraints: widget.constraints,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        decoration: BoxDecoration(
+          color: context.scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: context.borderColor, width: 1),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Month navigation
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.chevron_left, color: context.primary),
+                  onPressed: _previousMonth,
+                  style: ButtonStyle(
+                    shape: WidgetStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: context.borderColor),
                       ),
                     ),
                   ),
                 ),
-              );
-            },
-          ),
+                Text(
+                  '${_getMonthName(_currentMonth.month)} ${_currentMonth.year}',
+                  style: TextStyle(
+                    color: context.primary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.chevron_right, color: context.primary),
+                  onPressed: _nextMonth,
+                  style: ButtonStyle(
+                    shape: WidgetStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: context.borderColor),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
 
-          // const SizedBox(height: 16),
+            // Weekdays header
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: _weekdays
+                  .map(
+                    (day) => SizedBox(
+                      width: 36,
+                      child: Text(
+                        day,
+                        style: const TextStyle(color: Colors.grey),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+            const SizedBox(height: 8),
 
-          // Buttons
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('Cancel', style: TextStyle(color: context.secondary)),
+            // Calendar grid
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 7,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
               ),
-              const SizedBox(width: 16),
-              TextButton(
-                onPressed: () => Navigator.pop(context, _selectedDate),
-                child: Text('Confirm', style: TextStyle(color: context.primary)),
-              ),
-            ],
-          ),
-        ],
+              itemCount: _calculateRequiredGridCells(),
+              itemBuilder: (context, index) {
+                final int day = index + 1 - _getFirstDayOffset();
+                if (day < 1 || day > _getDaysInMonth(_currentMonth.year, _currentMonth.month)) {
+                  return const SizedBox();
+                }
+
+                final DateTime date = DateTime(_currentMonth.year, _currentMonth.month, day);
+                final bool isSelected =
+                    _selectedDate.year == date.year &&
+                    _selectedDate.month == date.month &&
+                    _selectedDate.day == date.day;
+
+                return GestureDetector(
+                  onTap: () => _selectDate(date),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: isSelected ? context.borderColor : Colors.transparent,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        day.toString(),
+                        style: TextStyle(
+                          color: isSelected ? context.primary : context.primary,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+
+            // const SizedBox(height: 16),
+
+            // Buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('Cancel', style: TextStyle(color: context.secondary)),
+                ),
+                const SizedBox(width: 16),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, _selectedDate),
+                  child: Text('Confirm', style: TextStyle(color: context.primary)),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

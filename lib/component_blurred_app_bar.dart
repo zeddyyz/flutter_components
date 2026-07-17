@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_components/component_back_button.dart';
+import 'package:flutter_components/shared/component_clipped_header.dart';
 import 'package:flutter_components/shared/fade_mask_painter.dart';
 
 // https://github.com/BlueBubblesApp/bluebubbles-app/blob/zach%2Ffeat%2Ftrue-foreground-service/lib%2Fapp%2Flayouts%2Fconversation_view%2Fwidgets%2Fheader%2Fcupertino_header.dart#L27-L52
@@ -157,7 +158,7 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
     required double resolvedToolbarHeight,
     required bool isLightTheme,
   }) {
-    return _ClippedHeader(
+    return ComponentClippedHeader(
       borderRadius: borderRadius,
       child: RepaintBoundary(
         child: Stack(
@@ -194,7 +195,7 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
             AppBar(
               title: title,
               titleSpacing: titleSpacing,
-              leadingWidth: leadingWidth,
+              leadingWidth: leadingWidth ?? 54,
               leading: shouldShowLeading
                   ? (leading ?? ComponentBackButton(onTap: onBackButtonTap))
                   : null,
@@ -225,24 +226,5 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
         ),
       ),
     );
-  }
-}
-
-/// Clips the blurred header to either a plain rectangle (default) or a rounded
-/// superellipse when a [borderRadius] is supplied. The clip forces a layer
-/// boundary so the inner [BackdropFilter] is constrained to the rounded
-/// corners instead of painting into them.
-class _ClippedHeader extends StatelessWidget {
-  const _ClippedHeader({required this.child, this.borderRadius});
-
-  final Widget child;
-  final BorderRadius? borderRadius;
-
-  @override
-  Widget build(BuildContext context) {
-    if (borderRadius == null) {
-      return ClipRect(child: child);
-    }
-    return ClipRSuperellipse(borderRadius: borderRadius!, child: child);
   }
 }

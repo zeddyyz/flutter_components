@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_components/component_blurred_app_bar.dart';
 import 'package:flutter_components/component_close_button.dart';
@@ -179,15 +178,17 @@ class ComponentResponsiveModal {
               appBar: ComponentBlurredAppBar(
                 context: context,
                 borderRadius: const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
-                toolbarHeight: kIsWeb ? kModalToolbarHeight : kToolbarHeight,
+                toolbarHeight: kModalToolbarHeight,
                 actions: actions,
-                leading: const Row(
+                leading: Row(
                   mainAxisSize: .min,
-                  mainAxisAlignment: .end,
+                  mainAxisAlignment: .start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(right: 2),
-                      child: ComponentCloseButton.blurred(),
+                      padding: EdgeInsets.only(left: 14),
+                      child: ComponentCloseButton.blurred(
+                        bgColor: context.bottomSheetCardColor,
+                      ),
                     ),
                   ],
                 ),
@@ -291,13 +292,15 @@ class ComponentResponsiveModal {
                   borderRadius: const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
                   toolbarHeight: kModalToolbarHeight,
                   actions: actions,
-                  leading: const Row(
+                  leading: Row(
                     mainAxisSize: .min,
-                    mainAxisAlignment: .center,
+                    mainAxisAlignment: .start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 12),
-                        child: ComponentCloseButton.blurred(),
+                        padding: EdgeInsets.only(left: 14),
+                        child: ComponentCloseButton.blurred(
+                          bgColor: context.bottomSheetCardColor,
+                        ),
                       ),
                     ],
                   ),
