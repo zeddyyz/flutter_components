@@ -2,8 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_components/component_back_button.dart';
-import 'package:flutter_components/shared/component_clipped_header.dart';
+import 'package:flutter_components/flutter_components.dart';
 import 'package:flutter_components/shared/fade_mask_painter.dart';
 
 // https://github.com/BlueBubblesApp/bluebubbles-app/blob/zach%2Ffeat%2Ftrue-foreground-service/lib%2Fapp%2Flayouts%2Fconversation_view%2Fwidgets%2Fheader%2Fcupertino_header.dart#L27-L52
@@ -196,6 +195,7 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
               title: title,
               titleSpacing: titleSpacing,
               leadingWidth: leadingWidth ?? 54,
+              titleTextStyle: context.textTheme.bodyMedium,
               leading: shouldShowLeading
                   ? (leading ?? ComponentBackButton(onTap: onBackButtonTap))
                   : null,
