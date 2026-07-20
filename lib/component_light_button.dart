@@ -39,6 +39,8 @@ class ComponentLightButton extends StatelessWidget {
           borderRadius: AppDecoration.borderRadiusStadium,
         ),
         splashFactory: NoSplash.splashFactory,
+        elevation: 0,
+        enabledMouseCursor: SystemMouseCursors.click,
       ),
       child: child,
     );
