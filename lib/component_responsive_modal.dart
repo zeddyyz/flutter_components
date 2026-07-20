@@ -202,6 +202,7 @@ class ComponentResponsiveModal {
               removeTop: true,
               child: Scaffold(
                 extendBodyBehindAppBar: true,
+                resizeToAvoidBottomInset: false,
                 backgroundColor: context.bottomSheetTheme.backgroundColor,
                 appBar: ComponentBlurredAppBar(
                   context: context,
