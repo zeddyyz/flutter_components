@@ -22,12 +22,13 @@ class ComponentLightButton extends StatelessWidget {
     Color defaultBackgroundColor =
         backgroundColor ?? (context.isLightMode ? Colors.grey.shade100 : Colors.grey.shade900);
 
+    Color modalSheetBackgroundColor =
+        backgroundColor ?? (context.isLightMode ? Colors.grey.shade200 : Color(0xff2c2c2e));
+
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: isModalSheet
-            ? (backgroundColor ?? context.bottomSheetCardColor)
-            : defaultBackgroundColor,
+        backgroundColor: isModalSheet ? modalSheetBackgroundColor : defaultBackgroundColor,
         foregroundColor: foregroundColor ?? context.primary,
         fixedSize: Size(double.maxFinite, context.isMobile ? 52 : 54),
         textStyle: TextStyle(
