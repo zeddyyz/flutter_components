@@ -78,8 +78,8 @@ extension ContextExtension on BuildContext {
   double get defaultPadding => isMobile
       ? 16.0
       : isMediumScreen
-      ? 20.0
-      : 24.0;
+      ? 18.0
+      : 20.0;
 
   double get defaultPaddingLargeScreen => isMobile
       ? 16.0
@@ -92,8 +92,8 @@ extension ContextExtension on BuildContext {
   double get cardPadding => isMobile
       ? 12.0
       : isMediumScreen
-      ? 16.0
-      : 20.0;
+      ? 14.0
+      : 26.0;
 
   double get defaultIconSize => isMobile
       ? 22.0
