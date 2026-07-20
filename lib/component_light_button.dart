@@ -42,27 +42,28 @@ class ComponentLightButton extends StatelessWidget {
         backgroundColor ??
         (context.isLightMode ? Colors.grey.shade300.withValues(alpha: 0.8) : Color(0xff2c2c2e));
 
-    return ComponentNoSplashTheme(
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isModalSheet ? modalSheetBackgroundColor : defaultBackgroundColor,
-          foregroundColor: foregroundColor ?? context.primary,
-          fixedSize: Size(double.maxFinite, context.isMobile ? 52 : 54),
-          textStyle: TextStyle(
-            fontSize: context.isMobile ? 16 : 19,
-            fontWeight: FontWeight.w600,
-            fontFamily: context.textTheme.bodySmall!.fontFamily,
-          ),
-          shape: RoundedSuperellipseBorder(
-            borderRadius: AppDecoration.borderRadiusStadium,
-          ),
-          splashFactory: NoSplash.splashFactory,
-          elevation: 0,
-          enabledMouseCursor: SystemMouseCursors.click,
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isModalSheet ? modalSheetBackgroundColor : defaultBackgroundColor,
+        foregroundColor: foregroundColor ?? context.primary,
+        shadowColor: Colors.transparent,
+        overlayColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        fixedSize: Size(double.maxFinite, context.isMobile ? 52 : 54),
+        textStyle: TextStyle(
+          fontSize: context.isMobile ? 16 : 19,
+          fontWeight: FontWeight.w600,
+          fontFamily: context.textTheme.bodySmall!.fontFamily,
         ),
-        child: child,
+        shape: RoundedSuperellipseBorder(
+          borderRadius: AppDecoration.borderRadiusStadium,
+        ),
+        splashFactory: NoSplash.splashFactory,
+        elevation: 0,
+        enabledMouseCursor: SystemMouseCursors.click,
       ),
+      child: child,
     );
   }
 }
