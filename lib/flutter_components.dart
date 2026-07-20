@@ -12,6 +12,7 @@ export 'component_date_picker.dart';
 export 'component_dialog_widget.dart';
 export 'component_filter_chip.dart';
 export 'component_full_screen_widget.dart';
+export 'component_light_button.dart';
 export 'component_list_tile.dart';
 export 'component_nested_scroll_view_config.dart';
 export 'component_no_splash_theme.dart';
