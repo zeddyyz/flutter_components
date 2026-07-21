@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_components/components_context_extension.dart';
+import 'package:flutter_components/flutter_components.dart';
 
 class ComponentDatePicker extends StatefulWidget {
   const ComponentDatePicker({
@@ -9,6 +9,9 @@ class ComponentDatePicker extends StatefulWidget {
     required this.firstDate,
     required this.lastDate,
     required this.onDateSelected,
+    this.primaryColor,
+    this.secondaryColor,
+    this.decoration,
   });
 
   final BoxConstraints constraints;
@@ -16,6 +19,10 @@ class ComponentDatePicker extends StatefulWidget {
   final DateTime firstDate;
   final DateTime lastDate;
   final Function(DateTime)? onDateSelected;
+
+  final Color? primaryColor;
+  final Color? secondaryColor;
+  final Decoration? decoration;
 
   @override
   State<ComponentDatePicker> createState() => _ComponentDatePickerState();
@@ -59,11 +66,15 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
       child: Container(
         padding: const EdgeInsets.all(16),
         margin: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-        decoration: BoxDecoration(
-          color: context.scaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: context.borderColor, width: 1),
-        ),
+        decoration:
+            widget.decoration ??
+            ShapeDecoration(
+              color: context.scaffoldBackgroundColor,
+              shape: RoundedSuperellipseBorder(
+                borderRadius: AppDecoration.iOSModalBorderRadius,
+                side: BorderSide(color: context.borderColor),
+              ),
+            ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -76,9 +87,9 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
                   onPressed: _previousMonth,
                   style: ButtonStyle(
                     shape: WidgetStatePropertyAll(
-                      RoundedRectangleBorder(
+                      RoundedSuperellipseBorder(
                         borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: context.borderColor),
+                        side: BorderSide(color: context.secondary.withValues(alpha: 0.8)),
                       ),
                     ),
                   ),
@@ -96,9 +107,9 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
                   onPressed: _nextMonth,
                   style: ButtonStyle(
                     shape: WidgetStatePropertyAll(
-                      RoundedRectangleBorder(
+                      RoundedSuperellipseBorder(
                         borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: context.borderColor),
+                        side: BorderSide(color: context.secondary.withValues(alpha: 0.8)),
                       ),
                     ),
                   ),
@@ -176,12 +187,22 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
               children: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('Cancel', style: TextStyle(color: context.secondary)),
+                  child: Text(
+                    'Cancel',
+                    style: context.bodyHeavy.copyWith(
+                      color: widget.secondaryColor ?? context.secondary,
+                    ),
+                  ),
                 ),
                 const SizedBox(width: 16),
                 TextButton(
                   onPressed: () => Navigator.pop(context, _selectedDate),
-                  child: Text('Confirm', style: TextStyle(color: context.primary)),
+                  child: Text(
+                    'Confirm',
+                    style: context.bodyHeavy.copyWith(
+                      color: widget.primaryColor ?? context.primary,
+                    ),
+                  ),
                 ),
               ],
             ),
