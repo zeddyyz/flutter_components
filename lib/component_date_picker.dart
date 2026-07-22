@@ -12,6 +12,7 @@ class ComponentDatePicker extends StatefulWidget {
     this.primaryColor,
     this.secondaryColor,
     this.decoration,
+    this.selectedColor,
   });
 
   final BoxConstraints constraints;
@@ -23,6 +24,7 @@ class ComponentDatePicker extends StatefulWidget {
   final Color? primaryColor;
   final Color? secondaryColor;
   final Decoration? decoration;
+  final Color? selectedColor;
 
   @override
   State<ComponentDatePicker> createState() => _ComponentDatePickerState();
@@ -89,7 +91,7 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
                     shape: WidgetStatePropertyAll(
                       RoundedSuperellipseBorder(
                         borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: context.secondary.withValues(alpha: 0.8)),
+                        side: BorderSide(color: context.primary.withValues(alpha: 0.2)),
                       ),
                     ),
                   ),
@@ -109,7 +111,7 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
                     shape: WidgetStatePropertyAll(
                       RoundedSuperellipseBorder(
                         borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: context.secondary.withValues(alpha: 0.8)),
+                        side: BorderSide(color: context.primary.withValues(alpha: 0.2)),
                       ),
                     ),
                   ),
@@ -169,7 +171,9 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
                       child: Text(
                         day.toString(),
                         style: TextStyle(
-                          color: isSelected ? context.primary : context.primary,
+                          color: isSelected
+                              ? (widget.selectedColor ?? context.primary)
+                              : context.primary,
                           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                         ),
                       ),
