@@ -12,8 +12,9 @@ import 'package:flutter_components/shared/fade_mask_painter.dart';
 class ComponentBottomNavBar extends StatelessWidget {
   const ComponentBottomNavBar({
     super.key,
-    required this.childrenLeftAligned,
+    this.childrenLeftAligned,
     this.childrenRightAligned,
+    this.childrenCenterAligned,
     this.navbarBlurSigma = 20,
     this.isBackgroundFaded = false,
     this.backgroundFadeHeight,
@@ -21,8 +22,9 @@ class ComponentBottomNavBar extends StatelessWidget {
     this.backgroundFadeSize = 10,
   });
 
-  final List<Widget> childrenLeftAligned;
+  final List<Widget>? childrenLeftAligned;
   final List<Widget>? childrenRightAligned;
+  final List<Widget>? childrenCenterAligned;
   final double navbarBlurSigma;
 
   final bool isBackgroundFaded;
@@ -96,34 +98,67 @@ class ComponentBottomNavBar extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 40),
       child: Row(
         children: [
-          Container(
-            decoration: ShapeDecoration(
-              color: context.cardColor.withValues(alpha: context.isLightMode ? 0.1 : 0.5),
-              shape: RoundedSuperellipseBorder(
-                borderRadius: BorderRadius.circular(40),
-                side: BorderSide(
-                  color: context.primary.withValues(alpha: 0.1),
-                  strokeAlign: BorderSide.strokeAlignOutside,
+          if (childrenLeftAligned != null)
+            Container(
+              decoration: ShapeDecoration(
+                color: context.cardColor.withValues(alpha: context.isLightMode ? 0.1 : 0.5),
+                shape: RoundedSuperellipseBorder(
+                  borderRadius: BorderRadius.circular(40),
+                  side: BorderSide(
+                    color: context.primary.withValues(alpha: 0.1),
+                    strokeAlign: BorderSide.strokeAlignOutside,
+                  ),
                 ),
               ),
-            ),
-            child: ClipRSuperellipse(
-              borderRadius: BorderRadius.circular(40),
-              child: RepaintBoundary(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: navbarBlurSigma, sigmaY: navbarBlurSigma),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      spacing: 4,
-                      children: childrenLeftAligned,
+              child: ClipRSuperellipse(
+                borderRadius: BorderRadius.circular(40),
+                child: RepaintBoundary(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: navbarBlurSigma, sigmaY: navbarBlurSigma),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        spacing: 4,
+                        children: childrenLeftAligned!,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
+          if (childrenCenterAligned != null) ...[
+            Spacer(),
+            Container(
+              decoration: ShapeDecoration(
+                color: context.cardColor.withValues(alpha: context.isLightMode ? 0.1 : 0.5),
+                shape: RoundedSuperellipseBorder(
+                  borderRadius: BorderRadius.circular(40),
+                  side: BorderSide(
+                    color: context.primary.withValues(alpha: 0.1),
+                    strokeAlign: BorderSide.strokeAlignOutside,
+                  ),
+                ),
+              ),
+              child: ClipRSuperellipse(
+                borderRadius: BorderRadius.circular(40),
+                child: RepaintBoundary(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: navbarBlurSigma, sigmaY: navbarBlurSigma),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        spacing: 4,
+                        children: childrenCenterAligned!,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Spacer(),
+          ],
           if (childrenRightAligned != null) ...[
             Spacer(),
             Container(

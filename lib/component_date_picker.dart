@@ -143,7 +143,7 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 7,
+                crossAxisCount: 8,
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
               ),
