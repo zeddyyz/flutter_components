@@ -21,6 +21,7 @@ export 'component_responsive_modal.dart';
 export 'component_responsive_widget.dart';
 export 'component_slide_down_bar.dart';
 export 'component_sliver_blurred_app_bar.dart';
+export 'component_sliver_large_title_app_bar.dart';
 export 'component_tab_bar.dart';
 export 'component_text_field.dart';
 export 'components_context_extension.dart';
