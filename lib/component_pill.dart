@@ -3,8 +3,8 @@ import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/shared/component_gesture_click.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
 
-class ModernGesturePill extends StatelessWidget {
-  const ModernGesturePill({
+class ComponentPill extends StatelessWidget {
+  const ComponentPill({
     super.key,
     required this.text,
     required this.onTap,
