@@ -17,6 +17,7 @@ export 'component_list_tile.dart';
 export 'component_nested_scroll_view_config.dart';
 export 'component_no_splash_theme.dart';
 export 'component_onboarding_carousel.dart';
+export 'component_pill.dart';
 export 'component_responsive_modal.dart';
 export 'component_responsive_widget.dart';
 export 'component_slide_down_bar.dart';
