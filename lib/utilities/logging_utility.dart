@@ -18,9 +18,9 @@ class Logging {
     }
   }
 
-  static void e(String message) {
+  static void e(String message, [StackTrace? stackTrace]) {
     if (kDebugMode) {
-      _logger.d("--Error--\n$message");
+      _logger.e("--Error--\n$message\n$stackTrace");
     }
   }
 
