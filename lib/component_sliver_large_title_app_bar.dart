@@ -56,6 +56,7 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
     this.floating = false,
     this.snap = false,
     this.stretch = false,
+    this.xAxisOverflowExtent,
   });
 
   final BuildContext context;
@@ -148,6 +149,9 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
   /// Whether the app bar should stretch to fill the over-scroll area
   final bool stretch;
 
+  /// The overflow extent of the app bar on the x-axis, in situations where the blurr seems padded on the left and right sides
+  final double? xAxisOverflowExtent;
+
   @override
   Widget build(BuildContext context) {
     var resolvedLargeTitleStyle =
@@ -236,6 +240,7 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
       floating: floating,
       snap: snap,
       stretch: stretch,
+      xAxisOverflowExtent: xAxisOverflowExtent,
     );
   }
 }

@@ -36,6 +36,7 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
     this.forceElevated = false,
     this.clipBehavior,
     this.borderRadius,
+    this.xAxisOverflowExtent,
   });
 
   final BuildContext context;
@@ -121,6 +122,9 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
   /// The border radius of the app bar shape
   final BorderRadius? borderRadius;
 
+  /// The overflow extent of the app bar on the x-axis, in situations where the blurr seems padded on the left and right sides
+  final double? xAxisOverflowExtent;
+
   @override
   Widget build(BuildContext context) {
     bool isLightTheme = Theme.of(context).brightness == Brightness.light;
@@ -163,12 +167,15 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
       flexibleSpace: ClipRect(
         child: RepaintBoundary(
           child: Stack(
+            clipBehavior: clipBehavior ?? Clip.antiAlias,
             children: [
               // Backdrop blur that fades out at the bottom edge so it ramps
               // down smoothly instead of ending in a hard line, mirroring the
               // bottom tab bar's faded blur. The status bar edge stays at full
               // blur.
               Positioned.fill(
+                left: xAxisOverflowExtent ?? 0,
+                right: xAxisOverflowExtent ?? 0,
                 child: RepaintBoundary(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY),
