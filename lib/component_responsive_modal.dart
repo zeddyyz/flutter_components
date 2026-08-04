@@ -17,7 +17,7 @@ class ComponentResponsiveModal {
   /// - [isScrollable]: Whether the content should be scrollable
   /// - [useRootNavigator]: Use root navigator
   /// - [barrierDismissible]: Whether clicking outside dismisses the modal (dialog mode only)
-  static Future<T?> show<T>({
+  static Future<T?> showWithScaffold<T>({
     required BuildContext context,
     required String title,
     required Widget Function(BuildContext, bool isDialog) builder,
@@ -139,7 +139,7 @@ class ComponentResponsiveModal {
   }
 
   /// - [animationStyle] defaults to `AppDecoration.smoothSheetAnimationStyle`
-  static Future<T?> showWithoutScaffold<T>({
+  static Future<T?> show<T>({
     required BuildContext context,
     required String title,
     required Widget Function(BuildContext context) builder,
