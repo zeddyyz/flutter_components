@@ -6,15 +6,15 @@ import 'package:logger/logger.dart';
 class Logging {
   static final _logger = Logger();
 
-  static void d(String message) {
+  static void d(String message, [StackTrace? stackTrace]) {
     if (kDebugMode) {
-      _logger.d(message);
+      _logger.d(message, stackTrace: stackTrace);
     }
   }
 
-  static void i(String message) {
+  static void i(String message, {StackTrace? stackTrace}) {
     if (kDebugMode) {
-      _logger.d("--Info--\n$message");
+      _logger.d("--Info--\n$message", stackTrace: stackTrace);
     }
   }
 
@@ -24,10 +24,10 @@ class Logging {
     }
   }
 
-  static void prettyPrint(dynamic data) {
+  static void prettyPrint(dynamic data, [StackTrace? stackTrace]) {
     if (kDebugMode) {
       JsonEncoder encoder = const JsonEncoder.withIndent('  '); // 2 spaces for indentation
-      d(encoder.convert(data));
+      d(encoder.convert(data), stackTrace);
     }
   }
 
