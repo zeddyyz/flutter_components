@@ -59,6 +59,7 @@ extension ContextExtension on BuildContext {
   BottomSheetThemeData get bottomSheetTheme => Theme.of(this).bottomSheetTheme;
   Color get bottomSheetBackgroundColor => bottomSheetTheme.backgroundColor!;
   Color get bottomSheetCardColor => isLightMode ? const Color(0xffffffff) : const Color(0xff2c2c2e);
+  Color get bottomSheetCardFgCardColor => isLightMode ? Color(0xffeae9ea) : Color(0xff444448);
 
   Color get iconColor => theme.iconTheme.color ?? primary;
   Color get iconButtonBackgroundColor => isLightMode ? Colors.grey.shade200 : Colors.grey.shade900;
