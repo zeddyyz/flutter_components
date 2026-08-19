@@ -242,6 +242,9 @@ class ComponentResponsiveModal {
         enableDrag: barrierDismissible,
         isDismissible: barrierDismissible,
         backgroundColor: float ? Colors.transparent : context.bottomSheetTheme.backgroundColor,
+        // Transparent sheet Material still paints theme elevation; kill it so
+        // it doesn't show as a ghost behind the inset card.
+        elevation: float ? 0 : null,
         barrierColor: context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7),
         shape: RoundedSuperellipseBorder(
           borderRadius: float
@@ -448,6 +451,9 @@ class ComponentResponsiveModal {
         enableDrag: barrierDismissible,
         isDismissible: barrierDismissible,
         backgroundColor: float ? Colors.transparent : context.bottomSheetTheme.backgroundColor,
+        // Transparent sheet Material still paints theme elevation; kill it so
+        // it doesn't show as a ghost behind the inset card.
+        elevation: float ? 0 : null,
         barrierColor: context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7),
         shape: RoundedSuperellipseBorder(
           borderRadius: float
