@@ -76,11 +76,12 @@ extension ContextExtension on BuildContext {
   EdgeInsets get mediaQueryViewPadding => MediaQuery.viewPaddingOf(this);
   EdgeInsets get mediaQueryViewInsets => MediaQuery.viewInsetsOf(this);
 
-  double get defaultPadding => isMobile
-      ? 16.0
-      : isMediumScreen
-      ? 18.0
-      : 20.0;
+  double get defaultPadding => 16.0;
+  // double get defaultPadding => isMobile
+  //     ? 16.0
+  //     : isMediumScreen
+  //     ? 18.0
+  //     : 20.0;
 
   double get defaultPaddingLargeScreen => isMobile
       ? 16.0
@@ -90,17 +91,19 @@ extension ContextExtension on BuildContext {
       ? 60.0
       : 120.0;
 
-  double get cardPadding => isMobile
-      ? 12.0
-      : isMediumScreen
-      ? 14.0
-      : 26.0;
+  double get cardPadding => 12.0;
+  // double get cardPadding => isMobile
+  //     ? 12.0
+  //     : isMediumScreen
+  //     ? 14.0
+  //     : 26.0;
 
-  double get defaultIconSize => isMobile
-      ? 22.0
-      : isMediumScreen
-      ? 24.0
-      : 26.0;
+  double get defaultIconSize => 22.0;
+  // double get defaultIconSize => isMobile
+  //     ? 22.0
+  //     : isMediumScreen
+  //     ? 24.0
+  //     : 26.0;
 
   double adaptiveSize(double value) => isMobile
       ? value
