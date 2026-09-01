@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Masks the alpha of a [BackdropFilter]'s blur so its top edge fades in
 /// smoothly. Drawn with [BlendMode.dstIn] inside the filter's child, the

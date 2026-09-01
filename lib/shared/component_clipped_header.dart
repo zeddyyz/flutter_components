@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Clips the blurred header to either a plain rectangle (default) or a rounded
 /// superellipse when a [borderRadius] is supplied. The clip forces a layer

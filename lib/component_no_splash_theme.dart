@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ComponentNoSplashTheme extends StatelessWidget {
   const ComponentNoSplashTheme({super.key, required this.child});
