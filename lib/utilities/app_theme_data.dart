@@ -1,7 +1,7 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
+import 'package:material_ui/material_ui.dart';
 
 class AppThemeData {
   static ThemeData lightTheme({
@@ -11,7 +11,7 @@ class AppThemeData {
     required Color secondaryColor,
     String? fontFamily,
     ColorScheme? colorScheme,
-    final Color? bottomSheetBackgroundColor,
+    Color? bottomSheetBackgroundColor,
   }) {
     return ThemeData(
       useMaterial3: true,
@@ -253,7 +253,7 @@ class AppThemeData {
     required Color secondaryColor,
     String? fontFamily,
     ColorScheme? colorScheme,
-    final Color? bottomSheetBackgroundColor,
+    Color? bottomSheetBackgroundColor,
   }) {
     return ThemeData(
       useMaterial3: true,
