@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_components/flutter_components.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A [ComponentSliverBlurredAppBar] with an iOS-style large title.
 ///
@@ -43,7 +43,6 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
     this.automaticallyImplyLeading = true,
     this.onBackButtonTap,
     this.expandedHeight,
-    this.toolbarHeight,
     this.backgroundColor,
     this.foregroundColor,
     this.backgroundOpacity = 0.6,
@@ -107,11 +106,10 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
 
   /// The size of the app bar when it is fully expanded, defaults to a height
   /// that fits the toolbar plus the measured large title and [subtitle]. Set it
-  /// explicitly when [expandedTrailing] is taller than a line of the title
+  /// explicitly when [expandedTrailing] is taller than a line of the title.
+  ///
+  /// The collapsed height is always [kToolbarHeight] (plus [bottom], if any)
   final double? expandedHeight;
-
-  /// Height of the toolbar
-  final double? toolbarHeight;
 
   /// Background color of the app bar, defaults to scaffold background with blur
   final Color? backgroundColor;
@@ -166,7 +164,6 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
     final resolvedSubtitleStyle =
         subtitleStyle ?? context.bodyMedium.copyWith(color: context.hintIntense);
 
-    final resolvedToolbarHeight = toolbarHeight ?? kToolbarHeight;
     final resolvedLargeTitlePadding =
         largeTitlePadding ??
         EdgeInsetsDirectional.only(
@@ -210,10 +207,10 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
       actions: actions,
       automaticallyImplyLeading: automaticallyImplyLeading,
       onBackButtonTap: onBackButtonTap,
-      toolbarHeight: resolvedToolbarHeight,
+      toolbarHeight: kToolbarHeight,
       expandedHeight:
           expandedHeight ??
-          resolvedToolbarHeight +
+          kToolbarHeight +
               largeTitleHeight +
               resolvedLargeTitlePadding.vertical +
               (bottom?.preferredSize.height ?? 0),
