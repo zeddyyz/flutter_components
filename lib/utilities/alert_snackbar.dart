@@ -247,6 +247,8 @@ class _ToastPill extends StatelessWidget {
                     ),
                     if (kIsWeb && !context.isMobile)
                       IconButton(
+                        key: ValueKey('snackbar-dismiss-${identityHashCode(data)}'),
+                        tooltip: 'Dismiss',
                         onPressed: () => onDismiss(),
                         icon: Icon(
                           Icons.close,

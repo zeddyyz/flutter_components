@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ComponentTabBar extends StatefulWidget {
   const ComponentTabBar({
@@ -193,15 +193,16 @@ class _ComponentTabBarState extends State<ComponentTabBar> with TickerProviderSt
           tabAlignment: TabAlignment.start,
           splashFactory: NoSplash.splashFactory,
           overlayColor: WidgetStateProperty.all<Color>(Colors.transparent),
-          tabs: widget.tabs.map(
-            (tab) {
-              final tabIndex = widget.tabs.indexOf(tab);
-              return Tab(
-                key: _tabKeys[tabIndex],
-                text: tab,
-              );
-            },
-          ).toList(),
+          tabs: [
+            for (int i = 0; i < widget.numberOfItems; i++)
+              KeyedSubtree(
+                key: ValueKey('tab-$i'),
+                child: Tab(
+                  key: _tabKeys[i],
+                  text: widget.tabs[i],
+                ),
+              ),
+          ],
           enableFeedback: true,
           onTap: (index) => _selectTab(index),
         ),

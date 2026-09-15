@@ -1,10 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/shared/component_gesture_click.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ComponentCloseButton extends StatelessWidget {
   const ComponentCloseButton({
@@ -40,6 +40,8 @@ class ComponentCloseButton extends StatelessWidget {
     }
 
     return ComponentGestureClick(
+      key: const ValueKey('modal-close'),
+      semanticsLabel: largeScreen ? null : 'Close',
       onTap: onTap ?? () => Navigator.pop(context),
       child: Container(
         height: 38,
@@ -79,30 +81,29 @@ class ComponentCloseButton extends StatelessWidget {
   }
 
   Widget _buildBlurEffect(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: onTap ?? () => Navigator.pop(context),
-        child: RepaintBoundary(
-          child: ClipRRect(
-            borderRadius: AppDecoration.borderRadiusStadium,
-            child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 5,
-                sigmaY: 5,
+    return ComponentGestureClick(
+      key: const ValueKey('modal-close'),
+      semanticsLabel: 'Close',
+      onTap: onTap ?? () => Navigator.pop(context),
+      child: RepaintBoundary(
+        child: ClipRRect(
+          borderRadius: AppDecoration.borderRadiusStadium,
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 5,
+              sigmaY: 5,
+            ),
+            child: Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                color: bgColor ?? context.iconButtonBackgroundColor.withValues(alpha: 0.5),
+                shape: BoxShape.circle,
               ),
-              child: Container(
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: bgColor ?? context.iconButtonBackgroundColor.withValues(alpha: 0.5),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.close_rounded,
-                  size: 26,
-                  color: iconColor ?? context.primary,
-                ),
+              child: Icon(
+                Icons.close_rounded,
+                size: 26,
+                color: iconColor ?? context.primary,
               ),
             ),
           ),

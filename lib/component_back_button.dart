@@ -1,6 +1,6 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/shared/component_gesture_click.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ComponentBackButton extends StatelessWidget {
   const ComponentBackButton({
@@ -17,6 +17,8 @@ class ComponentBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ComponentGestureClick(
+      key: const ValueKey('app-bar-back'),
+      semanticsLabel: 'Back',
       onTap: onTap ?? () => Navigator.pop(context),
       behavior: HitTestBehavior.opaque,
       child: Center(

@@ -85,6 +85,8 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
+                  key: const ValueKey('date-picker-prev'),
+                  tooltip: 'Previous month',
                   icon: Icon(Icons.chevron_left, color: context.primary),
                   onPressed: _previousMonth,
                   style: ButtonStyle(
@@ -105,6 +107,8 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
                   ),
                 ),
                 IconButton(
+                  key: const ValueKey('date-picker-next'),
+                  tooltip: 'Next month',
                   icon: Icon(Icons.chevron_right, color: context.primary),
                   onPressed: _nextMonth,
                   style: ButtonStyle(
@@ -160,21 +164,26 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
                     _selectedDate.month == date.month &&
                     _selectedDate.day == date.day;
 
-                return GestureDetector(
-                  onTap: () => _selectDate(date),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: isSelected ? context.borderColor : Colors.transparent,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Text(
-                        day.toString(),
-                        style: TextStyle(
-                          color: isSelected
-                              ? (widget.selectedColor ?? context.primary)
-                              : context.primary,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                return Semantics(
+                  label: MaterialLocalizations.of(context).formatFullDate(date),
+                  button: true,
+                  child: GestureDetector(
+                    key: ValueKey('date-picker-day-${_isoDate(date)}'),
+                    onTap: () => _selectDate(date),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: isSelected ? context.borderColor : Colors.transparent,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          day.toString(),
+                          style: TextStyle(
+                            color: isSelected
+                                ? (widget.selectedColor ?? context.primary)
+                                : context.primary,
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          ),
                         ),
                       ),
                     ),
@@ -190,6 +199,7 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
+                  key: const ValueKey('date-picker-cancel'),
                   onPressed: () => Navigator.pop(context),
                   child: Text(
                     'Cancel',
@@ -200,6 +210,7 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
                 ),
                 const SizedBox(width: 16),
                 TextButton(
+                  key: const ValueKey('date-picker-confirm'),
                   onPressed: () => Navigator.pop(context, _selectedDate),
                   child: Text(
                     'Confirm',
@@ -214,6 +225,12 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
         ),
       ),
     );
+  }
+
+  String _isoDate(DateTime date) {
+    final month = date.month.toString().padLeft(2, '0');
+    final day = date.day.toString().padLeft(2, '0');
+    return '${date.year}-$month-$day';
   }
 
   String _getMonthName(int month) {

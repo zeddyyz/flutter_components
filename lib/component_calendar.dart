@@ -1,7 +1,7 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ComponentCalendar extends StatelessWidget {
   const ComponentCalendar({
@@ -195,6 +195,7 @@ class ComponentCalendar extends StatelessWidget {
 
           return Expanded(
             child: _DayCell(
+              date: cellDate,
               day: displayDay,
               isOutside: isOutside,
               isHighlighted: isHighlighted,
@@ -235,6 +236,7 @@ class ComponentCalendar extends StatelessWidget {
 
 class _DayCell extends StatelessWidget {
   const _DayCell({
+    required this.date,
     required this.day,
     required this.isOutside,
     required this.isHighlighted,
@@ -250,6 +252,7 @@ class _DayCell extends StatelessWidget {
     required this.onTap,
   });
 
+  final DateTime date;
   final int day;
   final bool isOutside;
   final bool isHighlighted;
@@ -327,12 +330,20 @@ class _DayCell extends StatelessWidget {
       return content;
     }
 
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: onTap,
-        child: content,
+    final month = date.month.toString().padLeft(2, '0');
+    final dayOfMonth = date.day.toString().padLeft(2, '0');
+
+    return Semantics(
+      label: MaterialLocalizations.of(context).formatFullDate(date),
+      button: true,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          key: ValueKey('calendar-day-${date.year}-$month-$dayOfMonth'),
+          behavior: HitTestBehavior.opaque,
+          onTap: onTap,
+          child: content,
+        ),
       ),
     );
   }

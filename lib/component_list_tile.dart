@@ -1,7 +1,7 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_components/component_no_splash_theme.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ComponentListTile extends StatefulWidget {
   const ComponentListTile({
@@ -54,8 +54,9 @@ class ComponentListTile extends StatefulWidget {
 class _ComponentListTileState extends State<ComponentListTile> {
   @override
   Widget build(BuildContext context) {
-    // Create a theme-dependent key to ensure proper rebuilds
-    final themeKey = ValueKey('${Theme.of(context).brightness}_${widget.isWithinBottomSheet}');
+    // Theme-dependent key so the tile rebuilds with the sheet/brightness. Not a
+    // [ValueKey<String>] — those are reserved for agent-driving hit targets.
+    final themeKey = ValueKey((Theme.of(context).brightness, widget.isWithinBottomSheet));
 
     return AnimatedContainer(
       key: themeKey,

@@ -106,6 +106,7 @@ class ComponentDialogWidget extends StatelessWidget {
                 spacing: 8,
                 children: [
                   TextButton(
+                    key: const ValueKey('dialog-confirm'),
                     onPressed: onConfirm,
                     style: ButtonStyle(
                       splashFactory: NoSplash.splashFactory,
@@ -130,6 +131,7 @@ class ComponentDialogWidget extends StatelessWidget {
                   ),
                   if (showCancel)
                     TextButton(
+                      key: const ValueKey('dialog-cancel'),
                       onPressed: onCancel,
                       style: ButtonStyle(
                         splashFactory: NoSplash.splashFactory,

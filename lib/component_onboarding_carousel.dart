@@ -310,6 +310,7 @@ class _OnboardingBottomBarState extends State<_OnboardingBottomBar>
         child: child,
       ),
       child: ComponentGestureClick(
+        key: ValueKey(widget.isLastPage ? 'onboarding-done' : 'onboarding-next'),
         onTap: widget.isLastPage ? widget.onDoneTap : widget.onNextTap,
         child: Container(
           constraints: isMobile ? null : const BoxConstraints(minWidth: 160),
