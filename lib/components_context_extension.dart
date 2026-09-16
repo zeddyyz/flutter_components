@@ -1,5 +1,5 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_components/shared/app_screen_size.dart';
+import 'package:material_ui/material_ui.dart';
 
 extension ContextExtension on BuildContext {
   ThemeData get theme => Theme.of(this);
@@ -136,6 +136,7 @@ extension ContextExtension on BuildContext {
   /// Padding for screens
   double topPadding(double value) => value + MediaQuery.paddingOf(this).top + 20;
   double get bottomPadding => MediaQuery.paddingOf(this).bottom + 80;
+  double get paddingBottom => MediaQuery.paddingOf(this).bottom;
 
   String? get _fontFamily => textTheme.bodySmall!.fontFamily!;
 
