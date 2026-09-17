@@ -136,7 +136,7 @@ extension ContextExtension on BuildContext {
   /// Padding for screens
   double topPadding(double value) => value + MediaQuery.paddingOf(this).top + 20;
   double get bottomPadding => MediaQuery.paddingOf(this).bottom + 80;
-  double get paddingBottom => MediaQuery.paddingOf(this).bottom;
+  double get paddingBottom => MediaQuery.paddingOf(this).bottom + 20;
 
   String? get _fontFamily => textTheme.bodySmall!.fontFamily!;
 
