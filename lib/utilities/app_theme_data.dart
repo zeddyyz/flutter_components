@@ -17,7 +17,8 @@ class AppThemeData {
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: scaffoldBackgroundColor ?? Color(0xfff2f2f7),
+      // scaffoldBackgroundColor: scaffoldBackgroundColor ?? Color(0xfff2f2f7),
+      scaffoldBackgroundColor: scaffoldBackgroundColor ?? Colors.grey.shade100,
       primaryColor: primaryColor,
       primaryColorLight: Colors.white,
       primaryColorDark: Colors.black,
@@ -27,7 +28,7 @@ class AppThemeData {
         space: 1,
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: scaffoldBackgroundColor,
+        backgroundColor: scaffoldBackgroundColor ?? Colors.grey.shade100,
         titleTextStyle: TextStyle(
           color: Colors.black,
           fontSize: 21,
@@ -242,6 +243,7 @@ class AppThemeData {
       listTileTheme: ListTileThemeData(
         dense: false,
         contentPadding: AppDecoration.spaceZero,
+        shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusCard),
       ),
     );
   }
@@ -269,7 +271,7 @@ class AppThemeData {
         space: 1,
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: scaffoldBackgroundColor,
+        backgroundColor: scaffoldBackgroundColor ?? Color(0xff000000),
         titleTextStyle: TextStyle(
           color: Colors.white,
           fontSize: 21,
@@ -483,7 +485,7 @@ class AppThemeData {
       listTileTheme: ListTileThemeData(
         dense: false,
         contentPadding: EdgeInsets.zero,
-        shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusLg),
+        shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusCard),
       ),
     );
   }

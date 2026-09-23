@@ -24,7 +24,7 @@ class ComponentBackButton extends StatelessWidget {
       child: Center(
         child: Container(
           decoration: BoxDecoration(
-            color: color ?? context.borderColor,
+            color: color ?? context.primary.withValues(alpha: context.isDarkMode ? 0.12 : 0.10),
             borderRadius: BorderRadius.circular(50),
           ),
           width: 40,

@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/shared/component_gesture_click.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
@@ -32,50 +31,31 @@ class ComponentCloseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewWidth = MediaQuery.sizeOf(context).width;
-    bool largeScreen = kIsWeb || (viewWidth > 920 && viewWidth <= 1200);
-
     if (isBlurred) {
       return _buildBlurEffect(context);
     }
 
     return ComponentGestureClick(
       key: const ValueKey('modal-close'),
-      semanticsLabel: largeScreen ? null : 'Close',
+      semanticsLabel: 'Close',
       onTap: onTap ?? () => Navigator.pop(context),
       child: Container(
         height: 38,
-        width: !largeScreen ? 38 : 86,
+        width: 38,
         decoration: BoxDecoration(
           color:
               bgColor ??
               (context.isLightMode
                   ? Colors.white.withValues(alpha: 0.8)
                   : Colors.white.withValues(alpha: 0.1)),
-          shape: !largeScreen ? BoxShape.circle : BoxShape.rectangle,
-          borderRadius: !largeScreen ? null : stadiumBorderRadius,
+          shape: BoxShape.circle,
+          borderRadius: stadiumBorderRadius,
         ),
-        child: !largeScreen
-            ? Icon(
-                Icons.close_rounded,
-                size: 24,
-                color: iconColor ?? (context.primary.withValues(alpha: 0.8)),
-              )
-            : Row(
-                spacing: 8,
-                mainAxisAlignment: .center,
-                children: [
-                  Icon(
-                    Icons.close_rounded,
-                    size: 16,
-                    color: iconColor ?? (context.primary.withValues(alpha: 0.8)),
-                  ),
-                  Text(
-                    'Close',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                ],
-              ),
+        child: Icon(
+          Icons.close_rounded,
+          size: 24,
+          color: iconColor ?? (context.primary.withValues(alpha: 0.8)),
+        ),
       ),
     );
   }
@@ -90,14 +70,15 @@ class ComponentCloseButton extends StatelessWidget {
           borderRadius: AppDecoration.borderRadiusStadium,
           child: BackdropFilter(
             filter: ImageFilter.blur(
-              sigmaX: 5,
-              sigmaY: 5,
+              sigmaX: 8,
+              sigmaY: 8,
             ),
             child: Container(
               height: 40,
               width: 40,
               decoration: BoxDecoration(
-                color: bgColor ?? context.iconButtonBackgroundColor.withValues(alpha: 0.5),
+                color:
+                    bgColor ?? context.primary.withValues(alpha: context.isDarkMode ? 0.12 : 0.10),
                 shape: BoxShape.circle,
               ),
               child: Icon(
