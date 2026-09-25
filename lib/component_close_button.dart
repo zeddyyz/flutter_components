@@ -49,7 +49,6 @@ class ComponentCloseButton extends StatelessWidget {
                   ? Colors.white.withValues(alpha: 0.8)
                   : Colors.white.withValues(alpha: 0.1)),
           shape: BoxShape.circle,
-          borderRadius: stadiumBorderRadius,
         ),
         child: Icon(
           Icons.close_rounded,
