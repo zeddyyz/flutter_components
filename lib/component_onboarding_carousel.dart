@@ -24,6 +24,8 @@ class ComponentOnboardingCarousel extends StatefulWidget {
     required this.onDone,
     this.nextButtonLabel = 'Next',
     this.doneButtonLabel = 'Done',
+    this.skipButtonLabel = 'Skip',
+    this.onSkip,
     this.onBeforeAdvanceToNextPage,
     required this.buttonColor,
     this.imagePadding,
@@ -37,6 +39,8 @@ class ComponentOnboardingCarousel extends StatefulWidget {
   final VoidCallback onDone;
   final String nextButtonLabel;
   final String doneButtonLabel;
+  final String skipButtonLabel;
+  final VoidCallback? onSkip;
   final VoidCallback? onBeforeAdvanceToNextPage;
   final Color buttonColor;
   final EdgeInsets? imagePadding;
@@ -83,23 +87,33 @@ class _ComponentOnboardingCarouselState extends State<ComponentOnboardingCarouse
       borderRadius: widget.screenBorderRadius,
       child: Scaffold(
         backgroundColor: widget.backgroundColor,
-        body: LayoutBuilder(
-          builder: (context, bodyConstraints) {
-            return PageView.builder(
-              controller: _pageController,
-              scrollDirection: Axis.horizontal,
-              itemCount: pageCount,
-              onPageChanged: (index) => setState(() => _currentPage = index),
-              itemBuilder: (context, index) {
-                return _OnboardingSlideLayout(
-                  page: widget.pages[index],
-                  imagePadding: widget.imagePadding ?? EdgeInsets.zero,
-                  imageHeightPercentage: widget.imageHeightPercentage,
-                  textPadding: widget.textPadding,
+        body: Stack(
+          children: [
+            LayoutBuilder(
+              builder: (context, bodyConstraints) {
+                return PageView.builder(
+                  controller: _pageController,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: pageCount,
+                  onPageChanged: (index) => setState(() => _currentPage = index),
+                  itemBuilder: (context, index) {
+                    return _OnboardingSlideLayout(
+                      page: widget.pages[index],
+                      imagePadding: widget.imagePadding ?? EdgeInsets.zero,
+                      imageHeightPercentage: widget.imageHeightPercentage,
+                      textPadding: widget.textPadding,
+                    );
+                  },
                 );
               },
-            );
-          },
+            ),
+            if (widget.onSkip != null)
+              _OnboardingSkipButton(
+                label: widget.skipButtonLabel,
+                isVisible: !isLastPage,
+                onTap: widget.onSkip!,
+              ),
+          ],
         ),
         bottomNavigationBar: _OnboardingBottomBar(
           isLastPage: isLastPage,
@@ -241,6 +255,55 @@ class _OnboardingSlideLayout extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _OnboardingSkipButton extends StatelessWidget {
+  const _OnboardingSkipButton({
+    required this.label,
+    required this.isVisible,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool isVisible;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Align(
+        alignment: Alignment.topRight,
+        child: IgnorePointer(
+          ignoring: !isVisible,
+          child: AnimatedOpacity(
+            opacity: isVisible ? 1 : 0,
+            duration: const Duration(milliseconds: 200),
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: context.isMobile ? 8 : 16,
+                right: context.isMobile ? 12 : 24,
+              ),
+              child: ComponentGestureClick(
+                key: const ValueKey('onboarding-skip'),
+                onTap: onTap,
+                semanticsLabel: label,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Text(
+                    label,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: context.hintIntense,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
