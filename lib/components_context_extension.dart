@@ -62,7 +62,8 @@ extension ContextExtension on BuildContext {
   Color get bottomSheetCardFgCardColor => isLightMode ? Color(0xffeae9ea) : Color(0xff444448);
 
   Color get iconColor => theme.iconTheme.color ?? primary;
-  Color get iconButtonBackgroundColor => isLightMode ? Colors.grey.shade200 : Colors.grey.shade900;
+  Color get iconButtonBackgroundColor =>
+      isLightMode ? Colors.grey.shade300.withValues(alpha: 0.75) : Colors.grey.shade900;
 
   Color get shimmerBaseColor =>
       isDarkMode ? const Color.fromARGB(255, 20, 20, 20) : const Color.fromARGB(255, 240, 240, 240);

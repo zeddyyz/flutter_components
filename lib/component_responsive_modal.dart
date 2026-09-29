@@ -1,9 +1,9 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_components/component_blurred_app_bar.dart';
 import 'package:flutter_components/component_close_button.dart';
 import 'package:flutter_components/component_modal_controller.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
+import 'package:material_ui/material_ui.dart';
 
 const double kModalToolbarHeight = 65;
 
@@ -217,7 +217,7 @@ class ComponentResponsiveModal {
                       Padding(
                         padding: EdgeInsets.only(left: 14),
                         child: ComponentCloseButton.blurred(
-                          bgColor: context.bottomSheetCardColor,
+                          backgroundColor: context.bottomSheetCardColor,
                         ),
                       ),
                     ],
@@ -292,7 +292,9 @@ class ComponentResponsiveModal {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(left: 14),
-                        child: ComponentCloseButton.blurred(bgColor: context.bottomSheetCardColor),
+                        child: ComponentCloseButton.blurred(
+                          backgroundColor: context.bottomSheetCardColor,
+                        ),
                       ),
                     ],
                   ),
@@ -425,7 +427,7 @@ class ComponentResponsiveModal {
                         Padding(
                           padding: EdgeInsets.only(left: 14),
                           child: ComponentCloseButton.blurred(
-                            bgColor: context.bottomSheetCardColor,
+                            backgroundColor: context.bottomSheetCardColor,
                           ),
                         ),
                       ],
@@ -504,7 +506,7 @@ class ComponentResponsiveModal {
                           Padding(
                             padding: EdgeInsets.only(left: 14),
                             child: ComponentCloseButton.blurred(
-                              bgColor: context.bottomSheetCardColor,
+                              backgroundColor: context.bottomSheetCardColor,
                             ),
                           ),
                         ],

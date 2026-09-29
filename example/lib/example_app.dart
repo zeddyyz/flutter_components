@@ -33,12 +33,12 @@ class ExampleAppState extends State<ExampleApp> {
       debugShowCheckedModeBanner: false,
       theme: AppThemeData.lightTheme(
         context: context,
-        primaryColor: Colors.black,
+        primaryColor: Colors.blue,
         secondaryColor: Colors.grey,
       ),
       darkTheme: AppThemeData.darkTheme(
         context: context,
-        primaryColor: Colors.white,
+        primaryColor: Colors.blue,
         secondaryColor: Colors.grey,
       ),
       themeMode: themeMode,

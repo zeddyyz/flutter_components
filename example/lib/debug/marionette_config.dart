@@ -6,7 +6,7 @@ MarionetteConfiguration exampleMarionetteConfiguration() {
     logCollector: PrintLogCollector(),
     isInteractiveWidget: (Type type) =>
         type == ComponentCard ||
-        type == ComponentButton ||
+        type == ComponentDangerButton ||
         type == ComponentLightButton ||
         type == ComponentGestureClick ||
         type == ComponentPill ||

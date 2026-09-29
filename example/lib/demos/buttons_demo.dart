@@ -1,4 +1,5 @@
 import 'package:example/gallery/demo_scaffold.dart';
+import 'package:flutter_components/component_icon_button.dart';
 import 'package:flutter_components/flutter_components.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -16,20 +17,96 @@ class ButtonsDemoPage extends StatelessWidget {
           child: Column(
             spacing: 12,
             children: [
-              for (final ButtonType type in ButtonType.values)
-                ComponentButton(
-                  key: ValueKey<String>('button-${type.name}'),
-                  buttonType: type,
-                  style: type == ButtonType.filled
-                      ? FilledButton.styleFrom(
-                          foregroundColor: context.scaffoldBackgroundColor,
-                        )
-                      : null,
-                  onPressed: () {
-                    AlertSnackbar.show(title: type.name, message: 'ComponentButton pressed');
-                  },
-                  child: Text(type.name),
-                ),
+              FilledButton(
+                key: ValueKey<String>('button-filled'),
+                onPressed: () {
+                  AlertSnackbar.show(title: 'FilledButton', message: 'FilledButton pressed');
+                },
+                child: Text('FilledButton'),
+              ),
+              ElevatedButton(
+                key: ValueKey<String>('button-elevated'),
+                onPressed: () {
+                  AlertSnackbar.show(title: 'ElevatedButton', message: 'ElevatedButton pressed');
+                },
+                child: Text('ElevatedButton'),
+              ),
+              OutlinedButton(
+                key: ValueKey<String>('button-outlined'),
+                onPressed: () {
+                  AlertSnackbar.show(title: 'OutlinedButton', message: 'OutlinedButton pressed');
+                },
+                child: Text('OutlinedButton'),
+              ),
+              TextButton(
+                key: ValueKey<String>('button-text'),
+                onPressed: () {
+                  AlertSnackbar.show(title: 'TextButton', message: 'TextButton pressed');
+                },
+                child: Text('TextButton'),
+              ),
+              ComponentDangerButton(
+                key: ValueKey<String>('button-danger'),
+                onPressed: () {
+                  AlertSnackbar.show(
+                    title: 'ComponentDangerButton',
+                    message: 'ComponentDangerButton pressed',
+                  );
+                },
+                child: Text('ComponentDangerButton'),
+              ),
+              Row(
+                spacing: 12,
+                mainAxisAlignment: .center,
+                children: [
+                  ComponentIconButton(
+                    key: ValueKey<String>('button-icon'),
+                    isFilled: false,
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      AlertSnackbar.show(
+                        title: 'ComponentIconButton',
+                        message: 'ComponentIconButton pressed',
+                      );
+                    },
+                  ),
+                  ComponentIconButton(
+                    key: ValueKey<String>('button-icon-label'),
+                    isFilled: false,
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add'),
+                    onPressed: () {
+                      AlertSnackbar.show(
+                        title: 'ComponentIconButton',
+                        message: 'ComponentIconButton pressed',
+                      );
+                    },
+                  ),
+                  ComponentIconButton(
+                    key: ValueKey<String>('button-icon-filled'),
+                    isFilled: true,
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      AlertSnackbar.show(
+                        title: 'ComponentIconButton',
+                        message: 'ComponentIconButton pressed',
+                      );
+                    },
+                  ),
+                  ComponentIconButton(
+                    key: ValueKey<String>('button-icon-label-filled'),
+                    isFilled: true,
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add'),
+                    onPressed: () {
+                      AlertSnackbar.show(
+                        title: 'ComponentIconButton',
+                        message: 'ComponentIconButton pressed',
+                      );
+                    },
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -64,6 +141,14 @@ class ButtonsDemoPage extends StatelessWidget {
                     const ComponentBackButton(),
                     const SizedBox(width: 12),
                     Text('ComponentBackButton', style: context.bodyMedium),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    const ComponentBackButton(isInAppBar: true),
+                    const SizedBox(width: 12),
+                    Text('ComponentBackButton in AppBar', style: context.bodyMedium),
                   ],
                 ),
                 const SizedBox(height: 16),

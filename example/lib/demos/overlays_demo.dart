@@ -16,27 +16,23 @@ class OverlaysDemoPage extends StatelessWidget {
           child: Column(
             spacing: 12,
             children: [
-              ComponentButton(
+              FilledButton(
                 key: const ValueKey<String>('modal-show'),
-                buttonType: ButtonType.filled,
                 onPressed: () => _showModal(context),
                 child: const Text('Show modal'),
               ),
-              ComponentButton(
+              OutlinedButton(
                 key: const ValueKey<String>('modal-float'),
-                buttonType: ButtonType.outlined,
                 onPressed: () => _showModal(context, float: true),
                 child: const Text('Show floating modal'),
               ),
-              ComponentButton(
+              ComponentLightButton(
                 key: const ValueKey<String>('modal-scaffold'),
-                buttonType: ButtonType.light,
                 onPressed: () => _showScaffoldModal(context),
                 child: const Text('Show with scaffold'),
               ),
-              ComponentButton(
+              ElevatedButton(
                 key: const ValueKey<String>('modal-actions'),
-                buttonType: ButtonType.elevated,
                 onPressed: () => _showActionsModal(context),
                 child: const Text('Show with actions'),
               ),
@@ -45,9 +41,8 @@ class OverlaysDemoPage extends StatelessWidget {
         ),
         DemoSection(
           title: 'ComponentDialogWidget',
-          child: ComponentButton(
+          child: OutlinedButton(
             key: const ValueKey<String>('dialog-show'),
-            buttonType: ButtonType.outlined,
             onPressed: () => _showDialog(context),
             child: const Text('Show dialog'),
           ),
@@ -58,17 +53,15 @@ class OverlaysDemoPage extends StatelessWidget {
           child: Column(
             spacing: 12,
             children: [
-              ComponentButton(
+              ComponentLightButton(
                 key: const ValueKey<String>('snackbar-ok'),
-                buttonType: ButtonType.light,
                 onPressed: () {
                   AlertSnackbar.show(title: 'Saved', message: 'Changes are in sync');
                 },
                 child: const Text('Success toast'),
               ),
-              ComponentButton(
+              ComponentDangerButton(
                 key: const ValueKey<String>('snackbar-error'),
-                buttonType: ButtonType.danger,
                 onPressed: () {
                   AlertSnackbar.show(
                     isError: true,
@@ -83,9 +76,8 @@ class OverlaysDemoPage extends StatelessWidget {
         ),
         DemoSection(
           title: 'Full screen',
-          child: ComponentButton(
+          child: OutlinedButton(
             key: const ValueKey<String>('fullscreen-show'),
-            buttonType: ButtonType.outlined,
             onPressed: () => _showFullScreen(context),
             child: const Text('Slide up full screen'),
           ),

@@ -8,14 +8,53 @@ class ComponentBackButton extends StatelessWidget {
     this.onTap,
     this.color,
     this.iconColor,
+    this.isInAppBar = false,
   });
 
   final Function()? onTap;
   final Color? color;
   final Color? iconColor;
+  final bool? isInAppBar;
 
   @override
   Widget build(BuildContext context) {
+    return isInAppBar == true ? _buildBackButtonInAppBar(context) : _buildBackButton(context);
+  }
+
+  Widget _buildBackButtonInAppBar(BuildContext context) {
+    return Row(
+      mainAxisSize: .min,
+      mainAxisAlignment: .end,
+      children: [
+        const SizedBox(width: 6),
+        ComponentGestureClick(
+          key: const ValueKey('app-bar-back'),
+          semanticsLabel: 'Back',
+          onTap: onTap ?? () => Navigator.pop(context),
+          behavior: HitTestBehavior.opaque,
+          child: Center(
+            child: Container(
+              decoration: BoxDecoration(
+                color: color ?? context.primary.withValues(alpha: context.isDarkMode ? 0.12 : 0.10),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              width: 40,
+              height: 40,
+              margin: const EdgeInsets.only(left: 4),
+              alignment: Alignment.center,
+              child: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 22,
+                color: iconColor ?? context.primary,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBackButton(BuildContext context) {
     return ComponentGestureClick(
       key: const ValueKey('app-bar-back'),
       semanticsLabel: 'Back',

@@ -167,9 +167,11 @@ class AppThemeData {
             ),
           ),
           splashFactory: NoSplash.splashFactory,
+          elevation: WidgetStateProperty.all(0),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
           ),
+          mouseCursor: WidgetStateProperty.all(SystemMouseCursors.click),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -185,9 +187,11 @@ class AppThemeData {
             ),
           ),
           splashFactory: NoSplash.splashFactory,
+          elevation: WidgetStateProperty.all(0),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
           ),
+          mouseCursor: WidgetStateProperty.all(SystemMouseCursors.click),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -203,12 +207,19 @@ class AppThemeData {
             ),
           ),
           splashFactory: NoSplash.splashFactory,
+          elevation: WidgetStateProperty.all(0),
+          side: WidgetStateProperty.all(
+            BorderSide(
+              color: context.borderColorIntense,
+              width: 1.5,
+            ),
+          ),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(
               borderRadius: AppDecoration.borderRadiusStadium,
-              side: BorderSide(color: primaryColor, width: 1.5),
             ),
           ),
+          mouseCursor: WidgetStateProperty.all(SystemMouseCursors.click),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -223,8 +234,13 @@ class AppThemeData {
             ),
           ),
           splashFactory: NoSplash.splashFactory,
+          elevation: WidgetStateProperty.all(0),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
+          ),
+          mouseCursor: WidgetStateProperty.all(SystemMouseCursors.click),
+          padding: WidgetStateProperty.all(
+            EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           ),
         ),
       ),
@@ -412,6 +428,8 @@ class AppThemeData {
             RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
           ),
           splashFactory: NoSplash.splashFactory,
+          elevation: WidgetStateProperty.all(0),
+          mouseCursor: WidgetStateProperty.all(SystemMouseCursors.click),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -430,6 +448,8 @@ class AppThemeData {
             RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
           ),
           splashFactory: NoSplash.splashFactory,
+          elevation: WidgetStateProperty.all(0),
+          mouseCursor: WidgetStateProperty.all(SystemMouseCursors.click),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -447,10 +467,11 @@ class AppThemeData {
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(
               borderRadius: AppDecoration.borderRadiusStadium,
-              side: BorderSide(color: primaryColor),
             ),
           ),
           splashFactory: NoSplash.splashFactory,
+          elevation: WidgetStateProperty.all(0),
+          mouseCursor: WidgetStateProperty.all(SystemMouseCursors.click),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -465,8 +486,13 @@ class AppThemeData {
             ),
           ),
           splashFactory: NoSplash.splashFactory,
+          elevation: WidgetStateProperty.all(0),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
+          ),
+          mouseCursor: WidgetStateProperty.all(SystemMouseCursors.click),
+          padding: WidgetStateProperty.all(
+            EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           ),
         ),
       ),

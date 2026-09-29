@@ -14,6 +14,7 @@ class _TextFieldDemoPageState extends State<TextFieldDemoPage> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _amount = TextEditingController();
   final TextEditingController _notes = TextEditingController();
+  final TextEditingController _simple = TextEditingController();
 
   @override
   void dispose() {
@@ -21,6 +22,7 @@ class _TextFieldDemoPageState extends State<TextFieldDemoPage> {
     _email.dispose();
     _amount.dispose();
     _notes.dispose();
+    _simple.dispose();
     super.dispose();
   }
 
@@ -44,9 +46,9 @@ class _TextFieldDemoPageState extends State<TextFieldDemoPage> {
             controller: _email,
             hintText: 'Email',
             icon: const Icon(Icons.mail_outline_rounded),
-            isFilled: true,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
+            backgroundColor: context.cardColor,
           ),
         ),
         DemoSection(
@@ -67,6 +69,27 @@ class _TextFieldDemoPageState extends State<TextFieldDemoPage> {
             hintText: 'Notes',
             icon: const Icon(Icons.notes_rounded),
             maxLines: 4,
+          ),
+        ),
+        DemoSection(
+          title: 'Simple',
+          child: ComponentTextField(
+            controller: _simple,
+            hintText: 'Simple',
+            icon: const Icon(Icons.notes_rounded),
+            showSimple: true,
+            showClearTextButton: true,
+          ),
+        ),
+        DemoSection(
+          title: 'Simple Error',
+          child: ComponentTextField(
+            controller: _simple,
+            hintText: 'Simple',
+            icon: const Icon(Icons.notes_rounded),
+            showSimple: true,
+            showClearTextButton: true,
+            isError: true,
           ),
         ),
       ],

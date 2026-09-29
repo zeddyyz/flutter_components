@@ -57,9 +57,8 @@ class _DatePickerDemoPageState extends State<DatePickerDemoPage> {
                   style: context.body2Heavy,
                 ),
               ),
-              ComponentButton(
+              FilledButton(
                 key: const ValueKey<String>('open-date-picker'),
-                buttonType: ButtonType.filled,
                 onPressed: _openPicker,
                 child: const Text('Choose date'),
               ),
