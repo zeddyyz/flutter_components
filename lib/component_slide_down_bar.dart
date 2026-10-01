@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
-class SlideDownBar extends StatelessWidget {
-  const SlideDownBar({super.key});
+class ComponentSlideDownBar extends StatelessWidget {
+  const ComponentSlideDownBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,3 +19,5 @@ class SlideDownBar extends StatelessWidget {
     );
   }
 }
+
+typedef SlideDownBar = ComponentSlideDownBar;

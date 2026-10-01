@@ -4,14 +4,14 @@ import 'package:flutter_components/components_context_extension.dart';
 class AppDecoration {
   static const spaceZero = EdgeInsets.zero;
 
-  static var borderRadiusSm = BorderRadius.circular(9);
-  static var borderRadiusMd = BorderRadius.circular(13);
-  static var borderRadiusLg = BorderRadius.circular(16);
-  static var borderRadiusXl = BorderRadius.circular(20);
-  static var borderRadius2xl = BorderRadius.circular(24);
-  static var borderRadiusCard = BorderRadius.circular(24);
-  static var borderRadiusStadium = BorderRadius.circular(40);
-  static var iOSModalBorderRadius = BorderRadius.circular(32);
+  static const borderRadiusSm = BorderRadius.all(Radius.circular(9));
+  static const borderRadiusMd = BorderRadius.all(Radius.circular(13));
+  static const borderRadiusLg = BorderRadius.all(Radius.circular(16));
+  static const borderRadiusXl = BorderRadius.all(Radius.circular(20));
+  static const borderRadius2xl = BorderRadius.all(Radius.circular(24));
+  static const borderRadiusCard = BorderRadius.all(Radius.circular(24));
+  static const borderRadiusStadium = BorderRadius.all(Radius.circular(40));
+  static const iOSModalBorderRadius = BorderRadius.all(Radius.circular(32));
 
   static const radiusSm = Radius.circular(9);
   static const radiusMd = Radius.circular(13);

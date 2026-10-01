@@ -17,18 +17,18 @@ class OnboardingDemoPage extends StatelessWidget {
           skipButtonLabel: 'Skip',
           onSkip: () => Navigator.of(context).maybePop(),
           pages: const [
-            OnboardingPage(
+            ComponentOnboardingPage(
               imagePath: 'assets/onboarding/slide_1.png',
               title: 'Browse the catalog',
               description: 'Every widget in flutter_components has a screen you can tap through.',
             ),
-            OnboardingPage(
+            ComponentOnboardingPage(
               imagePath: 'assets/onboarding/slide_2.png',
               title: 'Resize freely',
               description:
                   'Sheets become dialogs on larger windows. Try it on iPad, macOS, or web.',
             ),
-            OnboardingPage(
+            ComponentOnboardingPage(
               imagePath: 'assets/onboarding/slide_3.png',
               title: 'Toggle the theme',
               description: 'Use the sun/moon control in the app bar to switch light and dark.',

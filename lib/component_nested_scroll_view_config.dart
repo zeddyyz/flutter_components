@@ -8,13 +8,13 @@ class ComponentNestedScrollViewConfig extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
-      behavior: MyMaterialScrollBehavior(),
+      behavior: ComponentMaterialScrollBehavior(),
       child: child,
     );
   }
 }
 
-class MyMaterialScrollBehavior extends MaterialScrollBehavior {
+class ComponentMaterialScrollBehavior extends MaterialScrollBehavior {
   @override
   Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details) {
     switch (getPlatform(context)) {
@@ -35,3 +35,5 @@ class MyMaterialScrollBehavior extends MaterialScrollBehavior {
     }
   }
 }
+
+typedef MyMaterialScrollBehavior = ComponentMaterialScrollBehavior;

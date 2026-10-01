@@ -35,6 +35,46 @@ class ComponentDialogWidget extends StatelessWidget {
   final VoidCallback onConfirm;
   final VoidCallback onCancel;
 
+  static Future<T?> show<T>({
+    required BuildContext context,
+    double? height,
+    Widget? icon,
+    required String title,
+    String? description,
+    Widget? content,
+    required String confirmText,
+    String cancelText = 'Cancel',
+    bool isDestructive = false,
+    bool showCancel = true,
+    required VoidCallback onConfirm,
+    VoidCallback? onCancel,
+    bool blurBackground = false,
+    bool barrierDismissible = true,
+    bool useRootNavigator = true,
+  }) {
+    return showDialog<T>(
+      context: context,
+      barrierDismissible: barrierDismissible,
+      useRootNavigator: useRootNavigator,
+      builder: (BuildContext dialogContext) {
+        return ComponentDialogWidget(
+          height: height,
+          icon: icon,
+          title: title,
+          description: description,
+          content: content,
+          confirmText: confirmText,
+          cancelText: cancelText,
+          isDestructive: isDestructive,
+          showCancel: showCancel,
+          blurBackground: blurBackground,
+          onConfirm: onConfirm,
+          onCancel: onCancel ?? () => Navigator.of(dialogContext).pop(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -63,7 +103,7 @@ class ComponentDialogWidget extends StatelessWidget {
               vertical: 24,
             ).copyWith(bottom: 16),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: height == null ? MainAxisSize.min : MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (icon != null)
@@ -100,7 +140,7 @@ class ComponentDialogWidget extends StatelessWidget {
                     ),
                   ),
                 ?content,
-                const Spacer(),
+                if (height != null) const Spacer() else const SizedBox(height: 24),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.stretch,

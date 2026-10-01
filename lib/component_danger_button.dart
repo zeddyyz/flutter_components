@@ -11,22 +11,36 @@ class ComponentDangerButton extends StatelessWidget {
 
   final Widget child;
   final Widget? icon;
-  final bool? isIconLeftAligned;
+  final bool isIconLeftAligned;
   final VoidCallback onPressed;
+
+  ButtonStyle _style() {
+    return ElevatedButton.styleFrom(
+      backgroundColor: Colors.red.withValues(alpha: 0.15),
+      foregroundColor: Colors.red,
+      side: const BorderSide(
+        color: Colors.red,
+      ),
+      enabledMouseCursor: SystemMouseCursors.click,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    if (icon == null) {
+      return ElevatedButton(
+        onPressed: onPressed,
+        style: _style(),
+        child: child,
+      );
+    }
+
+    return ElevatedButton.icon(
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.red.withValues(alpha: 0.15),
-        foregroundColor: Colors.red,
-        side: const BorderSide(
-          color: Colors.red,
-        ),
-        enabledMouseCursor: SystemMouseCursors.click,
-      ),
-      child: child,
+      style: _style(),
+      icon: icon!,
+      label: child,
+      iconAlignment: isIconLeftAligned ? IconAlignment.start : IconAlignment.end,
     );
   }
 }

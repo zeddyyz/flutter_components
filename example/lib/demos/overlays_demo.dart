@@ -112,13 +112,13 @@ class OverlaysDemoPage extends StatelessWidget {
               children: [
                 const Padding(
                   padding: EdgeInsets.only(top: 10),
-                  child: SlideDownBar(),
+                  child: ComponentSlideDownBar(),
                 ),
                 const ComponentBottomSheetHeader(title: 'Sheet title'),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
                   child: Text(
-                    'ComponentBottomSheetHeader + SlideDownBar',
+                    'ComponentBottomSheetHeader + ComponentSlideDownBar',
                     style: context.bodyMedium.copyWith(color: context.hintIntense),
                   ),
                 ),
@@ -206,21 +206,14 @@ class OverlaysDemoPage extends StatelessWidget {
   }
 
   Future<void> _showDialog(BuildContext context, {bool blurBackground = false}) {
-    return showDialog<void>(
+    return ComponentDialogWidget.show<void>(
       context: context,
-      builder: (BuildContext dialogContext) {
-        return ComponentDialogWidget(
-          height: 280,
-          // icon: Icon(Icons.info_outline_rounded, color: context.primary),
-          title: 'Replace file?',
-          description: 'This cannot be undone.',
-          confirmText: 'Replace',
-          cancelText: 'Cancel',
-          blurBackground: blurBackground,
-          onConfirm: () => Navigator.pop(dialogContext),
-          onCancel: () => Navigator.pop(dialogContext),
-        );
-      },
+      title: 'Replace file?',
+      description: 'This cannot be undone.',
+      confirmText: 'Replace',
+      cancelText: 'Cancel',
+      blurBackground: blurBackground,
+      onConfirm: () => Navigator.pop(context),
     );
   }
 

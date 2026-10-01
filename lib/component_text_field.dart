@@ -212,7 +212,21 @@ class _ComponentTextFieldState extends State<ComponentTextField> {
   @override
   void initState() {
     super.initState();
+    _isClearTextButtonVisible = _shouldShowClearButton();
     widget.controller.addListener(_listener);
+  }
+
+  @override
+  void didUpdateWidget(covariant ComponentTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(_listener);
+      widget.controller.addListener(_listener);
+    }
+    final bool shouldShow = _shouldShowClearButton();
+    if (shouldShow != _isClearTextButtonVisible) {
+      _isClearTextButtonVisible = shouldShow;
+    }
   }
 
   @override
@@ -221,16 +235,16 @@ class _ComponentTextFieldState extends State<ComponentTextField> {
     super.dispose();
   }
 
+  bool _shouldShowClearButton() {
+    return widget.showClearTextButton && widget.controller.text.isNotEmpty;
+  }
+
   void _listener() {
-    if (widget.controller.text.isEmpty) {
-      setState(() {
-        _isClearTextButtonVisible = false;
-      });
-    } else {
-      setState(() {
-        _isClearTextButtonVisible = true;
-      });
-    }
+    final bool shouldShow = _shouldShowClearButton();
+    if (shouldShow == _isClearTextButtonVisible) return;
+    setState(() {
+      _isClearTextButtonVisible = shouldShow;
+    });
   }
 
   @override
@@ -244,6 +258,7 @@ class _ComponentTextFieldState extends State<ComponentTextField> {
                   : (widget.backgroundColor ?? Colors.transparent));
     final TextStyle effectiveStyle =
         widget.style ?? context.textTheme.bodyMedium ?? const TextStyle(fontSize: 16);
+    final TextStyle hintStyle = effectiveStyle.copyWith(color: context.hintIntense);
 
     return Container(
       height: getHeight(),
@@ -272,30 +287,40 @@ class _ComponentTextFieldState extends State<ComponentTextField> {
             SizedBox(width: 16),
           ],
           Expanded(
-            child: _buildTextField(context, effectiveStyle),
+            child: _buildTextField(context, effectiveStyle, hintStyle),
           ),
-          AnimatedOpacity(
-            opacity: _isClearTextButtonVisible ? 1.0 : 0.0,
-            duration: const Duration(milliseconds: 200),
-            child: Padding(
-              padding: EdgeInsets.only(left: 8),
-              child: ComponentNoSplashTheme(
-                child: ComponentGestureClick(
-                  onTap: widget.onClearText ?? () => widget.controller.clear(),
-                  child: const Icon(
-                    Icons.close,
-                    size: 20,
+          if (widget.showClearTextButton)
+            IgnorePointer(
+              ignoring: !_isClearTextButtonVisible,
+              child: AnimatedOpacity(
+                opacity: _isClearTextButtonVisible ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 200),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: ComponentNoSplashTheme(
+                    child: ComponentGestureClick(
+                      key: const ValueKey<String>('text-field-clear'),
+                      semanticsLabel: 'Clear text',
+                      onTap: widget.onClearText ?? () => widget.controller.clear(),
+                      child: const Icon(
+                        Icons.close,
+                        size: 20,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
   }
 
-  Widget _buildTextField(BuildContext context, TextStyle effectiveStyle) {
+  Widget _buildTextField(
+    BuildContext context,
+    TextStyle effectiveStyle,
+    TextStyle hintStyle,
+  ) {
     return TextFormField(
       groupId: widget.groupId,
       controller: widget.controller,
@@ -305,7 +330,7 @@ class _ComponentTextFieldState extends State<ComponentTextField> {
       // decoration: decoration ?? _decoration(primaryColor, fillColor, effectiveStyle),
       decoration: InputDecoration.collapsed(
         hintText: widget.hintText,
-        hintStyle: effectiveStyle,
+        hintStyle: hintStyle,
         enabled: widget.isEnabled,
       ),
       keyboardType: widget.keyboardType,

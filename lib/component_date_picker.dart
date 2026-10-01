@@ -185,7 +185,7 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
       children: [
         const Padding(
           padding: EdgeInsets.only(top: 10),
-          child: SlideDownBar(),
+          child: ComponentSlideDownBar(),
         ),
         Expanded(
           child: Padding(

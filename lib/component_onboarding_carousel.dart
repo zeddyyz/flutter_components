@@ -4,17 +4,19 @@ import 'package:flutter_components/shared/component_gesture_click.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
 
 /// Single slide in a [ComponentOnboardingCarousel].
-class OnboardingPage {
+class ComponentOnboardingPage {
   final String imagePath;
   final String title;
   final String description;
 
-  const OnboardingPage({
+  const ComponentOnboardingPage({
     required this.imagePath,
     required this.title,
     required this.description,
   });
 }
+
+typedef OnboardingPage = ComponentOnboardingPage;
 
 /// Full-screen paged onboarding UI with Next / Done actions.
 class ComponentOnboardingCarousel extends StatefulWidget {
@@ -35,7 +37,7 @@ class ComponentOnboardingCarousel extends StatefulWidget {
     required this.textPadding,
   });
 
-  final List<OnboardingPage> pages;
+  final List<ComponentOnboardingPage> pages;
   final VoidCallback onDone;
   final String nextButtonLabel;
   final String doneButtonLabel;
@@ -136,7 +138,7 @@ class _OnboardingSlideLayout extends StatelessWidget {
     required this.textPadding,
   });
 
-  final OnboardingPage page;
+  final ComponentOnboardingPage page;
   final EdgeInsets imagePadding;
   final double imageHeightPercentage;
   final EdgeInsetsGeometry textPadding;

@@ -1,5 +1,4 @@
 export 'package:dynamic_grid_view/dynamic_grid_view.dart';
-export 'package:flutter_components/flutter_components.dart';
 
 export 'component_back_button.dart';
 export 'component_blurred_app_bar.dart';
@@ -13,6 +12,7 @@ export 'component_danger_button.dart';
 export 'component_date_picker.dart';
 export 'component_dialog_widget.dart';
 export 'component_filter_chip.dart';
+export 'component_icon_button.dart';
 export 'component_light_button.dart';
 export 'component_list_tile.dart';
 export 'component_modal_controller.dart';

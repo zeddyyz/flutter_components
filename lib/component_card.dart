@@ -21,21 +21,25 @@ class ComponentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComponentGestureClick(
-      onTap: onTap ?? () {},
-      child: Container(
-        padding: padding ?? EdgeInsets.all(context.defaultPadding),
-        decoration: ShapeDecoration(
-          color: isInSheet ? context.bottomSheetCardColor : context.cardColor,
-          shape: RoundedSuperellipseBorder(
-            borderRadius: AppDecoration.borderRadiusCard,
-            side: displayBorder
-                ? BorderSide(color: isInSheet ? context.borderColorIntense : context.borderColor)
-                : BorderSide.none,
-          ),
+    final Widget card = Container(
+      padding: padding ?? EdgeInsets.all(context.defaultPadding),
+      decoration: ShapeDecoration(
+        color: isInSheet ? context.bottomSheetCardColor : context.cardColor,
+        shape: RoundedSuperellipseBorder(
+          borderRadius: AppDecoration.borderRadiusCard,
+          side: displayBorder
+              ? BorderSide(color: isInSheet ? context.borderColorIntense : context.borderColor)
+              : BorderSide.none,
         ),
-        child: child,
       ),
+      child: child,
+    );
+
+    if (onTap == null) return card;
+
+    return ComponentGestureClick(
+      onTap: onTap!,
+      child: card,
     );
   }
 }
