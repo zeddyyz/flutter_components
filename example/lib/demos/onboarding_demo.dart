@@ -14,6 +14,8 @@ class OnboardingDemoPage extends StatelessWidget {
           screenBorderRadius: BorderRadius.zero,
           imageHeightPercentage: 0.42,
           textPadding: const EdgeInsets.fromLTRB(8, 24, 8, 8),
+          skipButtonLabel: 'Skip',
+          onSkip: () => Navigator.of(context).maybePop(),
           pages: const [
             OnboardingPage(
               imagePath: 'assets/onboarding/slide_1.png',

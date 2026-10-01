@@ -147,6 +147,7 @@ class _SectionGridState extends State<_SectionGrid> {
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
       shrinkWrap: true,
+      padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
       builder: (BuildContext context, int index) {
         return _GalleryCard(entry: widget.entries[index]);
