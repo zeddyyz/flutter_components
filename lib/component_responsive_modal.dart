@@ -161,6 +161,7 @@ class ComponentResponsiveModal {
   }
 
   /// - [animationStyle] defaults to `AppDecoration.smoothSheetAnimationStyle`
+  /// - [showAppBar] shows the close button and title. Defaults to true.
   static Future<T?> show<T>({
     required BuildContext context,
     required String title,
@@ -170,6 +171,7 @@ class ComponentResponsiveModal {
     bool useRootNavigator = true,
     bool barrierDismissible = true,
     bool float = false,
+    bool showAppBar = true,
     AnimationStyle? animationStyle,
     List<Widget>? actions,
   }) {
@@ -223,30 +225,34 @@ class ComponentResponsiveModal {
               context: dialogContext,
               removeTop: true,
               child: Scaffold(
-                extendBodyBehindAppBar: true,
+                extendBodyBehindAppBar: showAppBar,
                 resizeToAvoidBottomInset: false,
                 backgroundColor: context.bottomSheetTheme.backgroundColor,
-                appBar: ComponentBlurredAppBar(
-                  context: context,
-                  borderRadius: const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
-                  toolbarHeight: kModalToolbarHeight,
-                  actions: actions,
-                  leading: Row(
-                    mainAxisSize: .min,
-                    mainAxisAlignment: .start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 14),
-                        child: ComponentCloseButton.blurred(
-                          backgroundColor: context.bottomSheetCardColor,
+                appBar: showAppBar
+                    ? ComponentBlurredAppBar(
+                        context: context,
+                        borderRadius: const BorderRadius.vertical(
+                          top: AppDecoration.iOSModalRadius,
                         ),
-                      ),
-                    ],
-                  ),
-                  title: Text(title, style: context.body2Heavy),
-                  centerTitle: true,
-                  backgroundColor: context.bottomSheetTheme.backgroundColor,
-                ),
+                        toolbarHeight: kModalToolbarHeight,
+                        actions: actions,
+                        leading: Row(
+                          mainAxisSize: .min,
+                          mainAxisAlignment: .start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 14),
+                              child: ComponentCloseButton.blurred(
+                                backgroundColor: context.bottomSheetCardColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        title: Text(title, style: context.body2Heavy),
+                        centerTitle: true,
+                        backgroundColor: context.bottomSheetTheme.backgroundColor,
+                      )
+                    : null,
                 body: builder(dialogContext),
               ),
             ),
@@ -300,29 +306,33 @@ class ComponentResponsiveModal {
                 // the Scaffold must not also consume the inset. Full-height
                 // sheets rely on the Scaffold resizing its own body.
                 resizeToAvoidBottomInset: !hasFixedHeight,
-                extendBodyBehindAppBar: true,
+                extendBodyBehindAppBar: showAppBar,
                 backgroundColor: context.bottomSheetTheme.backgroundColor,
-                appBar: ComponentBlurredAppBar(
-                  context: context,
-                  borderRadius: const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
-                  toolbarHeight: kModalToolbarHeight,
-                  actions: actions,
-                  leading: Row(
-                    mainAxisSize: .min,
-                    mainAxisAlignment: .start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 14),
-                        child: ComponentCloseButton.blurred(
-                          backgroundColor: context.bottomSheetCardColor,
+                appBar: showAppBar
+                    ? ComponentBlurredAppBar(
+                        context: context,
+                        borderRadius: const BorderRadius.vertical(
+                          top: AppDecoration.iOSModalRadius,
                         ),
-                      ),
-                    ],
-                  ),
-                  title: Text(title, style: context.body2Heavy),
-                  centerTitle: true,
-                  backgroundColor: context.bottomSheetTheme.backgroundColor,
-                ),
+                        toolbarHeight: kModalToolbarHeight,
+                        actions: actions,
+                        leading: Row(
+                          mainAxisSize: .min,
+                          mainAxisAlignment: .start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 14),
+                              child: ComponentCloseButton.blurred(
+                                backgroundColor: context.bottomSheetCardColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        title: Text(title, style: context.body2Heavy),
+                        centerTitle: true,
+                        backgroundColor: context.bottomSheetTheme.backgroundColor,
+                      )
+                    : null,
                 body: builder(bottomSheetContext),
               ),
             ),

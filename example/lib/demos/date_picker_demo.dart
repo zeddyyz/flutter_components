@@ -14,61 +14,7 @@ class _DatePickerDemoPageState extends State<DatePickerDemoPage> {
 
   Future<void> _openPicker() async {
     final DateTime now = DateTime.now();
-    final DateTime? picked = await showDialog<DateTime>(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return Material(
-          type: MaterialType.transparency,
-          child: Center(
-            child: ComponentDatePicker(
-              constraints: const BoxConstraints(maxWidth: 420, maxHeight: 560),
-              initialDate: _selected,
-              firstDate: DateTime(now.year - 4),
-              lastDate: DateTime(now.year + 4),
-              onDateSelected: (DateTime date) {},
-            ),
-          ),
-        );
-      },
-    );
-    if (picked == null || !mounted) return;
-    setState(() => _selected = picked);
-    AlertSnackbar.show(
-      title: 'Date selected',
-      message: MaterialLocalizations.of(context).formatFullDate(picked),
-    );
-  }
-
-  Future<void> _openPickerIos() async {
-    const BoxConstraints modalConstraints = BoxConstraints.tightFor(
-      width: 400,
-      height: 488,
-    );
-
-    Future<DateTime?> show({
-      required BuildContext context,
-      required DateTime initialDate,
-      required DateTime firstDate,
-      required DateTime lastDate,
-      Color? accentColor,
-    }) {
-      return ComponentResponsiveModal.show<DateTime>(
-        context: context,
-        title: 'Select date',
-        isScrollable: false,
-        float: true,
-        constraints: modalConstraints,
-        builder: (context) => DatePickerComponentIOS(
-          initialDate: initialDate,
-          firstDate: firstDate,
-          lastDate: lastDate,
-          accentColor: accentColor,
-        ),
-      );
-    }
-
-    final DateTime now = DateTime.now();
-    final DateTime? picked = await show(
+    final DateTime? picked = await ComponentDatePicker.show(
       context: context,
       initialDate: _selected,
       firstDate: DateTime(now.year - 4),
@@ -89,7 +35,7 @@ class _DatePickerDemoPageState extends State<DatePickerDemoPage> {
       children: [
         DemoSection(
           title: 'ComponentDatePicker',
-          description: 'Opens in a dialog. Confirm or cancel from the picker.',
+          description: 'Floating sheet. Tap a day to select.',
           child: Column(
             spacing: 12,
             children: [
@@ -103,11 +49,6 @@ class _DatePickerDemoPageState extends State<DatePickerDemoPage> {
               FilledButton(
                 key: const ValueKey<String>('open-date-picker'),
                 onPressed: _openPicker,
-                child: const Text('Choose date'),
-              ),
-              FilledButton(
-                key: const ValueKey<String>('open-date-picker-ios'),
-                onPressed: _openPickerIos,
                 child: const Text('Choose date'),
               ),
             ],

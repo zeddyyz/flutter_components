@@ -2,311 +2,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_components/flutter_components.dart';
 import 'package:material_ui/material_ui.dart';
 
-class ComponentDatePicker extends StatefulWidget {
-  const ComponentDatePicker({
-    super.key,
-    required this.constraints,
-    required this.initialDate,
-    required this.firstDate,
-    required this.lastDate,
-    required this.onDateSelected,
-    this.primaryColor,
-    this.secondaryColor,
-    this.decoration,
-    this.selectedColor,
-  }) : iosStyle = false;
-
-  const ComponentDatePicker.iosStyle({
-    super.key,
-    required this.constraints,
-    required this.initialDate,
-    required this.firstDate,
-    required this.lastDate,
-    required this.onDateSelected,
-    this.primaryColor,
-    this.secondaryColor,
-    this.decoration,
-    this.selectedColor,
-  }) : iosStyle = true;
-
-  final bool iosStyle;
-
-  final BoxConstraints constraints;
-  final DateTime initialDate;
-  final DateTime firstDate;
-  final DateTime lastDate;
-  final Function(DateTime)? onDateSelected;
-
-  final Color? primaryColor;
-  final Color? secondaryColor;
-  final Decoration? decoration;
-  final Color? selectedColor;
-
-  @override
-  State<ComponentDatePicker> createState() => _ComponentDatePickerState();
-}
-
-class _ComponentDatePickerState extends State<ComponentDatePicker> {
-  late DateTime _selectedDate;
-  late DateTime _currentMonth;
-  final List<String> _weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedDate = widget.initialDate;
-    _currentMonth = DateTime(_selectedDate.year, _selectedDate.month);
-  }
-
-  void _selectDate(DateTime date) {
-    setState(() {
-      _selectedDate = date;
-    });
-    widget.onDateSelected?.call(date);
-  }
-
-  void _previousMonth() {
-    setState(() {
-      _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1);
-    });
-  }
-
-  void _nextMonth() {
-    setState(() {
-      _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (widget.iosStyle) {
-      return DatePickerComponentIOS(
-        initialDate: _selectedDate,
-        firstDate: widget.firstDate,
-        lastDate: widget.lastDate,
-        accentColor: widget.primaryColor,
-      );
-    }
-    return ConstrainedBox(
-      constraints: widget.constraints,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-        decoration:
-            widget.decoration ??
-            ShapeDecoration(
-              color: context.scaffoldBackgroundColor,
-              shape: RoundedSuperellipseBorder(
-                borderRadius: AppDecoration.iOSModalBorderRadius,
-                side: BorderSide(color: context.borderColor),
-              ),
-            ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Month navigation
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  key: const ValueKey('date-picker-prev'),
-                  tooltip: 'Previous month',
-                  icon: Icon(Icons.chevron_left, color: context.primary),
-                  onPressed: _previousMonth,
-                  style: ButtonStyle(
-                    shape: WidgetStatePropertyAll(
-                      RoundedSuperellipseBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: context.primary.withValues(alpha: 0.2)),
-                      ),
-                    ),
-                  ),
-                ),
-                Text(
-                  '${_getMonthName(_currentMonth.month)} ${_currentMonth.year}',
-                  style: TextStyle(
-                    color: context.primary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                IconButton(
-                  key: const ValueKey('date-picker-next'),
-                  tooltip: 'Next month',
-                  icon: Icon(Icons.chevron_right, color: context.primary),
-                  onPressed: _nextMonth,
-                  style: ButtonStyle(
-                    shape: WidgetStatePropertyAll(
-                      RoundedSuperellipseBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: context.primary.withValues(alpha: 0.2)),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Weekdays header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: _weekdays
-                  .map(
-                    (day) => SizedBox(
-                      width: 36,
-                      child: Text(
-                        day,
-                        style: const TextStyle(color: Colors.grey),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-            const SizedBox(height: 8),
-
-            // Calendar grid
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 8,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-              ),
-              itemCount: _calculateRequiredGridCells(),
-              itemBuilder: (context, index) {
-                final int day = index + 1 - _getFirstDayOffset();
-                if (day < 1 || day > _getDaysInMonth(_currentMonth.year, _currentMonth.month)) {
-                  return const SizedBox();
-                }
-
-                final DateTime date = DateTime(_currentMonth.year, _currentMonth.month, day);
-                final bool isSelected =
-                    _selectedDate.year == date.year &&
-                    _selectedDate.month == date.month &&
-                    _selectedDate.day == date.day;
-
-                return Semantics(
-                  label: MaterialLocalizations.of(context).formatFullDate(date),
-                  button: true,
-                  child: GestureDetector(
-                    key: ValueKey('date-picker-day-${_isoDate(date)}'),
-                    onTap: () => _selectDate(date),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: isSelected ? context.borderColor : Colors.transparent,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: Text(
-                          day.toString(),
-                          style: TextStyle(
-                            color: isSelected
-                                ? (widget.selectedColor ?? context.primary)
-                                : context.primary,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-
-            // const SizedBox(height: 16),
-
-            // Buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  key: const ValueKey('date-picker-cancel'),
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    'Cancel',
-                    style: context.bodyHeavy.copyWith(
-                      color: widget.secondaryColor ?? context.secondary,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                TextButton(
-                  key: const ValueKey('date-picker-confirm'),
-                  onPressed: () => Navigator.pop(context, _selectedDate),
-                  child: Text(
-                    'Confirm',
-                    style: context.bodyHeavy.copyWith(
-                      color: widget.primaryColor ?? context.primary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  String _isoDate(DateTime date) {
-    final month = date.month.toString().padLeft(2, '0');
-    final day = date.day.toString().padLeft(2, '0');
-    return '${date.year}-$month-$day';
-  }
-
-  String _getMonthName(int month) {
-    const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    return monthNames[month - 1];
-  }
-
-  int _getFirstDayOffset() {
-    // Get the weekday of the first day (1 = Monday, 7 = Sunday)
-    int firstDayWeekday = DateTime(_currentMonth.year, _currentMonth.month, 1).weekday;
-    // Adjust for our grid layout where Monday is the first column
-    return firstDayWeekday - 1;
-  }
-
-  int _getDaysInMonth([int? year, int? month]) {
-    year ??= _currentMonth.year;
-    month ??= _currentMonth.month;
-
-    // Get the days in the month by getting the last day of the month
-    return DateTime(year, month + 1, 0).day;
-  }
-
-  int _calculateRequiredGridCells() {
-    final int firstDayOffset = _getFirstDayOffset();
-    final int daysInMonth = _getDaysInMonth(_currentMonth.year, _currentMonth.month);
-    final int totalCells = firstDayOffset + daysInMonth;
-    // Ensure we have complete rows by rounding up to the next multiple of 7
-    final int rows = (totalCells / 7).ceil();
-    return rows * 7;
-  }
-}
-
-/// A compact month calendar shown via [ComponentResponsiveModal.show].
+/// A compact month calendar shown in a floating sheet via [ComponentDatePicker.show].
 ///
 /// Tapping a day in range selects it and pops the date. Month paging is
 /// clamped to [firstDate]–[lastDate]. Week starts on Sunday so the weekday
 /// header and day cells share the same 7-column layout.
-class DatePickerComponentIOS extends StatefulWidget {
-  const DatePickerComponentIOS({
+class ComponentDatePicker extends StatefulWidget {
+  const ComponentDatePicker({
     super.key,
     required this.initialDate,
     required this.firstDate,
@@ -319,11 +21,39 @@ class DatePickerComponentIOS extends StatefulWidget {
   final DateTime lastDate;
   final Color? accentColor;
 
+  static const BoxConstraints _modalConstraints = BoxConstraints.tightFor(
+    width: 400,
+    height: 400,
+  );
+
+  static Future<DateTime?> show({
+    required BuildContext context,
+    required DateTime initialDate,
+    required DateTime firstDate,
+    required DateTime lastDate,
+    Color? accentColor,
+  }) {
+    return ComponentResponsiveModal.show<DateTime>(
+      context: context,
+      title: '',
+      showAppBar: false,
+      isScrollable: true,
+      float: true,
+      constraints: _modalConstraints,
+      builder: (context) => ComponentDatePicker(
+        initialDate: initialDate,
+        firstDate: firstDate,
+        lastDate: lastDate,
+        accentColor: accentColor,
+      ),
+    );
+  }
+
   @override
-  State<DatePickerComponentIOS> createState() => _DatePickerComponentIOSState();
+  State<ComponentDatePicker> createState() => _ComponentDatePickerState();
 }
 
-class _DatePickerComponentIOSState extends State<DatePickerComponentIOS> {
+class _ComponentDatePickerState extends State<ComponentDatePicker> {
   late DateTime _firstDate;
   late DateTime _lastDate;
   late DateTime _selected;
@@ -387,69 +117,74 @@ class _DatePickerComponentIOSState extends State<DatePickerComponentIOS> {
   @override
   Widget build(BuildContext context) {
     final accent = _accent(context);
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        20,
-        kModalToolbarHeight + 12,
-        20,
-        16,
-      ),
-      child: Column(
-        children: [
-          _MonthHeader(
-            label: _visibleMonth.monthYear,
-            canGoPrevious: _canGoPrevious,
-            canGoNext: _canGoNext,
-            accent: accent,
-            fill: _accentFill(context),
-            onPrevious: () => _goToMonth(-1),
-            onNext: () => _goToMonth(1),
-          ),
-          const SizedBox(height: 16),
-          const _WeekdayHeader(),
-          const SizedBox(height: 8),
-          Expanded(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 240),
-              switchInCurve: Curves.easeOutCubic,
-              switchOutCurve: Curves.easeInCubic,
-              layoutBuilder: (currentChild, previousChildren) {
-                return Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    ...previousChildren,
-                    ?currentChild,
-                  ],
-                );
-              },
-              transitionBuilder: (child, animation) {
-                final isIncoming = child.key == ValueKey(_monthKey);
-                final inbound = Offset(_monthDirection * 0.18, 0);
-                final outbound = Offset(-_monthDirection * 0.18, 0);
-                return FadeTransition(
-                  opacity: animation,
-                  child: SlideTransition(
-                    position: Tween<Offset>(
-                      begin: isIncoming ? inbound : outbound,
-                      end: Offset.zero,
-                    ).animate(animation),
-                    child: child,
+    return Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: SlideDownBar(),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+            child: Column(
+              children: [
+                _MonthHeader(
+                  label: _visibleMonth.monthYear,
+                  canGoPrevious: _canGoPrevious,
+                  canGoNext: _canGoNext,
+                  accent: accent,
+                  fill: _accentFill(context),
+                  onPrevious: () => _goToMonth(-1),
+                  onNext: () => _goToMonth(1),
+                ),
+                const SizedBox(height: 16),
+                const _WeekdayHeader(),
+                const SizedBox(height: 8),
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 240),
+                    switchInCurve: Curves.easeOutCubic,
+                    switchOutCurve: Curves.easeInCubic,
+                    layoutBuilder: (currentChild, previousChildren) {
+                      return Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          ...previousChildren,
+                          ?currentChild,
+                        ],
+                      );
+                    },
+                    transitionBuilder: (child, animation) {
+                      final isIncoming = child.key == ValueKey(_monthKey);
+                      final inbound = Offset(_monthDirection * 0.18, 0);
+                      final outbound = Offset(-_monthDirection * 0.18, 0);
+                      return FadeTransition(
+                        opacity: animation,
+                        child: SlideTransition(
+                          position: Tween<Offset>(
+                            begin: isIncoming ? inbound : outbound,
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: child,
+                        ),
+                      );
+                    },
+                    child: _CalendarMonth(
+                      key: ValueKey(_monthKey),
+                      month: _visibleMonth,
+                      selected: _selected,
+                      firstDate: _firstDate,
+                      lastDate: _lastDate,
+                      accent: accent,
+                      onSelect: _select,
+                    ),
                   ),
-                );
-              },
-              child: _CalendarMonth(
-                key: ValueKey(_monthKey),
-                month: _visibleMonth,
-                selected: _selected,
-                firstDate: _firstDate,
-                lastDate: _lastDate,
-                accent: accent,
-                onSelect: _select,
-              ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -722,10 +457,8 @@ extension on DateTime {
     'December',
   ];
 
-  /// Medium date matching `DateFormat.yMMMd()` in en, e.g. `Oct 1, 2026`.
   String get yMMMd => '${_abbreviatedMonths[month - 1]} $day, $year';
 
-  /// Month and year matching `DateFormat('MMMM yyyy')`, e.g. `October 2026`.
   String get monthYear => '${_fullMonths[month - 1]} $year';
 }
 
