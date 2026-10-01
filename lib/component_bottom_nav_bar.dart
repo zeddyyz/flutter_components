@@ -1,14 +1,16 @@
 import 'dart:ui';
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/shared/fade_mask_painter.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Set both:
 ///
 /// [body: navigationShell]
 ///
 /// [extendBody: true] in the scaffold to allow the bottom nav bar to be extended beyond the bottom of the screen.
+///
+/// [children] should all be [ComponentGestureClick] with an [icon] and [iconSize] set to 32px
 class ComponentBottomNavBar extends StatelessWidget {
   const ComponentBottomNavBar({
     super.key,
@@ -100,10 +102,11 @@ class ComponentBottomNavBar extends StatelessWidget {
         children: [
           if (childrenLeftAligned != null)
             Container(
+              height: double.infinity,
               decoration: ShapeDecoration(
                 color: context.cardColor.withValues(alpha: context.isLightMode ? 0.1 : 0.5),
                 shape: RoundedSuperellipseBorder(
-                  borderRadius: BorderRadius.circular(40),
+                  borderRadius: BorderRadius.circular(50),
                   side: BorderSide(
                     color: context.primary.withValues(alpha: 0.1),
                     strokeAlign: BorderSide.strokeAlignOutside,
@@ -111,15 +114,15 @@ class ComponentBottomNavBar extends StatelessWidget {
                 ),
               ),
               child: ClipRSuperellipse(
-                borderRadius: BorderRadius.circular(40),
+                borderRadius: BorderRadius.circular(50),
                 child: RepaintBoundary(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: navbarBlurSigma, sigmaY: navbarBlurSigma),
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        spacing: 4,
+                        mainAxisAlignment: .spaceBetween,
+                        spacing: 16,
                         children: childrenLeftAligned!,
                       ),
                     ),
@@ -130,10 +133,11 @@ class ComponentBottomNavBar extends StatelessWidget {
           if (childrenCenterAligned != null) ...[
             Spacer(),
             Container(
+              height: double.infinity,
               decoration: ShapeDecoration(
                 color: context.cardColor.withValues(alpha: context.isLightMode ? 0.1 : 0.5),
                 shape: RoundedSuperellipseBorder(
-                  borderRadius: BorderRadius.circular(40),
+                  borderRadius: BorderRadius.circular(50),
                   side: BorderSide(
                     color: context.primary.withValues(alpha: 0.1),
                     strokeAlign: BorderSide.strokeAlignOutside,
@@ -141,15 +145,15 @@ class ComponentBottomNavBar extends StatelessWidget {
                 ),
               ),
               child: ClipRSuperellipse(
-                borderRadius: BorderRadius.circular(40),
+                borderRadius: BorderRadius.circular(50),
                 child: RepaintBoundary(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: navbarBlurSigma, sigmaY: navbarBlurSigma),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 6),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        spacing: 4,
+                        mainAxisAlignment: .spaceBetween,
+                        spacing: 20,
                         children: childrenCenterAligned!,
                       ),
                     ),
@@ -162,10 +166,12 @@ class ComponentBottomNavBar extends StatelessWidget {
           if (childrenRightAligned != null) ...[
             Spacer(),
             Container(
+              height: double.infinity,
+              width: childrenRightAligned!.length == 1 ? 60 : double.infinity,
               decoration: ShapeDecoration(
                 color: context.cardColor.withValues(alpha: context.isLightMode ? 0.1 : 0.5),
                 shape: RoundedSuperellipseBorder(
-                  borderRadius: BorderRadius.circular(40),
+                  borderRadius: BorderRadius.circular(50),
                   side: BorderSide(
                     color: context.primary.withValues(alpha: 0.1),
                     strokeAlign: BorderSide.strokeAlignOutside,
@@ -173,14 +179,20 @@ class ComponentBottomNavBar extends StatelessWidget {
                 ),
               ),
               child: ClipRSuperellipse(
-                borderRadius: BorderRadius.circular(40),
+                borderRadius: BorderRadius.circular(50),
                 child: RepaintBoundary(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: navbarBlurSigma, sigmaY: navbarBlurSigma),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: childrenRightAligned!.length == 1 ? 6 : 16,
+                        vertical: 6,
+                      ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: childrenRightAligned!.length == 1
+                            ? .center
+                            : .spaceBetween,
+                        spacing: 16,
                         children: childrenRightAligned!,
                       ),
                     ),

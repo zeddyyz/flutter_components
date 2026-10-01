@@ -41,7 +41,8 @@ class ExampleAppState extends State<ExampleApp> {
         primaryColor: Colors.blue,
         secondaryColor: Colors.grey,
       ),
-      themeMode: themeMode,
+      // themeMode: themeMode,
+      themeMode: context.isMobile ? ThemeMode.system : themeMode,
       builder: (BuildContext context, Widget? child) {
         return ComponentNestedScrollViewConfig(child: child!);
       },

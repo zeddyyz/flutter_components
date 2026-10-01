@@ -29,39 +29,73 @@ class BottomNavDemoPage extends StatelessWidget {
             height: 96,
             margin: const EdgeInsets.only(bottom: 12),
             decoration: ShapeDecoration(
-              color: color.withValues(alpha: 0.35),
+              color: color.withValues(alpha: 0.45),
               shape: RoundedSuperellipseBorder(
                 borderRadius: AppDecoration.borderRadiusXl,
               ),
             ),
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text('Row ${index + 1}', style: context.body2Heavy),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              spacing: 14,
+              children: [
+                DecoratedBox(
+                  decoration: ShapeDecoration(color: color, shape: const CircleBorder()),
+                  child: SizedBox.square(
+                    dimension: 44,
+                    child: Center(
+                      child: Text(
+                        '${index + 1}',
+                        style: context.bodyBold.copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 2,
+                    children: [
+                      Text('Row ${index + 1}', style: context.body2Heavy),
+                      Text(
+                        'Scroll so this text passes under the glass pills',
+                        style: context.labelMedium.copyWith(
+                          color: context.primary.withValues(alpha: 0.7),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(Icons.chevron_right_rounded, color: context.primary.withValues(alpha: 0.5)),
+              ],
+            ),
           );
         },
       ),
       bottomNavigationBar: ComponentBottomNavBar(
         isBackgroundFaded: true,
         childrenLeftAligned: [
-          IconButton(
+          ComponentGestureClick(
             key: const ValueKey<String>('nav-home'),
-            tooltip: 'Home',
-            onPressed: () => AlertSnackbar.show(message: 'Home'),
-            icon: const Icon(Icons.home_rounded),
+            onTap: () => AlertSnackbar.show(message: 'Home'),
+            child: const Icon(Icons.home_rounded, size: 32),
           ),
-          IconButton(
+          ComponentGestureClick(
             key: const ValueKey<String>('nav-search'),
-            tooltip: 'Search',
-            onPressed: () => AlertSnackbar.show(message: 'Search'),
-            icon: const Icon(Icons.search_rounded),
+            onTap: () => AlertSnackbar.show(message: 'Search'),
+            child: const Icon(Icons.search_rounded, size: 32),
           ),
         ],
         childrenRightAligned: [
-          IconButton(
+          ComponentGestureClick(
             key: const ValueKey<String>('nav-add'),
-            tooltip: 'Add',
-            onPressed: () => AlertSnackbar.show(message: 'Add'),
-            icon: const Icon(Icons.add_rounded),
+            onTap: () => AlertSnackbar.show(message: 'Add'),
+            child: const Icon(
+              Icons.add_rounded,
+              size: 32,
+            ),
           ),
         ],
       ),

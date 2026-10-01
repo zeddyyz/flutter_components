@@ -199,13 +199,13 @@ class _ComponentTextFieldState extends State<ComponentTextField> {
   bool _isClearTextButtonVisible = false;
 
   double getHeight() {
-    if (widget.maxLines == null) return 52.0;
+    if (widget.maxLines == null) return 56.0;
     return switch (widget.maxLines) {
-      1 => 52.0,
-      2 => 70.0,
-      3 => 88.0,
-      4 => 108.0,
-      _ => 52.0,
+      1 => 56.0,
+      2 => 76.0,
+      3 => 94.0,
+      4 => 114.0,
+      _ => 56.0,
     };
   }
 

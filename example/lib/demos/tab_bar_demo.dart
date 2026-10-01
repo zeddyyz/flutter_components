@@ -27,43 +27,39 @@ class _TabBarDemoPageState extends State<TabBarDemoPage> with TickerProviderStat
         context: context,
         title: const Text('Tab bar'),
         actions: const [ThemeToggleButton()],
-      ),
-      body: Column(
-        children: [
-          SizedBox(height: MediaQuery.paddingOf(context).top + kToolbarHeight + 8),
-          ComponentTabBar(
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: ComponentTabBar(
             numberOfItems: _tabs.length,
             tabs: _tabs,
             tabController: _controller,
+            isBlurred: false,
           ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: TabBarView(
-              controller: _controller,
-              children: [
-                for (final String tab in _tabs)
-                  ListView.builder(
-                    padding: EdgeInsets.fromLTRB(
-                      context.defaultPadding,
-                      0,
-                      context.defaultPadding,
-                      context.paddingBottom,
-                    ),
-                    itemCount: 16,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: ComponentListTile(
-                          displayBorder: true,
-                          title: Text('$tab item ${index + 1}'),
-                          subtitle: const Text('Swipe or tap a tab'),
-                        ),
-                      );
-                    },
+        ),
+      ),
+      body: TabBarView(
+        controller: _controller,
+        children: [
+          for (final String tab in _tabs)
+            ListView.builder(
+              padding: EdgeInsets.fromLTRB(
+                context.defaultPadding,
+                context.topPadding(120),
+                context.defaultPadding,
+                context.paddingBottom,
+              ),
+              itemCount: 16,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: ComponentListTile(
+                    displayBorder: true,
+                    title: Text('$tab item ${index + 1}'),
+                    subtitle: const Text('Swipe or tap a tab'),
                   ),
-              ],
+                );
+              },
             ),
-          ),
         ],
       ),
     );

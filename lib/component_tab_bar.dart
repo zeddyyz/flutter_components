@@ -43,48 +43,39 @@ class ComponentTabBar extends StatefulWidget {
   State<ComponentTabBar> createState() => _ComponentTabBarState();
 }
 
-class _ComponentTabBarState extends State<ComponentTabBar> with TickerProviderStateMixin {
+class _ComponentTabBarState extends State<ComponentTabBar> {
   // Tab keys to get tab positions for smooth scrolling
   late List<GlobalKey> _tabKeys;
-  int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _tabKeys = List.generate(widget.numberOfItems, (_) => GlobalKey());
-    // Add listener to handle tab changes
     widget.tabController.addListener(_handleTabChange);
+  }
+
+  @override
+  void didUpdateWidget(ComponentTabBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.tabController != widget.tabController) {
+      oldWidget.tabController.removeListener(_handleTabChange);
+      widget.tabController.addListener(_handleTabChange);
+    }
+    if (oldWidget.numberOfItems != widget.numberOfItems) {
+      _tabKeys = List.generate(widget.numberOfItems, (_) => GlobalKey());
+    }
   }
 
   @override
   void dispose() {
     widget.tabController.removeListener(_handleTabChange);
-    // Don't dispose the controller since it was provided externally
-    // and may still be used by other widgets
     super.dispose();
   }
 
   void _handleTabChange() {
-    // Only respond when the animation is done
     if (!widget.tabController.indexIsChanging) {
-      // User has changed the tab
-      // Scroll the selected tab into view
       _scrollTabIntoView(widget.tabController.index);
     }
-  }
-
-  void _selectTab(int index) {
-    if (widget.tabController.index == index) return;
-
-    // Immediately animate to the selected tab
-    // widget.tabController.animateTo(
-    //   index,
-    //   duration: const Duration(milliseconds: 300),
-    //   curve: Curves.easeInOut,
-    // );
-    setState(() {
-      _selectedIndex = index;
-    });
   }
 
   void _scrollTabIntoView(int index) {
@@ -148,10 +139,6 @@ class _ComponentTabBarState extends State<ComponentTabBar> with TickerProviderSt
     return context.isLightMode ? Colors.white : Colors.grey.shade800;
   }
 
-  Color _getUnselectedIndicatorColor(BuildContext context, bool isBlurred) {
-    return context.isLightMode ? Colors.grey.shade200 : Colors.grey.shade900;
-  }
-
   Widget _buildTabBar(BuildContext context, bool isBlurred) {
     return ClipRSuperellipse(
       borderRadius: AppDecoration.borderRadiusStadium,
@@ -174,9 +161,7 @@ class _ComponentTabBarState extends State<ComponentTabBar> with TickerProviderSt
           indicatorWeight: 2,
           indicatorSize: TabBarIndicatorSize.tab,
           indicator: ShapeDecoration(
-            color: widget.tabController.index == _selectedIndex
-                ? _getSelectedIndicatorColor(context, isBlurred)
-                : _getUnselectedIndicatorColor(context, isBlurred),
+            color: _getSelectedIndicatorColor(context, isBlurred),
             shape: RoundedSuperellipseBorder(
               borderRadius: AppDecoration.borderRadiusStadium,
             ),
@@ -204,7 +189,6 @@ class _ComponentTabBarState extends State<ComponentTabBar> with TickerProviderSt
               ),
           ],
           enableFeedback: true,
-          onTap: (index) => _selectTab(index),
         ),
       ),
     );

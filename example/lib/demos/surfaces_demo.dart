@@ -30,7 +30,7 @@ class _SurfacesDemoPageState extends State<SurfacesDemoPage> {
               ),
               ComponentCard(
                 isInSheet: true,
-                displayBorder: true,
+                displayBorder: false,
                 onTap: () => AlertSnackbar.show(message: 'Sheet card'),
                 child: Text('Sheet card color', style: context.body2Heavy),
               ),
@@ -92,7 +92,8 @@ class _SurfacesDemoPageState extends State<SurfacesDemoPage> {
                   key: ValueKey<String>('chip-$label'),
                   label: label,
                   isSelected: _selectedChips.contains(label),
-                  selectedColor: context.primary,
+                  selectedColor: context.cardColor,
+                  showCheckmark: true,
                   onSelected: (bool selected) {
                     setState(() {
                       if (selected) {

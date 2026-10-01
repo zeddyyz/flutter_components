@@ -98,7 +98,7 @@ class _ComponentListTileState extends State<ComponentListTile> {
               trailing: widget.trailing,
               tileColor: tileColor,
               shape: RoundedSuperellipseBorder(
-                borderRadius: widget.borderRadius ?? AppDecoration.borderRadiusSm,
+                borderRadius: widget.borderRadius ?? AppDecoration.borderRadiusCard,
                 side: widget.displayBorder ? BorderSide(color: borderColor) : BorderSide.none,
               ),
               contentPadding: contentPadding,
