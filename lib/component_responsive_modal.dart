@@ -1,6 +1,7 @@
 import 'package:flutter_components/component_blurred_app_bar.dart';
 import 'package:flutter_components/component_close_button.dart';
 import 'package:flutter_components/component_modal_controller.dart';
+import 'package:flutter_components/component_responsive_modal_widget.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
 import 'package:material_ui/material_ui.dart';
@@ -9,6 +10,26 @@ const double kModalToolbarHeight = 65;
 
 /// Shows either a modal bottom sheet (on small screens) or a dialog (on larger screens)
 class ComponentResponsiveModal {
+  static Future<T?> showFullScreen<T>({
+    required BuildContext context,
+    required Widget child,
+  }) async {
+    return await showGeneralDialog<T>(
+      context: context,
+      transitionDuration: const Duration(milliseconds: 400),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween(
+            begin: const Offset(0, 1),
+            end: const Offset(0, 0),
+          ).animate(animation),
+          child: child,
+        );
+      },
+      pageBuilder: (context, animation1, animation2) => child,
+    );
+  }
+
   ///
   /// Parameters:
   /// - [context]: BuildContext
@@ -527,6 +548,160 @@ class ComponentResponsiveModal {
                 child: sheet,
               );
             },
+          );
+        },
+      );
+    }
+  }
+
+  /// [show] for content that renders its own app bar, so the app bar actions
+  /// are built from the content's state and need no [ComponentModalController].
+  ///
+  /// [builder] returns the widget shown in the modal, whose `build` returns a
+  /// [ComponentResponsiveModalWidget] with the title, the app bar actions and
+  /// the slivers. The content closes the modal, optionally with a result, with
+  /// `Navigator.pop(context, result)`.
+  ///
+  /// - [animationStyle] defaults to `AppDecoration.smoothSheetAnimationStyle`
+  ///
+  /// ```dart
+  /// final name = await ComponentResponsiveModal.showWithActionsSimple<String>(
+  ///   context: context,
+  ///   builder: (context) => const EditNameForm(),
+  /// );
+  /// ```
+  static Future<T?> showWithActionsSimple<T>({
+    required BuildContext context,
+    required Widget Function(BuildContext context) builder,
+    BoxConstraints? constraints,
+    bool isScrollable = true,
+    bool useRootNavigator = true,
+    bool barrierDismissible = true,
+    bool float = false,
+    AnimationStyle? animationStyle,
+  }) {
+    // Use MediaQuery to determine if we should show a dialog or bottom sheet
+    final isLargeScreen = !context.isMobile;
+
+    if (isLargeScreen) {
+      // Show as dialog on larger screens
+      return showGeneralDialog<T>(
+        context: context,
+        useRootNavigator: useRootNavigator,
+        barrierLabel: '',
+        barrierDismissible: barrierDismissible,
+        barrierColor: context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7),
+        transitionDuration: const Duration(milliseconds: 400),
+        transitionBuilder: (context, anim1, anim2, child) {
+          final tween = Tween<Offset>(
+            begin: const Offset(0.0, 1.0),
+            end: Offset.zero,
+          );
+          return SlideTransition(
+            position: anim1.drive(
+              tween.chain(
+                CurveTween(
+                  curve: Curves.ease,
+                ),
+              ),
+            ),
+            child: child,
+          );
+        },
+        pageBuilder: (dialogContext, animation, secondaryAnimation) => Dialog(
+          backgroundColor: context.bottomSheetTheme.backgroundColor,
+          shadowColor: Colors.transparent,
+          elevation: 8,
+          insetAnimationCurve: Curves.ease,
+          insetAnimationDuration: const Duration(milliseconds: 400),
+          shape: RoundedSuperellipseBorder(
+            borderRadius: AppDecoration.iOSModalBorderRadius,
+            side: context.isLightMode ? BorderSide.none : BorderSide(color: context.borderColor),
+          ),
+          constraints:
+              constraints ?? BoxConstraints(maxWidth: 560, maxHeight: context.viewHeight * 0.8),
+          child: ClipRSuperellipse(
+            borderRadius: AppDecoration.iOSModalBorderRadius,
+            // The dialog is inset from the screen edges, so its content must
+            // not pad for the safe area.
+            child: MediaQuery.removeViewPadding(
+              context: dialogContext,
+              removeTop: true,
+              removeBottom: true,
+              removeLeft: true,
+              removeRight: true,
+              child: Scaffold(
+                resizeToAvoidBottomInset: false,
+                backgroundColor: context.bottomSheetTheme.backgroundColor,
+                body: builder(dialogContext),
+              ),
+            ),
+          ),
+        ),
+      );
+    } else {
+      // Show as bottom sheet on smaller screens
+      return showModalBottomSheet<T>(
+        context: context,
+        useRootNavigator: useRootNavigator,
+        useSafeArea: true,
+        isScrollControlled: isScrollable,
+        enableDrag: barrierDismissible,
+        isDismissible: barrierDismissible,
+        backgroundColor: float ? Colors.transparent : context.bottomSheetTheme.backgroundColor,
+        // Transparent sheet Material still paints theme elevation; kill it so
+        // it doesn't show as a ghost behind the inset card.
+        elevation: float ? 0 : null,
+        barrierColor: context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7),
+        shape: RoundedSuperellipseBorder(
+          borderRadius: float
+              ? AppDecoration.iOSModalBorderRadius
+              : const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
+        ),
+        sheetAnimationStyle: animationStyle ?? AppDecoration.smoothSheetAnimationStyle,
+        // When the caller pins a height, don't forward that height to
+        // [showModalBottomSheet] (a pinned sheet can't slide above the
+        // keyboard). Only forward the width; the fixed height is re-applied to
+        // an inner box that we lift with the keyboard inset.
+        constraints: constraints == null
+            ? const BoxConstraints.expand()
+            : BoxConstraints(maxWidth: constraints.maxWidth),
+        builder: (BuildContext bottomSheetContext) {
+          // A caller-provided height means the sheet is content/fixed sized and
+          // should be lifted above the keyboard as a whole. Otherwise the sheet
+          // is full-height and the inner Scaffold should resize its body.
+          final bool hasFixedHeight = constraints != null && constraints.maxHeight.isFinite;
+          final double keyboardInset = MediaQuery.viewInsetsOf(bottomSheetContext).bottom;
+          final Widget sheet = Container(
+            margin: float
+                ? EdgeInsets.only(left: 12, right: 12, bottom: context.mediaQueryPadding.bottom)
+                : EdgeInsets.zero,
+            constraints: constraints ?? const BoxConstraints.expand(),
+            child: ClipRSuperellipse(
+              borderRadius: float
+                  ? AppDecoration.iOSModalBorderRadius
+                  : const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
+              // A floating sheet's margin already clears the bottom safe area.
+              child: MediaQuery.removePadding(
+                context: bottomSheetContext,
+                removeBottom: float,
+                child: Scaffold(
+                  // For fixed-height sheets the whole sheet is lifted below,
+                  // so the Scaffold must not also consume the inset.
+                  // Full-height sheets rely on the Scaffold resizing its body.
+                  resizeToAvoidBottomInset: !hasFixedHeight,
+                  backgroundColor: context.bottomSheetTheme.backgroundColor,
+                  body: builder(bottomSheetContext),
+                ),
+              ),
+            ),
+          );
+          if (!hasFixedHeight) return sheet;
+          return AnimatedPadding(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+            padding: EdgeInsets.only(bottom: keyboardInset),
+            child: sheet,
           );
         },
       );

@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ComponentDialogWidget extends StatelessWidget {
   const ComponentDialogWidget({
@@ -18,6 +18,7 @@ class ComponentDialogWidget extends StatelessWidget {
     this.showCancel = true,
     required this.onConfirm,
     required this.onCancel,
+    this.blurBackground = false,
   });
 
   final double? height;
@@ -29,6 +30,7 @@ class ComponentDialogWidget extends StatelessWidget {
   final String cancelText;
   final bool isDestructive;
   final bool showCancel;
+  final bool blurBackground;
 
   final VoidCallback onConfirm;
   final VoidCallback onCancel;
@@ -41,104 +43,76 @@ class ComponentDialogWidget extends StatelessWidget {
       ),
       elevation: 8,
       backgroundColor: Colors.transparent,
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-        child: Container(
-          height: height,
-          width: context.isMobile ? null : 400,
-          decoration: ShapeDecoration(
-            color: context.isLightMode
-                ? Colors.white.withValues(alpha: 0.8)
-                : const Color.fromARGB(255, 27, 27, 27),
-            shape: RoundedSuperellipseBorder(
-              borderRadius: AppDecoration.iOSModalBorderRadius,
-              side: BorderSide(
-                color: context.borderColor,
+      child: RepaintBoundary(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: blurBackground ? 5 : 0, sigmaY: blurBackground ? 5 : 0),
+          child: Container(
+            height: height,
+            width: context.isMobile ? null : 400,
+            decoration: ShapeDecoration(
+              color: context.isLightMode ? Colors.white : const Color.fromARGB(255, 27, 27, 27),
+              shape: RoundedSuperellipseBorder(
+                borderRadius: AppDecoration.iOSModalBorderRadius,
+                side: BorderSide(
+                  color: context.isLightMode ? Colors.transparent : context.borderColor,
+                ),
               ),
             ),
-          ),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 24,
-          ).copyWith(bottom: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (icon != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Row(
-                    spacing: 20,
-                    children: [
-                      icon!,
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: Theme.of(context).textTheme.titleMedium,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 24,
+            ).copyWith(bottom: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (icon != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Row(
+                      spacing: 20,
+                      children: [
+                        icon!,
+                        Expanded(
+                          child: Text(
+                            title,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              else
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-              const SizedBox(height: 16),
-              if (description != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    description!,
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                ),
-              ?content,
-              const Spacer(),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                spacing: 8,
-                children: [
-                  TextButton(
-                    key: const ValueKey('dialog-confirm'),
-                    onPressed: onConfirm,
-                    style: ButtonStyle(
-                      splashFactory: NoSplash.splashFactory,
-                      backgroundColor: WidgetStateProperty.all(
-                        isDestructive ? Colors.red : Theme.of(context).primaryColor,
-                      ),
-                      fixedSize: WidgetStateProperty.all(
-                        const Size(double.infinity, 50),
-                      ),
-                      shape: WidgetStateProperty.all(
-                        RoundedSuperellipseBorder(
-                          borderRadius: AppDecoration.borderRadiusStadium,
-                        ),
-                      ),
+                      ],
                     ),
+                  )
+                else
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
-                      confirmText,
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: Colors.white,
-                      ),
+                      title,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
-                  if (showCancel)
+                const SizedBox(height: 16),
+                if (description != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Text(
+                      description!,
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                  ),
+                ?content,
+                const Spacer(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 8,
+                  children: [
                     TextButton(
-                      key: const ValueKey('dialog-cancel'),
-                      onPressed: onCancel,
+                      key: const ValueKey('dialog-confirm'),
+                      onPressed: onConfirm,
                       style: ButtonStyle(
                         splashFactory: NoSplash.splashFactory,
                         backgroundColor: WidgetStateProperty.all(
-                          context.isLightMode
-                              ? Colors.grey.withValues(alpha: 0.15)
-                              : const Color.fromARGB(255, 43, 42, 42),
+                          isDestructive ? Colors.red : Theme.of(context).primaryColor,
                         ),
                         fixedSize: WidgetStateProperty.all(
                           const Size(double.infinity, 50),
@@ -148,20 +122,48 @@ class ComponentDialogWidget extends StatelessWidget {
                             borderRadius: AppDecoration.borderRadiusStadium,
                           ),
                         ),
-                        overlayColor: WidgetStateProperty.all(
-                          context.isLightMode
-                              ? Colors.grey.withValues(alpha: 0.15)
-                              : const Color.fromARGB(255, 43, 42, 42),
-                        ),
                       ),
                       child: Text(
-                        cancelText,
-                        style: Theme.of(context).textTheme.titleMedium,
+                        confirmText,
+                        style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                ],
-              ),
-            ],
+                    if (showCancel)
+                      TextButton(
+                        key: const ValueKey('dialog-cancel'),
+                        onPressed: onCancel,
+                        style: ButtonStyle(
+                          splashFactory: NoSplash.splashFactory,
+                          backgroundColor: WidgetStateProperty.all(
+                            context.isLightMode
+                                ? Colors.grey.withValues(alpha: 0.15)
+                                : const Color.fromARGB(255, 43, 42, 42),
+                          ),
+                          fixedSize: WidgetStateProperty.all(
+                            const Size(double.infinity, 50),
+                          ),
+                          shape: WidgetStateProperty.all(
+                            RoundedSuperellipseBorder(
+                              borderRadius: AppDecoration.borderRadiusStadium,
+                            ),
+                          ),
+                          overlayColor: WidgetStateProperty.all(
+                            context.isLightMode
+                                ? Colors.grey.withValues(alpha: 0.15)
+                                : const Color.fromARGB(255, 43, 42, 42),
+                          ),
+                        ),
+                        child: Text(
+                          cancelText,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

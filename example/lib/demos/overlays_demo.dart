@@ -36,15 +36,35 @@ class OverlaysDemoPage extends StatelessWidget {
                 onPressed: () => _showActionsModal(context),
                 child: const Text('Show with actions'),
               ),
+              ElevatedButton(
+                key: const ValueKey<String>('modal-actions-simple'),
+                onPressed: () => _showSimpleActionsModal(context),
+                child: const Text('Show with actions (simple)'),
+              ),
+              ElevatedButton(
+                key: const ValueKey<String>('modal-actions-simple-large-title'),
+                onPressed: () => _showSimpleActionsModal(context, hasLargeTitle: true),
+                child: const Text('Show with actions (simple, large title)'),
+              ),
             ],
           ),
         ),
         DemoSection(
           title: 'ComponentDialogWidget',
-          child: OutlinedButton(
-            key: const ValueKey<String>('dialog-show'),
-            onPressed: () => _showDialog(context),
-            child: const Text('Show dialog'),
+          child: Column(
+            spacing: 8,
+            children: [
+              OutlinedButton(
+                key: const ValueKey<String>('dialog-show'),
+                onPressed: () => _showDialog(context, blurBackground: false),
+                child: const Text('Show dialog'),
+              ),
+              OutlinedButton(
+                key: const ValueKey<String>('dialog-show-blurred'),
+                onPressed: () => _showDialog(context, blurBackground: true),
+                child: const Text('Show dialog with blurred background'),
+              ),
+            ],
           ),
         ),
         DemoSection(
@@ -176,17 +196,27 @@ class OverlaysDemoPage extends StatelessWidget {
     AlertSnackbar.show(title: 'Saved', message: name);
   }
 
-  Future<void> _showDialog(BuildContext context) {
+  Future<void> _showSimpleActionsModal(BuildContext context, {bool hasLargeTitle = false}) async {
+    final String? name = await ComponentResponsiveModal.showWithActionsSimple<String>(
+      context: context,
+      builder: (BuildContext modalContext) => _SimpleNameForm(hasLargeTitle: hasLargeTitle),
+    );
+    if (!context.mounted || name == null) return;
+    AlertSnackbar.show(title: 'Saved', message: name);
+  }
+
+  Future<void> _showDialog(BuildContext context, {bool blurBackground = false}) {
     return showDialog<void>(
       context: context,
       builder: (BuildContext dialogContext) {
         return ComponentDialogWidget(
           height: 280,
-          icon: Icon(Icons.info_outline_rounded, color: context.primary),
+          // icon: Icon(Icons.info_outline_rounded, color: context.primary),
           title: 'Replace file?',
           description: 'This cannot be undone.',
           confirmText: 'Replace',
           cancelText: 'Cancel',
+          blurBackground: blurBackground,
           onConfirm: () => Navigator.pop(dialogContext),
           onCancel: () => Navigator.pop(dialogContext),
         );
@@ -195,7 +225,7 @@ class OverlaysDemoPage extends StatelessWidget {
   }
 
   Future<void> _showFullScreen(BuildContext context) {
-    return showComponentFullScreenWidget<void>(
+    return ComponentResponsiveModal.showFullScreen<void>(
       context: context,
       child: Scaffold(
         extendBodyBehindAppBar: true,
@@ -253,6 +283,121 @@ class _NameFormState extends State<_NameForm> {
           icon: const Icon(Icons.person_outline_rounded),
         ),
       ],
+    );
+  }
+}
+
+class _SimpleNameForm extends StatefulWidget {
+  const _SimpleNameForm({required this.hasLargeTitle});
+
+  final bool hasLargeTitle;
+
+  @override
+  State<_SimpleNameForm> createState() => _SimpleNameFormState();
+}
+
+class _SimpleNameFormState extends State<_SimpleNameForm> {
+  static const List<String> _suggestedNames = [
+    'Ada Lovelace',
+    'Alan Turing',
+    'Barbara Liskov',
+    'Dennis Ritchie',
+    'Donald Knuth',
+    'Edsger Dijkstra',
+    'Frances Allen',
+    'Grace Hopper',
+    'Hedy Lamarr',
+    'Katherine Johnson',
+    'Ken Thompson',
+    'Linus Torvalds',
+    'Margaret Hamilton',
+    'Radia Perlman',
+    'Tim Berners-Lee',
+  ];
+
+  final TextEditingController _name = TextEditingController();
+  bool _isSaving = false;
+
+  bool get _canSave => _name.text.trim().isNotEmpty && !_isSaving;
+
+  @override
+  void initState() {
+    super.initState();
+    _name.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _name.dispose();
+    super.dispose();
+  }
+
+  Future<void> _save() async {
+    setState(() => _isSaving = true);
+    await Future<void>.delayed(const Duration(milliseconds: 400));
+    if (!mounted) return;
+    Navigator.pop(context, _name.text.trim());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> actions = [
+      TextButton(
+        key: const ValueKey<String>('modal-simple-save'),
+        onPressed: _canSave ? _save : null,
+        child: _isSaving
+            ? const SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            : const Text('Save'),
+      ),
+    ];
+    final List<Widget> slivers = [
+      SliverPadding(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+        sliver: SliverToBoxAdapter(
+          child: ComponentTextField(
+            controller: _name,
+            hintText: 'Your name',
+            icon: const Icon(Icons.person_outline_rounded),
+          ),
+        ),
+      ),
+      SliverPadding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+        sliver: SliverList.builder(
+          itemCount: _suggestedNames.length,
+          itemBuilder: (BuildContext context, int index) {
+            final String suggestedName = _suggestedNames[index];
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: ComponentListTile(
+                key: ValueKey<String>('suggested-name-$index'),
+                isWithinBottomSheet: true,
+                displayBorder: true,
+                isSelected: _name.text == suggestedName,
+                title: Text(suggestedName),
+                onTap: () => _name.text = suggestedName,
+              ),
+            );
+          },
+        ),
+      ),
+    ];
+
+    if (widget.hasLargeTitle) {
+      return ComponentResponsiveModalWidget.largeTitle(
+        title: 'Edit name',
+        actions: actions,
+        slivers: slivers,
+      );
+    }
+    return ComponentResponsiveModalWidget(
+      title: 'Edit name',
+      actions: actions,
+      slivers: slivers,
     );
   }
 }

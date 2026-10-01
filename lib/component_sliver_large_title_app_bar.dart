@@ -39,6 +39,7 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
     this.largeTitlePadding,
     this.leading,
     this.actions,
+    this.actionsPadding,
     this.centerCollapsedTitle = true,
     this.automaticallyImplyLeading = true,
     this.onBackButtonTap,
@@ -94,6 +95,9 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
 
   /// List of action widgets to display at the end of the app bar
   final List<Widget>? actions;
+
+  /// Padding around the [actions]
+  final EdgeInsetsGeometry? actionsPadding;
 
   /// Whether the collapsed title is centered in the toolbar
   final bool centerCollapsedTitle;
@@ -205,6 +209,7 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
       centerTitle: centerCollapsedTitle,
       leading: leading,
       actions: actions,
+      actionsPadding: actionsPadding,
       automaticallyImplyLeading: automaticallyImplyLeading,
       onBackButtonTap: onBackButtonTap,
       toolbarHeight: kToolbarHeight,

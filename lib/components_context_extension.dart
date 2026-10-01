@@ -52,7 +52,8 @@ extension ContextExtension on BuildContext {
       ? Colors.grey.shade300.withValues(alpha: 0.75)
       : Colors.grey.shade800.withValues(alpha: 0.75);
 
-  Color get chipColor => isLightMode ? Colors.grey.shade100 : Colors.grey.shade900;
+  Color get chipColor =>
+      isLightMode ? Colors.grey.shade300.withValues(alpha: 0.75) : Colors.grey.shade900;
 
   Color get scaffoldBackgroundColor => theme.scaffoldBackgroundColor;
 

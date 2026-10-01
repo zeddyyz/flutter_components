@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_components/component_back_button.dart';
+import 'package:flutter_components/shared/component_clipped_header.dart';
 import 'package:flutter_components/shared/fade_mask_painter.dart';
 
 class ComponentSliverBlurredAppBar extends StatelessWidget {
@@ -12,6 +13,7 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
     this.title,
     this.leading,
     this.actions,
+    this.actionsPadding,
     this.centerTitle,
     this.backgroundColor,
     this.foregroundColor,
@@ -49,6 +51,9 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
 
   /// List of action widgets to display at the end of the app bar
   final List<Widget>? actions;
+
+  /// Padding around the [actions]
+  final EdgeInsetsGeometry? actionsPadding;
 
   /// The bottom widget to display at the bottom of the app bar
   final PreferredSizeWidget? bottom;
@@ -119,7 +124,9 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
   /// The content will be clipped (or not) according to this option
   final Clip? clipBehavior;
 
-  /// The border radius of the app bar shape
+  /// The border radius of the app bar shape, which the blur is clipped to as
+  /// well. Provide a top-only radius when this app bar sits at the top of a
+  /// modal sheet, since a [BackdropFilter] ignores ancestor rounded clips
   final BorderRadius? borderRadius;
 
   /// The overflow extent of the app bar on the x-axis, in situations where the blurr seems padded on the left and right sides
@@ -145,6 +152,7 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
       title: title,
       leading: shouldShowLeading ? (leading ?? ComponentBackButton(onTap: onBackButtonTap)) : null,
       actions: actions,
+      actionsPadding: actionsPadding,
       centerTitle: centerTitle,
       backgroundColor: Colors.transparent,
       foregroundColor: foregroundColor ?? defaultForegroundColor,
@@ -164,7 +172,8 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
           ),
       bottom: bottom,
       expandedHeight: expandedHeight,
-      flexibleSpace: ClipRect(
+      flexibleSpace: ComponentClippedHeader(
+        borderRadius: borderRadius,
         child: RepaintBoundary(
           child: Stack(
             clipBehavior: clipBehavior ?? Clip.antiAlias,
