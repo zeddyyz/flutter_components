@@ -2,11 +2,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_components/flutter_components.dart';
 import 'package:material_ui/material_ui.dart';
 
+enum _PickerLevel { days, years, months }
+
 /// A compact month calendar shown in a floating sheet via [ComponentDatePicker.show].
 ///
-/// Tapping a day in range selects it and pops the date. Month paging is
-/// clamped to [firstDate]–[lastDate]. Week starts on Sunday so the weekday
-/// header and day cells share the same 7-column layout.
+/// Tapping a day in range selects it and pops the date. The month title opens a
+/// year grid, then a month grid, then returns to dates. Month paging is clamped
+/// to [firstDate]–[lastDate]. Week starts on Sunday so the weekday header and
+/// day cells share the same 7-column layout.
 class ComponentDatePicker extends StatefulWidget {
   const ComponentDatePicker({
     super.key,
@@ -58,7 +61,10 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
   late DateTime _lastDate;
   late DateTime _selected;
   late DateTime _visibleMonth;
+  late int _pickerYear;
+  _PickerLevel _level = _PickerLevel.days;
   int _monthDirection = 1;
+  int _levelDirection = 1;
   bool _isClosing = false;
 
   @override
@@ -68,6 +74,7 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
     _lastDate = _dateOnly(widget.lastDate);
     _selected = _clamp(_dateOnly(widget.initialDate), _firstDate, _lastDate);
     _visibleMonth = DateTime(_selected.year, _selected.month);
+    _pickerYear = _visibleMonth.year;
   }
 
   Color _accent(BuildContext context) => widget.accentColor ?? context.primary;
@@ -76,13 +83,56 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
       _accent(context).withValues(alpha: context.isLightMode ? 0.08 : 0.16);
 
   void _goToMonth(int offset) {
+    if (_level != _PickerLevel.days) return;
     final next = DateTime(_visibleMonth.year, _visibleMonth.month + offset);
     if (!_monthHasSelectableDays(next)) return;
     HapticFeedback.selectionClick();
     setState(() {
       _monthDirection = offset;
       _visibleMonth = next;
+      _pickerYear = next.year;
     });
+  }
+
+  void _showYears() {
+    HapticFeedback.selectionClick();
+    setState(() {
+      _levelDirection = _level == _PickerLevel.days ? 1 : -1;
+      _pickerYear = _visibleMonth.year;
+      _level = _PickerLevel.years;
+    });
+  }
+
+  void _showMonths(int year) {
+    HapticFeedback.selectionClick();
+    setState(() {
+      _levelDirection = 1;
+      _pickerYear = year;
+      _level = _PickerLevel.months;
+    });
+  }
+
+  void _showDays({DateTime? month}) {
+    HapticFeedback.selectionClick();
+    setState(() {
+      _levelDirection = -1;
+      if (month != null) {
+        _visibleMonth = DateTime(month.year, month.month);
+        _pickerYear = month.year;
+      }
+      _level = _PickerLevel.days;
+    });
+  }
+
+  void _onTitleTap() {
+    switch (_level) {
+      case _PickerLevel.days:
+        _showYears();
+      case _PickerLevel.years:
+        _showDays();
+      case _PickerLevel.months:
+        _showYears();
+    }
   }
 
   Future<void> _select(DateTime date) async {
@@ -114,6 +164,20 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
   bool get _canGoNext =>
       _monthHasSelectableDays(DateTime(_visibleMonth.year, _visibleMonth.month + 1));
 
+  String get _titleLabel => switch (_level) {
+    _PickerLevel.days => _visibleMonth.monthYear,
+    _PickerLevel.years => 'Year',
+    _PickerLevel.months => '$_pickerYear',
+  };
+
+  String get _monthKey => '${_visibleMonth.year}-${_visibleMonth.month}';
+
+  String get _levelKey => switch (_level) {
+    _PickerLevel.days => 'days',
+    _PickerLevel.years => 'years',
+    _PickerLevel.months => 'months-$_pickerYear',
+  };
+
   @override
   Widget build(BuildContext context) {
     final accent = _accent(context);
@@ -129,20 +193,28 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
             child: Column(
               children: [
                 _MonthHeader(
-                  label: _visibleMonth.monthYear,
-                  canGoPrevious: _canGoPrevious,
-                  canGoNext: _canGoNext,
+                  label: _titleLabel,
+                  canGoPrevious: _level == _PickerLevel.days && _canGoPrevious,
+                  canGoNext: _level == _PickerLevel.days && _canGoNext,
+                  showPrevious: _level != _PickerLevel.years,
+                  showNext: _level == _PickerLevel.days,
+                  isExpanded: _level != _PickerLevel.days,
                   accent: accent,
                   fill: _accentFill(context),
-                  onPrevious: () => _goToMonth(-1),
+                  onTitleTap: _onTitleTap,
+                  onPrevious: () {
+                    if (_level == _PickerLevel.months) {
+                      _showYears();
+                      return;
+                    }
+                    _goToMonth(-1);
+                  },
                   onNext: () => _goToMonth(1),
                 ),
                 const SizedBox(height: 16),
-                const _WeekdayHeader(),
-                const SizedBox(height: 8),
                 Expanded(
                   child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 240),
+                    duration: const Duration(milliseconds: 280),
                     switchInCurve: Curves.easeOutCubic,
                     switchOutCurve: Curves.easeInCubic,
                     layoutBuilder: (currentChild, previousChildren) {
@@ -155,9 +227,9 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
                       );
                     },
                     transitionBuilder: (child, animation) {
-                      final isIncoming = child.key == ValueKey(_monthKey);
-                      final inbound = Offset(_monthDirection * 0.18, 0);
-                      final outbound = Offset(-_monthDirection * 0.18, 0);
+                      final isIncoming = child.key == ValueKey(_levelKey);
+                      final inbound = Offset(0, _levelDirection * 0.18);
+                      final outbound = Offset(0, -_levelDirection * 0.18);
                       return FadeTransition(
                         opacity: animation,
                         child: SlideTransition(
@@ -169,14 +241,41 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
                         ),
                       );
                     },
-                    child: _CalendarMonth(
-                      key: ValueKey(_monthKey),
-                      month: _visibleMonth,
-                      selected: _selected,
-                      firstDate: _firstDate,
-                      lastDate: _lastDate,
-                      accent: accent,
-                      onSelect: _select,
+                    child: KeyedSubtree(
+                      key: ValueKey(_levelKey),
+                      child: switch (_level) {
+                        _PickerLevel.days => _DaysView(
+                          monthKey: _monthKey,
+                          monthDirection: _monthDirection,
+                          visibleMonth: _visibleMonth,
+                          selected: _selected,
+                          firstDate: _firstDate,
+                          lastDate: _lastDate,
+                          accent: accent,
+                          onSelect: _select,
+                        ),
+                        _PickerLevel.years => _YearPicker(
+                          firstYear: _firstDate.year,
+                          lastYear: _lastDate.year,
+                          selectedYear: _visibleMonth.year,
+                          currentYear: DateTime.now().year,
+                          accent: accent,
+                          onSelect: _showMonths,
+                        ),
+                        _PickerLevel.months => _MonthPicker(
+                          year: _pickerYear,
+                          selectedMonth: _visibleMonth.year == _pickerYear
+                              ? _visibleMonth.month
+                              : null,
+                          currentMonth: DateTime.now().year == _pickerYear
+                              ? DateTime.now().month
+                              : null,
+                          firstDate: _firstDate,
+                          lastDate: _lastDate,
+                          accent: accent,
+                          onSelect: (month) => _showDays(month: DateTime(_pickerYear, month)),
+                        ),
+                      },
                     ),
                   ),
                 ),
@@ -187,8 +286,279 @@ class _ComponentDatePickerState extends State<ComponentDatePicker> {
       ],
     );
   }
+}
 
-  String get _monthKey => '${_visibleMonth.year}-${_visibleMonth.month}';
+class _DaysView extends StatelessWidget {
+  const _DaysView({
+    required this.monthKey,
+    required this.monthDirection,
+    required this.visibleMonth,
+    required this.selected,
+    required this.firstDate,
+    required this.lastDate,
+    required this.accent,
+    required this.onSelect,
+  });
+
+  final String monthKey;
+  final int monthDirection;
+  final DateTime visibleMonth;
+  final DateTime selected;
+  final DateTime firstDate;
+  final DateTime lastDate;
+  final Color accent;
+  final ValueChanged<DateTime> onSelect;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const _WeekdayHeader(),
+        const SizedBox(height: 8),
+        Expanded(
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 240),
+            switchInCurve: Curves.easeOutCubic,
+            switchOutCurve: Curves.easeInCubic,
+            layoutBuilder: (currentChild, previousChildren) {
+              return Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  ...previousChildren,
+                  ?currentChild,
+                ],
+              );
+            },
+            transitionBuilder: (child, animation) {
+              final isIncoming = child.key == ValueKey(monthKey);
+              final inbound = Offset(monthDirection * 0.18, 0);
+              final outbound = Offset(-monthDirection * 0.18, 0);
+              return FadeTransition(
+                opacity: animation,
+                child: SlideTransition(
+                  position: Tween<Offset>(
+                    begin: isIncoming ? inbound : outbound,
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                ),
+              );
+            },
+            child: _CalendarMonth(
+              key: ValueKey(monthKey),
+              month: visibleMonth,
+              selected: selected,
+              firstDate: firstDate,
+              lastDate: lastDate,
+              accent: accent,
+              onSelect: onSelect,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _YearPicker extends StatelessWidget {
+  const _YearPicker({
+    required this.firstYear,
+    required this.lastYear,
+    required this.selectedYear,
+    required this.currentYear,
+    required this.accent,
+    required this.onSelect,
+  });
+
+  final int firstYear;
+  final int lastYear;
+  final int selectedYear;
+  final int currentYear;
+  final Color accent;
+  final ValueChanged<int> onSelect;
+
+  @override
+  Widget build(BuildContext context) {
+    final years = [for (var year = firstYear; year <= lastYear; year++) year];
+    return _SelectionGrid(
+      itemCount: years.length,
+      itemBuilder: (index) {
+        final year = years[index];
+        return _PickerCell(
+          key: ValueKey('date-picker-year-$year'),
+          label: '$year',
+          semanticLabel: '$year',
+          selected: year == selectedYear,
+          isCurrent: year == currentYear,
+          accent: accent,
+          onTap: () => onSelect(year),
+        );
+      },
+    );
+  }
+}
+
+class _MonthPicker extends StatelessWidget {
+  const _MonthPicker({
+    required this.year,
+    required this.selectedMonth,
+    required this.currentMonth,
+    required this.firstDate,
+    required this.lastDate,
+    required this.accent,
+    required this.onSelect,
+  });
+
+  final int year;
+  final int? selectedMonth;
+  final int? currentMonth;
+  final DateTime firstDate;
+  final DateTime lastDate;
+  final Color accent;
+  final ValueChanged<int> onSelect;
+
+  bool _isEnabled(int month) {
+    final start = DateTime(year, month);
+    final end = DateTime(year, month + 1, 0);
+    return !end.isBefore(firstDate) && !start.isAfter(lastDate);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _SelectionGrid(
+      itemCount: 12,
+      itemBuilder: (index) {
+        final month = index + 1;
+        final label = DateTime(year, month).abbreviatedMonth;
+        return _PickerCell(
+          key: ValueKey('date-picker-month-$year-$month'),
+          label: label,
+          semanticLabel: DateTime(year, month).monthYear,
+          selected: month == selectedMonth,
+          isCurrent: month == currentMonth,
+          enabled: _isEnabled(month),
+          accent: accent,
+          onTap: () => onSelect(month),
+        );
+      },
+    );
+  }
+}
+
+class _SelectionGrid extends StatelessWidget {
+  const _SelectionGrid({
+    required this.itemCount,
+    required this.itemBuilder,
+  });
+
+  static const _crossAxisCount = 3;
+
+  final int itemCount;
+  final Widget Function(int index) itemBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    final rows = (itemCount / _crossAxisCount).ceil();
+    if (rows <= 5) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Column(
+          children: [
+            for (var row = 0; row < rows; row++)
+              Expanded(
+                child: Row(
+                  children: [
+                    for (var col = 0; col < _crossAxisCount; col++)
+                      Expanded(
+                        child: () {
+                          final index = row * _crossAxisCount + col;
+                          if (index >= itemCount) return const SizedBox.expand();
+                          return itemBuilder(index);
+                        }(),
+                      ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      );
+    }
+
+    return GridView.builder(
+      padding: const EdgeInsets.only(bottom: 12),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: _crossAxisCount,
+        childAspectRatio: 1.7,
+      ),
+      itemCount: itemCount,
+      itemBuilder: (context, index) => itemBuilder(index),
+    );
+  }
+}
+
+class _PickerCell extends StatelessWidget {
+  const _PickerCell({
+    super.key,
+    required this.label,
+    required this.semanticLabel,
+    required this.selected,
+    required this.isCurrent,
+    required this.accent,
+    required this.onTap,
+    this.enabled = true,
+  });
+
+  final String label;
+  final String semanticLabel;
+  final bool selected;
+  final bool isCurrent;
+  final bool enabled;
+  final Color accent;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      selected: selected,
+      enabled: enabled,
+      label: semanticLabel,
+      child: IgnorePointer(
+        ignoring: !enabled,
+        child: ComponentGestureClick(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(6),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              curve: Curves.easeOutCubic,
+              alignment: Alignment.center,
+              decoration: ShapeDecoration(
+                color: selected ? accent : Colors.transparent,
+                shape: RoundedSuperellipseBorder(
+                  borderRadius: AppDecoration.borderRadiusMd,
+                  side: isCurrent && !selected
+                      ? BorderSide(color: accent.withValues(alpha: 0.45))
+                      : BorderSide.none,
+                ),
+              ),
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: context.bodyBold.copyWith(
+                  color: selected
+                      ? context.primaryInverse
+                      : (enabled ? context.primary : context.hintIos),
+                  fontWeight: selected || isCurrent ? FontWeight.w700 : FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _MonthHeader extends StatelessWidget {
@@ -196,8 +566,12 @@ class _MonthHeader extends StatelessWidget {
     required this.label,
     required this.canGoPrevious,
     required this.canGoNext,
+    required this.showPrevious,
+    required this.showNext,
+    required this.isExpanded,
     required this.accent,
     required this.fill,
+    required this.onTitleTap,
     required this.onPrevious,
     required this.onNext,
   });
@@ -205,8 +579,12 @@ class _MonthHeader extends StatelessWidget {
   final String label;
   final bool canGoPrevious;
   final bool canGoNext;
+  final bool showPrevious;
+  final bool showNext;
+  final bool isExpanded;
   final Color accent;
   final Color fill;
+  final VoidCallback onTitleTap;
   final VoidCallback onPrevious;
   final VoidCallback onNext;
 
@@ -214,29 +592,58 @@ class _MonthHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _NavChevron(
-          icon: Icons.chevron_left_rounded,
-          enabled: canGoPrevious,
-          accent: accent,
-          fill: fill,
-          onTap: onPrevious,
-        ),
+        if (showPrevious)
+          _NavChevron(
+            icon: Icons.chevron_left_rounded,
+            enabled: canGoPrevious || isExpanded,
+            accent: accent,
+            fill: fill,
+            onTap: onPrevious,
+          )
+        else
+          const SizedBox(width: 40, height: 40),
         Expanded(
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: context.bodyBold,
+          child: Center(
+            child: ComponentGestureClick(
+              key: const ValueKey('date-picker-title'),
+              onTap: onTitleTap,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: Text(
+                      label,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.bodyBold,
+                    ),
+                  ),
+                  AnimatedRotation(
+                    turns: isExpanded ? 0.5 : 0,
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeOutCubic,
+                    child: Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      size: 18,
+                      color: accent,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-        _NavChevron(
-          icon: Icons.chevron_right_rounded,
-          enabled: canGoNext,
-          accent: accent,
-          fill: fill,
-          onTap: onNext,
-        ),
+        if (showNext)
+          _NavChevron(
+            icon: Icons.chevron_right_rounded,
+            enabled: canGoNext,
+            accent: accent,
+            fill: fill,
+            onTap: onNext,
+          )
+        else
+          const SizedBox(width: 40, height: 40),
       ],
     );
   }
@@ -456,6 +863,8 @@ extension on DateTime {
     'November',
     'December',
   ];
+
+  String get abbreviatedMonth => _abbreviatedMonths[month - 1];
 
   String get yMMMd => '${_abbreviatedMonths[month - 1]} $day, $year';
 

@@ -17,7 +17,7 @@ class _DatePickerDemoPageState extends State<DatePickerDemoPage> {
     final DateTime? picked = await ComponentDatePicker.show(
       context: context,
       initialDate: _selected,
-      firstDate: DateTime(now.year - 4),
+      firstDate: DateTime(now.year - 20),
       lastDate: DateTime(now.year + 4),
     );
     if (picked == null || !mounted) return;
