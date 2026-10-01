@@ -28,6 +28,7 @@ export 'component_sliver_blurred_app_bar.dart';
 export 'component_sliver_large_title_app_bar.dart';
 export 'component_tab_bar.dart';
 export 'component_text_field.dart';
+export 'component_theme.dart';
 export 'components_context_extension.dart';
 export 'shared/app_screen_size.dart';
 export 'shared/component_clipped_header.dart';

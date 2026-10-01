@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_components/component_theme.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
 import 'package:material_ui/material_ui.dart';
@@ -262,6 +263,9 @@ class AppThemeData {
         contentPadding: AppDecoration.spaceZero,
         shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusCard),
       ),
+      extensions: <ThemeExtension<dynamic>>[
+        ComponentThemeData.light(sheetBackgroundColor: bottomSheetBackgroundColor),
+      ],
     );
   }
 
@@ -515,6 +519,9 @@ class AppThemeData {
         contentPadding: EdgeInsets.zero,
         shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusCard),
       ),
+      extensions: <ThemeExtension<dynamic>>[
+        ComponentThemeData.dark(sheetBackgroundColor: bottomSheetBackgroundColor),
+      ],
     );
   }
 }

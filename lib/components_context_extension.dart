@@ -1,3 +1,4 @@
+import 'package:flutter_components/component_theme.dart';
 import 'package:flutter_components/shared/app_screen_size.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -25,6 +26,10 @@ extension ContextExtension on BuildContext {
 
   /// ColorScheme
   ColorScheme get colorScheme => theme.colorScheme;
+
+  /// Brandable component tokens. Falls back to light/dark defaults when the
+  /// app has not registered [ComponentThemeData] on [ThemeData.extensions].
+  ComponentThemeData get componentTheme => ComponentThemeData.of(this);
 
   /// Screen Sizes
   bool get isMobile => viewWidth <= AppScreenSize.small;
