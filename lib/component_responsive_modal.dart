@@ -8,6 +8,10 @@ import 'package:material_ui/material_ui.dart';
 
 const double kModalToolbarHeight = 65;
 
+const BorderRadius _kModalTopBorderRadius = BorderRadius.vertical(
+  top: AppDecoration.iOSModalRadius,
+);
+
 /// Shows either a modal bottom sheet (on small screens) or a dialog (on larger screens)
 class ComponentResponsiveModal {
   static Future<T?> showFullScreen<T>({
@@ -17,15 +21,7 @@ class ComponentResponsiveModal {
     return await showGeneralDialog<T>(
       context: context,
       transitionDuration: const Duration(milliseconds: 400),
-      transitionBuilder: (context, animation, secondaryAnimation, child) {
-        return SlideTransition(
-          position: Tween(
-            begin: const Offset(0, 1),
-            end: const Offset(0, 0),
-          ).animate(animation),
-          child: child,
-        );
-      },
+      transitionBuilder: _slideUpTransition,
       pageBuilder: (context, animation1, animation2) => child,
     );
   }
@@ -49,20 +45,17 @@ class ComponentResponsiveModal {
     bool barrierDismissible = true,
     bool isFloating = false,
   }) {
-    // Use MediaQuery to determine if we should show a dialog or bottom sheet
-    final isLargeScreen = MediaQuery.sizeOf(context).width >= 635;
-    final isLightMode = Theme.of(context).brightness == Brightness.light;
-    final bgColor = Theme.of(context).bottomSheetTheme.backgroundColor;
-    final textTheme = Theme.of(context).textTheme;
-    final viewHeight = MediaQuery.sizeOf(context).height;
+    final bool isLargeScreen = !context.isMobile;
+    final Color? bgColor = Theme.of(context).bottomSheetTheme.backgroundColor;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final double viewHeight = MediaQuery.sizeOf(context).height;
 
     if (isLargeScreen) {
-      // Show as dialog on larger screens
       return showDialog<T>(
         context: context,
         useRootNavigator: useRootNavigator,
         barrierDismissible: barrierDismissible,
-        barrierColor: isLightMode ? Colors.black45 : Colors.black54,
+        barrierColor: _barrierColor(context),
         builder: (BuildContext dialogContext) {
           return Dialog(
             backgroundColor: bgColor,
@@ -82,8 +75,8 @@ class ComponentResponsiveModal {
                     automaticallyImplyLeading: false,
                     centerTitle: false,
                     toolbarHeight: 80,
-                    actionsPadding: EdgeInsets.only(right: 20),
-                    actions: [ComponentCloseButton()],
+                    actionsPadding: const EdgeInsets.only(right: 20),
+                    actions: const [ComponentCloseButton()],
                   ),
                   body: isScrollable
                       ? SingleChildScrollView(child: builder(dialogContext, true))
@@ -94,70 +87,59 @@ class ComponentResponsiveModal {
           );
         },
       );
-    } else {
-      // Show as bottom sheet on smaller screens
-      return showModalBottomSheet<T>(
-        context: context,
-        useRootNavigator: useRootNavigator,
-        useSafeArea: true,
-        isScrollControlled: true,
-        enableDrag: barrierDismissible,
-        backgroundColor: bgColor,
-        barrierColor: isLightMode ? Colors.black45 : Colors.black54,
-        shape: RoundedSuperellipseBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: AppDecoration.iOSModalRadius,
-            topRight: AppDecoration.iOSModalRadius,
-          ),
+    }
+
+    return showModalBottomSheet<T>(
+      context: context,
+      useRootNavigator: useRootNavigator,
+      useSafeArea: true,
+      isScrollControlled: true,
+      enableDrag: barrierDismissible,
+      backgroundColor: bgColor,
+      barrierColor: _barrierColor(context),
+      shape: RoundedSuperellipseBorder(
+        borderRadius: const BorderRadius.only(
+          topLeft: AppDecoration.iOSModalRadius,
+          topRight: AppDecoration.iOSModalRadius,
         ),
-        constraints:
-            constraints ?? BoxConstraints(minHeight: viewHeight * 0.3, maxHeight: viewHeight * 0.8),
-        builder: (BuildContext bottomSheetContext) {
-          if (isFloating) {
-            return Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: MediaQuery.of(context).padding.bottom,
-              ),
-              child: ClipRSuperellipse(
-                borderRadius: AppDecoration.iOSModalBorderRadius,
-                child: Scaffold(
-                  appBar: AppBar(
-                    title: Padding(padding: const EdgeInsets.only(left: 8), child: Text(title)),
-                    titleTextStyle: textTheme.headlineMedium,
-                    automaticallyImplyLeading: false,
-                    centerTitle: false,
-                    toolbarHeight: 65,
-                    actionsPadding: EdgeInsets.only(right: 10),
-                    actions: [ComponentCloseButton()],
-                  ),
-                  body: isScrollable
-                      ? SingleChildScrollView(child: builder(bottomSheetContext, true))
-                      : builder(bottomSheetContext, true),
-                ),
-              ),
-            );
-          }
-          return ClipRSuperellipse(
-            borderRadius: AppDecoration.iOSModalBorderRadius,
-            child: Scaffold(
-              appBar: AppBar(
-                title: Padding(padding: const EdgeInsets.only(left: 8), child: Text(title)),
-                titleTextStyle: textTheme.headlineMedium,
-                automaticallyImplyLeading: false,
-                centerTitle: false,
-                toolbarHeight: 65,
-                actionsPadding: EdgeInsets.only(right: 10),
-                actions: [ComponentCloseButton()],
-              ),
-              body: isScrollable
-                  ? SingleChildScrollView(child: builder(bottomSheetContext, true))
-                  : builder(bottomSheetContext, true),
+      ),
+      constraints:
+          constraints ?? BoxConstraints(minHeight: viewHeight * 0.3, maxHeight: viewHeight * 0.8),
+      builder: (BuildContext bottomSheetContext) {
+        final Widget scaffold = Scaffold(
+          appBar: AppBar(
+            title: Padding(padding: const EdgeInsets.only(left: 8), child: Text(title)),
+            titleTextStyle: textTheme.headlineMedium,
+            automaticallyImplyLeading: false,
+            centerTitle: false,
+            toolbarHeight: 65,
+            actionsPadding: const EdgeInsets.only(right: 10),
+            actions: const [ComponentCloseButton()],
+          ),
+          body: isScrollable
+              ? SingleChildScrollView(child: builder(bottomSheetContext, true))
+              : builder(bottomSheetContext, true),
+        );
+
+        if (isFloating) {
+          return Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: MediaQuery.of(context).padding.bottom,
+            ),
+            child: ClipRSuperellipse(
+              borderRadius: AppDecoration.iOSModalBorderRadius,
+              child: scaffold,
             ),
           );
-        },
-      );
-    }
+        }
+
+        return ClipRSuperellipse(
+          borderRadius: AppDecoration.iOSModalBorderRadius,
+          child: scaffold,
+        );
+      },
+    );
   }
 
   /// - [animationStyle] defaults to `AppDecoration.smoothSheetAnimationStyle`
@@ -175,178 +157,37 @@ class ComponentResponsiveModal {
     AnimationStyle? animationStyle,
     List<Widget>? actions,
   }) {
-    // Use MediaQuery to determine if we should show a dialog or bottom sheet
-    final isLargeScreen = !context.isMobile;
-
-    if (isLargeScreen) {
-      // Show as dialog on larger screens
-      return showGeneralDialog<T>(
-        context: context,
-        useRootNavigator: useRootNavigator,
-        barrierLabel: '',
-        barrierDismissible: barrierDismissible,
-        barrierColor: context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7),
-        transitionDuration: const Duration(milliseconds: 400),
-        transitionBuilder: (context, anim1, anim2, child) {
-          final tween = Tween<Offset>(
-            begin: const Offset(0.0, 1.0),
-            end: Offset.zero,
-          );
-          return SlideTransition(
-            position: anim1.drive(
-              tween.chain(
-                CurveTween(
-                  curve: Curves.ease,
-                ),
-              ),
-            ),
-            child: child,
-          );
-        },
-        pageBuilder: (dialogContext, animation, secondaryAnimation) => Dialog(
-          backgroundColor: context.bottomSheetTheme.backgroundColor,
-          shadowColor: Colors.transparent,
-          elevation: 8,
-          insetAnimationCurve: Curves.ease,
-          insetAnimationDuration: const Duration(milliseconds: 400),
-          shape: RoundedSuperellipseBorder(
-            borderRadius: AppDecoration.iOSModalBorderRadius,
-            side: context.isLightMode ? BorderSide.none : BorderSide(color: context.borderColor),
+    return _present<T>(
+      context: context,
+      constraints: constraints,
+      isScrollable: isScrollable,
+      useRootNavigator: useRootNavigator,
+      barrierDismissible: barrierDismissible,
+      float: float,
+      animationStyle: animationStyle,
+      builder: (BuildContext routeContext) {
+        return _ModalFrame(
+          context: context,
+          routeContext: routeContext,
+          constraints: constraints,
+          float: float,
+          removeTopDialogViewPadding: true,
+          child: Scaffold(
+            extendBodyBehindAppBar: showAppBar,
+            resizeToAvoidBottomInset: !_hasFixedHeight(constraints),
+            backgroundColor: context.bottomSheetTheme.backgroundColor,
+            appBar: showAppBar
+                ? _modalBlurredAppBar(
+                    context: context,
+                    title: title,
+                    actions: actions,
+                  )
+                : null,
+            body: builder(routeContext),
           ),
-          constraints:
-              constraints ??
-              BoxConstraints(
-                maxWidth: constraints?.maxWidth ?? 560,
-                maxHeight: constraints?.maxHeight ?? context.viewHeight * 0.8,
-              ),
-          child: ClipRSuperellipse(
-            borderRadius: AppDecoration.iOSModalBorderRadius,
-            child: MediaQuery.removeViewPadding(
-              context: dialogContext,
-              removeTop: true,
-              child: Scaffold(
-                extendBodyBehindAppBar: showAppBar,
-                resizeToAvoidBottomInset: false,
-                backgroundColor: context.bottomSheetTheme.backgroundColor,
-                appBar: showAppBar
-                    ? ComponentBlurredAppBar(
-                        context: context,
-                        borderRadius: const BorderRadius.vertical(
-                          top: AppDecoration.iOSModalRadius,
-                        ),
-                        toolbarHeight: kModalToolbarHeight,
-                        actions: actions,
-                        leading: Row(
-                          mainAxisSize: .min,
-                          mainAxisAlignment: .start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 14),
-                              child: ComponentCloseButton.blurred(
-                                backgroundColor: context.bottomSheetCardColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        title: Text(title, style: context.body2Heavy),
-                        centerTitle: true,
-                        backgroundColor: context.bottomSheetTheme.backgroundColor,
-                      )
-                    : null,
-                body: builder(dialogContext),
-              ),
-            ),
-          ),
-        ),
-      );
-    } else {
-      // Show as bottom sheet on smaller screens
-      return showModalBottomSheet<T>(
-        context: context,
-        useRootNavigator: useRootNavigator,
-        useSafeArea: true,
-        isScrollControlled: isScrollable,
-        enableDrag: barrierDismissible,
-        isDismissible: barrierDismissible,
-        backgroundColor: float ? Colors.transparent : context.bottomSheetTheme.backgroundColor,
-        // Transparent sheet Material still paints theme elevation; kill it so
-        // it doesn't show as a ghost behind the inset card.
-        elevation: float ? 0 : null,
-        barrierColor: context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7),
-        shape: RoundedSuperellipseBorder(
-          borderRadius: float
-              ? AppDecoration.iOSModalBorderRadius
-              : const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
-        ),
-        sheetAnimationStyle: animationStyle ?? AppDecoration.smoothSheetAnimationStyle,
-        // When the caller pins a height, don't forward that height to
-        // [showModalBottomSheet] (a pinned sheet can't slide above the
-        // keyboard). Only forward the width; the fixed height is re-applied to
-        // an inner box that we lift with the keyboard inset.
-        constraints: constraints == null
-            ? const BoxConstraints.expand()
-            : BoxConstraints(maxWidth: constraints.maxWidth),
-        builder: (BuildContext bottomSheetContext) {
-          // A caller-provided height means the sheet is content/fixed sized and
-          // should be lifted above the keyboard as a whole. Otherwise the sheet
-          // is full-height and the inner Scaffold should resize its body.
-          final bool hasFixedHeight = constraints != null && constraints.maxHeight.isFinite;
-          final double keyboardInset = MediaQuery.viewInsetsOf(bottomSheetContext).bottom;
-          final Widget sheet = Container(
-            margin: float
-                ? EdgeInsets.only(left: 12, right: 12, bottom: context.mediaQueryPadding.bottom)
-                : EdgeInsets.zero,
-            constraints: constraints ?? const BoxConstraints.expand(),
-            child: ClipRSuperellipse(
-              borderRadius: float
-                  ? AppDecoration.iOSModalBorderRadius
-                  : const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
-              child: Scaffold(
-                // For fixed-height sheets the whole sheet is lifted below, so
-                // the Scaffold must not also consume the inset. Full-height
-                // sheets rely on the Scaffold resizing its own body.
-                resizeToAvoidBottomInset: !hasFixedHeight,
-                extendBodyBehindAppBar: showAppBar,
-                backgroundColor: context.bottomSheetTheme.backgroundColor,
-                appBar: showAppBar
-                    ? ComponentBlurredAppBar(
-                        context: context,
-                        borderRadius: const BorderRadius.vertical(
-                          top: AppDecoration.iOSModalRadius,
-                        ),
-                        toolbarHeight: kModalToolbarHeight,
-                        actions: actions,
-                        leading: Row(
-                          mainAxisSize: .min,
-                          mainAxisAlignment: .start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 14),
-                              child: ComponentCloseButton.blurred(
-                                backgroundColor: context.bottomSheetCardColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        title: Text(title, style: context.body2Heavy),
-                        centerTitle: true,
-                        backgroundColor: context.bottomSheetTheme.backgroundColor,
-                      )
-                    : null,
-                body: builder(bottomSheetContext),
-              ),
-            ),
-          );
-          if (!hasFixedHeight) return sheet;
-          return AnimatedPadding(
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeOut,
-            padding: EdgeInsets.only(bottom: keyboardInset),
-            child: sheet,
-          );
-        },
-      );
-    }
+        );
+      },
+    );
   }
 
   /// [show] with app bar actions that the widget in the modal's body can drive,
@@ -392,176 +233,39 @@ class ComponentResponsiveModal {
     List<Widget>? actions,
     List<Widget> Function(BuildContext context, ComponentModalController modal)? actionsBuilder,
   }) {
-    // Use MediaQuery to determine if we should show a dialog or bottom sheet
-    final isLargeScreen = !context.isMobile;
-
-    if (isLargeScreen) {
-      // Show as dialog on larger screens
-      return showGeneralDialog<T>(
-        context: context,
-        useRootNavigator: useRootNavigator,
-        barrierLabel: '',
-        barrierDismissible: barrierDismissible,
-        barrierColor: context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7),
-        transitionDuration: const Duration(milliseconds: 400),
-        transitionBuilder: (context, anim1, anim2, child) {
-          final tween = Tween<Offset>(
-            begin: const Offset(0.0, 1.0),
-            end: Offset.zero,
-          );
-          return SlideTransition(
-            position: anim1.drive(
-              tween.chain(
-                CurveTween(
-                  curve: Curves.ease,
+    return _present<T>(
+      context: context,
+      constraints: constraints,
+      isScrollable: isScrollable,
+      useRootNavigator: useRootNavigator,
+      barrierDismissible: barrierDismissible,
+      float: float,
+      animationStyle: animationStyle,
+      builder: (BuildContext routeContext) {
+        return _ComponentModalShell(
+          builder: (_, ComponentModalController modal) {
+            return _ModalFrame(
+              context: context,
+              routeContext: routeContext,
+              constraints: constraints,
+              float: float,
+              removeTopDialogViewPadding: true,
+              child: Scaffold(
+                extendBodyBehindAppBar: true,
+                resizeToAvoidBottomInset: !_hasFixedHeight(constraints),
+                backgroundColor: context.bottomSheetTheme.backgroundColor,
+                appBar: _modalBlurredAppBar(
+                  context: context,
+                  title: title,
+                  actions: _resolveActions(actions, actionsBuilder, modal),
                 ),
+                body: builder(routeContext),
               ),
-            ),
-            child: child,
-          );
-        },
-        pageBuilder: (dialogContext, animation, secondaryAnimation) => _ComponentModalShell(
-          builder: (_, modal) => Dialog(
-            backgroundColor: context.bottomSheetTheme.backgroundColor,
-            shadowColor: Colors.transparent,
-            elevation: 8,
-            insetAnimationCurve: Curves.ease,
-            insetAnimationDuration: const Duration(milliseconds: 400),
-            shape: RoundedSuperellipseBorder(
-              borderRadius: AppDecoration.iOSModalBorderRadius,
-              side: context.isLightMode ? BorderSide.none : BorderSide(color: context.borderColor),
-            ),
-            constraints:
-                constraints ??
-                BoxConstraints(
-                  maxWidth: constraints?.maxWidth ?? 560,
-                  maxHeight: constraints?.maxHeight ?? context.viewHeight * 0.8,
-                ),
-            child: ClipRSuperellipse(
-              borderRadius: AppDecoration.iOSModalBorderRadius,
-              child: MediaQuery.removeViewPadding(
-                context: dialogContext,
-                removeTop: true,
-                child: Scaffold(
-                  extendBodyBehindAppBar: true,
-                  resizeToAvoidBottomInset: false,
-                  backgroundColor: context.bottomSheetTheme.backgroundColor,
-                  appBar: ComponentBlurredAppBar(
-                    context: context,
-                    borderRadius: const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
-                    toolbarHeight: kModalToolbarHeight,
-                    actions: _resolveActions(actions, actionsBuilder, modal),
-                    leading: Row(
-                      mainAxisSize: .min,
-                      mainAxisAlignment: .start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 14),
-                          child: ComponentCloseButton.blurred(
-                            backgroundColor: context.bottomSheetCardColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                    title: Text(title, style: context.body2Heavy),
-                    centerTitle: true,
-                    backgroundColor: context.bottomSheetTheme.backgroundColor,
-                  ),
-                  body: builder(dialogContext),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    } else {
-      // Show as bottom sheet on smaller screens
-      return showModalBottomSheet<T>(
-        context: context,
-        useRootNavigator: useRootNavigator,
-        useSafeArea: true,
-        isScrollControlled: isScrollable,
-        enableDrag: barrierDismissible,
-        isDismissible: barrierDismissible,
-        backgroundColor: float ? Colors.transparent : context.bottomSheetTheme.backgroundColor,
-        // Transparent sheet Material still paints theme elevation; kill it so
-        // it doesn't show as a ghost behind the inset card.
-        elevation: float ? 0 : null,
-        barrierColor: context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7),
-        shape: RoundedSuperellipseBorder(
-          borderRadius: float
-              ? AppDecoration.iOSModalBorderRadius
-              : const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
-        ),
-        sheetAnimationStyle: animationStyle ?? AppDecoration.smoothSheetAnimationStyle,
-        // When the caller pins a height, don't forward that height to
-        // [showModalBottomSheet] (a pinned sheet can't slide above the
-        // keyboard). Only forward the width; the fixed height is re-applied to
-        // an inner box that we lift with the keyboard inset.
-        constraints: constraints == null
-            ? const BoxConstraints.expand()
-            : BoxConstraints(maxWidth: constraints.maxWidth),
-        builder: (BuildContext bottomSheetContext) {
-          // A caller-provided height means the sheet is content/fixed sized and
-          // should be lifted above the keyboard as a whole. Otherwise the sheet
-          // is full-height and the inner Scaffold should resize its body.
-          final bool hasFixedHeight = constraints != null && constraints.maxHeight.isFinite;
-          final double keyboardInset = MediaQuery.viewInsetsOf(bottomSheetContext).bottom;
-          return _ComponentModalShell(
-            builder: (_, modal) {
-              final Widget sheet = Container(
-                margin: float
-                    ? EdgeInsets.only(left: 12, right: 12, bottom: context.mediaQueryPadding.bottom)
-                    : EdgeInsets.zero,
-                constraints: constraints ?? const BoxConstraints.expand(),
-                child: ClipRSuperellipse(
-                  borderRadius: float
-                      ? AppDecoration.iOSModalBorderRadius
-                      : const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
-                  child: Scaffold(
-                    // For fixed-height sheets the whole sheet is lifted below,
-                    // so the Scaffold must not also consume the inset.
-                    // Full-height sheets rely on the Scaffold resizing its body.
-                    resizeToAvoidBottomInset: !hasFixedHeight,
-                    extendBodyBehindAppBar: true,
-                    backgroundColor: context.bottomSheetTheme.backgroundColor,
-                    appBar: ComponentBlurredAppBar(
-                      context: context,
-                      borderRadius: const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
-                      toolbarHeight: kModalToolbarHeight,
-                      actions: _resolveActions(actions, actionsBuilder, modal),
-                      leading: Row(
-                        mainAxisSize: .min,
-                        mainAxisAlignment: .start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 14),
-                            child: ComponentCloseButton.blurred(
-                              backgroundColor: context.bottomSheetCardColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                      title: Text(title, style: context.body2Heavy),
-                      centerTitle: true,
-                      backgroundColor: context.bottomSheetTheme.backgroundColor,
-                    ),
-                    body: builder(bottomSheetContext),
-                  ),
-                ),
-              );
-              if (!hasFixedHeight) return sheet;
-              return AnimatedPadding(
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.easeOut,
-                padding: EdgeInsets.only(bottom: keyboardInset),
-                child: sheet,
-              );
-            },
-          );
-        },
-      );
-    }
+            );
+          },
+        );
+      },
+    );
   }
 
   /// [show] for content that renders its own app bar, so the app bar actions
@@ -590,132 +294,222 @@ class ComponentResponsiveModal {
     bool float = false,
     AnimationStyle? animationStyle,
   }) {
-    // Use MediaQuery to determine if we should show a dialog or bottom sheet
-    final isLargeScreen = !context.isMobile;
+    return _present<T>(
+      context: context,
+      constraints: constraints,
+      isScrollable: isScrollable,
+      useRootNavigator: useRootNavigator,
+      barrierDismissible: barrierDismissible,
+      float: float,
+      animationStyle: animationStyle,
+      builder: (BuildContext routeContext) {
+        return _ModalFrame(
+          context: context,
+          routeContext: routeContext,
+          constraints: constraints,
+          float: float,
+          removeAllDialogViewPadding: true,
+          removeFloatingSheetBottomPadding: true,
+          child: Scaffold(
+            resizeToAvoidBottomInset: !_hasFixedHeight(constraints),
+            backgroundColor: context.bottomSheetTheme.backgroundColor,
+            body: builder(routeContext),
+          ),
+        );
+      },
+    );
+  }
+}
 
-    if (isLargeScreen) {
-      // Show as dialog on larger screens
-      return showGeneralDialog<T>(
-        context: context,
-        useRootNavigator: useRootNavigator,
-        barrierLabel: '',
-        barrierDismissible: barrierDismissible,
-        barrierColor: context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7),
-        transitionDuration: const Duration(milliseconds: 400),
-        transitionBuilder: (context, anim1, anim2, child) {
-          final tween = Tween<Offset>(
-            begin: const Offset(0.0, 1.0),
-            end: Offset.zero,
-          );
-          return SlideTransition(
-            position: anim1.drive(
-              tween.chain(
-                CurveTween(
-                  curve: Curves.ease,
-                ),
-              ),
-            ),
-            child: child,
-          );
-        },
-        pageBuilder: (dialogContext, animation, secondaryAnimation) => Dialog(
-          backgroundColor: context.bottomSheetTheme.backgroundColor,
-          shadowColor: Colors.transparent,
-          elevation: 8,
-          insetAnimationCurve: Curves.ease,
-          insetAnimationDuration: const Duration(milliseconds: 400),
-          shape: RoundedSuperellipseBorder(
-            borderRadius: AppDecoration.iOSModalBorderRadius,
-            side: context.isLightMode ? BorderSide.none : BorderSide(color: context.borderColor),
-          ),
-          constraints:
-              constraints ?? BoxConstraints(maxWidth: 560, maxHeight: context.viewHeight * 0.8),
-          child: ClipRSuperellipse(
-            borderRadius: AppDecoration.iOSModalBorderRadius,
-            // The dialog is inset from the screen edges, so its content must
-            // not pad for the safe area.
-            child: MediaQuery.removeViewPadding(
-              context: dialogContext,
-              removeTop: true,
-              removeBottom: true,
-              removeLeft: true,
-              removeRight: true,
-              child: Scaffold(
-                resizeToAvoidBottomInset: false,
-                backgroundColor: context.bottomSheetTheme.backgroundColor,
-                body: builder(dialogContext),
-              ),
-            ),
-          ),
-        ),
+Future<T?> _present<T>({
+  required BuildContext context,
+  required Widget Function(BuildContext routeContext) builder,
+  BoxConstraints? constraints,
+  required bool isScrollable,
+  required bool useRootNavigator,
+  required bool barrierDismissible,
+  required bool float,
+  AnimationStyle? animationStyle,
+}) {
+  if (!context.isMobile) {
+    return showGeneralDialog<T>(
+      context: context,
+      useRootNavigator: useRootNavigator,
+      barrierLabel: '',
+      barrierDismissible: barrierDismissible,
+      barrierColor: _barrierColor(context),
+      transitionDuration: const Duration(milliseconds: 400),
+      transitionBuilder: _slideUpTransition,
+      pageBuilder: (BuildContext dialogContext, Animation<double> animation, Animation<double> secondaryAnimation) =>
+          builder(dialogContext),
+    );
+  }
+
+  return showModalBottomSheet<T>(
+    context: context,
+    useRootNavigator: useRootNavigator,
+    useSafeArea: true,
+    isScrollControlled: isScrollable,
+    enableDrag: barrierDismissible,
+    isDismissible: barrierDismissible,
+    backgroundColor: float ? Colors.transparent : context.bottomSheetTheme.backgroundColor,
+    elevation: float ? 0 : null,
+    barrierColor: _barrierColor(context),
+    shape: RoundedSuperellipseBorder(
+      borderRadius: float ? AppDecoration.iOSModalBorderRadius : _kModalTopBorderRadius,
+    ),
+    sheetAnimationStyle: animationStyle ?? AppDecoration.smoothSheetAnimationStyle,
+    constraints: constraints == null
+        ? const BoxConstraints.expand()
+        : BoxConstraints(maxWidth: constraints.maxWidth),
+    builder: (BuildContext bottomSheetContext) {
+      final Widget sheet = builder(bottomSheetContext);
+      if (!_hasFixedHeight(constraints)) return sheet;
+      return AnimatedPadding(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+        padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(bottomSheetContext).bottom),
+        child: sheet,
       );
-    } else {
-      // Show as bottom sheet on smaller screens
-      return showModalBottomSheet<T>(
-        context: context,
-        useRootNavigator: useRootNavigator,
-        useSafeArea: true,
-        isScrollControlled: isScrollable,
-        enableDrag: barrierDismissible,
-        isDismissible: barrierDismissible,
-        backgroundColor: float ? Colors.transparent : context.bottomSheetTheme.backgroundColor,
-        // Transparent sheet Material still paints theme elevation; kill it so
-        // it doesn't show as a ghost behind the inset card.
-        elevation: float ? 0 : null,
-        barrierColor: context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7),
-        shape: RoundedSuperellipseBorder(
-          borderRadius: float
-              ? AppDecoration.iOSModalBorderRadius
-              : const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
+    },
+  );
+}
+
+bool _hasFixedHeight(BoxConstraints? constraints) {
+  return constraints != null && constraints.maxHeight.isFinite;
+}
+
+Color _barrierColor(BuildContext context) {
+  return context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7);
+}
+
+Widget _slideUpTransition(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  final Tween<Offset> tween = Tween<Offset>(
+    begin: const Offset(0.0, 1.0),
+    end: Offset.zero,
+  );
+  return SlideTransition(
+    position: animation.drive(
+      tween.chain(
+        CurveTween(
+          curve: Curves.ease,
         ),
-        sheetAnimationStyle: animationStyle ?? AppDecoration.smoothSheetAnimationStyle,
-        // When the caller pins a height, don't forward that height to
-        // [showModalBottomSheet] (a pinned sheet can't slide above the
-        // keyboard). Only forward the width; the fixed height is re-applied to
-        // an inner box that we lift with the keyboard inset.
-        constraints: constraints == null
-            ? const BoxConstraints.expand()
-            : BoxConstraints(maxWidth: constraints.maxWidth),
-        builder: (BuildContext bottomSheetContext) {
-          // A caller-provided height means the sheet is content/fixed sized and
-          // should be lifted above the keyboard as a whole. Otherwise the sheet
-          // is full-height and the inner Scaffold should resize its body.
-          final bool hasFixedHeight = constraints != null && constraints.maxHeight.isFinite;
-          final double keyboardInset = MediaQuery.viewInsetsOf(bottomSheetContext).bottom;
-          final Widget sheet = Container(
-            margin: float
-                ? EdgeInsets.only(left: 12, right: 12, bottom: context.mediaQueryPadding.bottom)
-                : EdgeInsets.zero,
-            constraints: constraints ?? const BoxConstraints.expand(),
-            child: ClipRSuperellipse(
-              borderRadius: float
-                  ? AppDecoration.iOSModalBorderRadius
-                  : const BorderRadius.vertical(top: AppDecoration.iOSModalRadius),
-              // A floating sheet's margin already clears the bottom safe area.
-              child: MediaQuery.removePadding(
-                context: bottomSheetContext,
-                removeBottom: float,
-                child: Scaffold(
-                  // For fixed-height sheets the whole sheet is lifted below,
-                  // so the Scaffold must not also consume the inset.
-                  // Full-height sheets rely on the Scaffold resizing its body.
-                  resizeToAvoidBottomInset: !hasFixedHeight,
-                  backgroundColor: context.bottomSheetTheme.backgroundColor,
-                  body: builder(bottomSheetContext),
-                ),
-              ),
+      ),
+    ),
+    child: child,
+  );
+}
+
+PreferredSizeWidget _modalBlurredAppBar({
+  required BuildContext context,
+  required String title,
+  List<Widget>? actions,
+}) {
+  return ComponentBlurredAppBar(
+    context: context,
+    borderRadius: _kModalTopBorderRadius,
+    toolbarHeight: kModalToolbarHeight,
+    actions: actions,
+    leading: const _ModalCloseLeading(),
+    title: Text(title, style: context.body2Heavy),
+    centerTitle: true,
+    backgroundColor: context.bottomSheetTheme.backgroundColor,
+  );
+}
+
+class _ModalCloseLeading extends StatelessWidget {
+  const _ModalCloseLeading();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 14),
+          child: ComponentCloseButton.blurred(
+            backgroundColor: context.bottomSheetCardColor,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ModalFrame extends StatelessWidget {
+  const _ModalFrame({
+    required this.context,
+    required this.routeContext,
+    required this.constraints,
+    required this.float,
+    required this.child,
+    this.removeTopDialogViewPadding = false,
+    this.removeAllDialogViewPadding = false,
+    this.removeFloatingSheetBottomPadding = false,
+  });
+
+  final BuildContext context;
+  final BuildContext routeContext;
+  final BoxConstraints? constraints;
+  final bool float;
+  final Widget child;
+  final bool removeTopDialogViewPadding;
+  final bool removeAllDialogViewPadding;
+  final bool removeFloatingSheetBottomPadding;
+
+  @override
+  Widget build(BuildContext _) {
+    if (!context.isMobile) {
+      return Dialog(
+        backgroundColor: context.bottomSheetTheme.backgroundColor,
+        shadowColor: Colors.transparent,
+        elevation: 8,
+        insetAnimationCurve: Curves.ease,
+        insetAnimationDuration: const Duration(milliseconds: 400),
+        shape: RoundedSuperellipseBorder(
+          borderRadius: AppDecoration.iOSModalBorderRadius,
+          side: context.isLightMode ? BorderSide.none : BorderSide(color: context.borderColor),
+        ),
+        constraints:
+            constraints ??
+            BoxConstraints(
+              maxWidth: constraints?.maxWidth ?? 560,
+              maxHeight: constraints?.maxHeight ?? context.viewHeight * 0.8,
             ),
-          );
-          if (!hasFixedHeight) return sheet;
-          return AnimatedPadding(
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeOut,
-            padding: EdgeInsets.only(bottom: keyboardInset),
-            child: sheet,
-          );
-        },
+        child: ClipRSuperellipse(
+          borderRadius: AppDecoration.iOSModalBorderRadius,
+          child: MediaQuery.removeViewPadding(
+            context: routeContext,
+            removeTop: removeTopDialogViewPadding || removeAllDialogViewPadding,
+            removeBottom: removeAllDialogViewPadding,
+            removeLeft: removeAllDialogViewPadding,
+            removeRight: removeAllDialogViewPadding,
+            child: child,
+          ),
+        ),
       );
     }
+
+    return Container(
+      margin: float
+          ? EdgeInsets.only(left: 12, right: 12, bottom: context.mediaQueryPadding.bottom)
+          : EdgeInsets.zero,
+      constraints: constraints ?? const BoxConstraints.expand(),
+      child: ClipRSuperellipse(
+        borderRadius: float ? AppDecoration.iOSModalBorderRadius : _kModalTopBorderRadius,
+        child: MediaQuery.removePadding(
+          context: routeContext,
+          removeBottom: removeFloatingSheetBottomPadding && float,
+          child: child,
+        ),
+      ),
+    );
   }
 }
 
