@@ -65,7 +65,7 @@ class ComponentResponsiveModalWidget extends StatelessWidget {
   final bool _hasLargeTitle;
 
   static const _modalTopBorderRadius = BorderRadius.vertical(top: AppDecoration.iOSModalRadius);
-  static const _actionsPadding = EdgeInsets.only(right: 12);
+  static const _actionsPadding = EdgeInsets.only(right: 8);
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +101,7 @@ class ComponentResponsiveModalWidget extends StatelessWidget {
       actionsPadding: _actionsPadding,
       backgroundColor: context.bottomSheetTheme.backgroundColor,
       borderRadius: _modalTopBorderRadius,
+      toolbarHeight: kModalToolbarHeight,
     );
   }
 }

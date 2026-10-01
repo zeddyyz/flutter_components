@@ -57,6 +57,7 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
     this.snap = false,
     this.stretch = false,
     this.xAxisOverflowExtent,
+    this.toolbarHeight = kToolbarHeight,
   });
 
   final BuildContext context;
@@ -154,6 +155,9 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
   /// The overflow extent of the app bar on the x-axis, in situations where the blurr seems padded on the left and right sides
   final double? xAxisOverflowExtent;
 
+  /// The height of the app bar
+  final double toolbarHeight;
+
   @override
   Widget build(BuildContext context) {
     var resolvedLargeTitleStyle =
@@ -212,10 +216,10 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
       actionsPadding: actionsPadding,
       automaticallyImplyLeading: automaticallyImplyLeading,
       onBackButtonTap: onBackButtonTap,
-      toolbarHeight: kToolbarHeight,
+      toolbarHeight: toolbarHeight,
       expandedHeight:
           expandedHeight ??
-          kToolbarHeight +
+          toolbarHeight +
               largeTitleHeight +
               resolvedLargeTitlePadding.vertical +
               (bottom?.preferredSize.height ?? 0),
