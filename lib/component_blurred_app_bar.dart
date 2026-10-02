@@ -1,9 +1,9 @@
 import 'dart:ui';
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_components/flutter_components.dart';
 import 'package:flutter_components/shared/fade_mask_painter.dart';
+import 'package:material_ui/material_ui.dart';
 
 // https://github.com/BlueBubblesApp/bluebubbles-app/blob/zach%2Ffeat%2Ftrue-foreground-service/lib%2Fapp%2Flayouts%2Fconversation_view%2Fwidgets%2Fheader%2Fcupertino_header.dart#L27-L52
 
@@ -197,7 +197,17 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
               leadingWidth: leadingWidth ?? 54,
               titleTextStyle: context.textTheme.titleMedium,
               leading: shouldShowLeading
-                  ? (leading ?? ComponentBackButton(onTap: onBackButtonTap))
+                  ? Row(
+                      mainAxisSize: .min,
+                      mainAxisAlignment: .end,
+                      children: [
+                        const SizedBox(width: 6),
+                        (leading ??
+                            ComponentBackButton.blurred(
+                              onTap: onBackButtonTap,
+                            )),
+                      ],
+                    )
                   : null,
               actions: actions,
               actionsPadding: const EdgeInsets.only(right: 12),

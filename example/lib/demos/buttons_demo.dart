@@ -141,6 +141,7 @@ class ButtonsDemoPage extends StatelessWidget {
           title: 'Back, close, and gesture click',
           child: ComponentCard(
             displayBorder: true,
+            backgroundColor: Colors.transparent,
             child: Column(
               children: [
                 Row(
@@ -153,9 +154,9 @@ class ButtonsDemoPage extends StatelessWidget {
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    const ComponentBackButton(isInAppBar: true),
+                    const ComponentBackButton.blurred(),
                     const SizedBox(width: 12),
-                    Text('ComponentBackButton in AppBar', style: context.bodyMedium),
+                    Text('ComponentBackButton in AppBar (blurred)', style: context.bodyMedium),
                   ],
                 ),
                 const SizedBox(height: 16),

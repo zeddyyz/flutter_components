@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_components/component_back_button.dart';
 import 'package:flutter_components/shared/component_clipped_header.dart';
 import 'package:flutter_components/shared/fade_mask_painter.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ComponentSliverBlurredAppBar extends StatelessWidget {
   const ComponentSliverBlurredAppBar({
@@ -150,7 +150,16 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
 
     return SliverAppBar(
       title: title,
-      leading: shouldShowLeading ? (leading ?? ComponentBackButton(onTap: onBackButtonTap)) : null,
+      leading: shouldShowLeading
+          ? Row(
+              mainAxisSize: .min,
+              mainAxisAlignment: .end,
+              children: [
+                const SizedBox(width: 6),
+                (leading ?? ComponentBackButton.blurred(onTap: onBackButtonTap)),
+              ],
+            )
+          : null,
       actions: actions,
       actionsPadding: actionsPadding,
       centerTitle: centerTitle,

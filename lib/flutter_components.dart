@@ -61,6 +61,7 @@ export 'components_context_extension.dart';
 export 'shared/app_screen_size.dart';
 export 'shared/component_clipped_header.dart';
 export 'shared/component_gesture_click.dart';
+export 'shared/component_weighted_icon.dart';
 export 'utilities/alert_snackbar.dart';
 export 'utilities/app_decoration.dart';
 export 'utilities/app_theme_data.dart';

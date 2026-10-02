@@ -1,7 +1,7 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/shared/component_gesture_click.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ComponentCard extends StatelessWidget {
   const ComponentCard({
@@ -11,6 +11,7 @@ class ComponentCard extends StatelessWidget {
     this.padding,
     this.isInSheet = false,
     this.displayBorder = false,
+    this.backgroundColor,
   });
 
   final Widget child;
@@ -18,13 +19,14 @@ class ComponentCard extends StatelessWidget {
   final EdgeInsets? padding;
   final bool isInSheet;
   final bool displayBorder;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     final Widget card = Container(
       padding: padding ?? EdgeInsets.all(context.defaultPadding),
       decoration: ShapeDecoration(
-        color: isInSheet ? context.bottomSheetCardColor : context.cardColor,
+        color: backgroundColor ?? (isInSheet ? context.bottomSheetCardColor : context.cardColor),
         shape: RoundedSuperellipseBorder(
           borderRadius: AppDecoration.borderRadiusCard,
           side: displayBorder

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/shared/component_gesture_click.dart';
+import 'package:flutter_components/shared/component_weighted_icon.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -69,8 +70,8 @@ class ComponentCloseButton extends StatelessWidget {
       semanticsLabel: 'Close',
       onTap: onTap ?? () => Navigator.pop(context),
       child: Container(
-        height: 38,
-        width: 38,
+        height: 40,
+        width: 40,
         decoration: BoxDecoration(
           color:
               backgroundColor ??
@@ -79,10 +80,11 @@ class ComponentCloseButton extends StatelessWidget {
                   : Colors.white.withValues(alpha: 0.1)),
           shape: BoxShape.circle,
         ),
-        child: Icon(
-          Icons.close_rounded,
-          size: 24,
-          color: foregroundColor ?? (context.primary.withValues(alpha: 0.8)),
+        alignment: .center,
+        child: ComponentWeightedIcon(
+          icon: Icons.close_rounded,
+          fontWeight: FontWeight.w700,
+          fontSize: 24,
         ),
       ),
     );
