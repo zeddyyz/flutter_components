@@ -11,6 +11,7 @@ class ComponentQuantityStepper extends StatelessWidget {
     this.min = 0,
     this.max = 99,
     this.step = 1,
+    this.backgroundColor,
   });
 
   final int value;
@@ -18,6 +19,7 @@ class ComponentQuantityStepper extends StatelessWidget {
   final int min;
   final int max;
   final int step;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class ComponentQuantityStepper extends StatelessWidget {
 
     return DecoratedBox(
       decoration: ShapeDecoration(
-        color: context.componentTheme.chipColor,
+        color: backgroundColor ?? context.componentTheme.cardColor,
         shape: RoundedSuperellipseBorder(
           borderRadius: AppDecoration.borderRadiusStadium,
         ),

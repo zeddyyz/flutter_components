@@ -10,7 +10,7 @@ class ComponentTabBar extends StatefulWidget {
     required this.numberOfItems,
     required this.tabs,
     required this.tabController,
-    this.height = 45,
+    this.height = AppDecoration.pillTrackHeight,
     this.backgroundColor,
     this.labelColor,
     this.unselectedLabelColor,
@@ -114,29 +114,11 @@ class _ComponentTabBarState extends State<ComponentTabBar> {
   }
 
   Color _getBackgroundColor(BuildContext context, bool isBlurred) {
-    if (isBlurred) {
-      return context.isLightMode
-          ? Colors.grey.shade200.withValues(alpha: 0.6)
-          : Colors.grey.shade900.withValues(alpha: 0.6);
-    }
-
-    if (widget.backgroundColor != null) {
-      return widget.backgroundColor!;
-    }
-
-    return context.isLightMode ? Colors.grey.shade200 : Colors.grey.shade900;
+    return widget.backgroundColor ?? AppDecoration.pillTrackColor(context, isBlurred: isBlurred);
   }
 
   Color _getSelectedIndicatorColor(BuildContext context, bool isBlurred) {
-    if (isBlurred) {
-      return context.isLightMode ? Colors.white.withValues(alpha: 0.7) : Colors.grey.shade900;
-    }
-
-    if (widget.selectedColor != null) {
-      return widget.selectedColor!;
-    }
-
-    return context.isLightMode ? Colors.white : Colors.grey.shade800;
+    return widget.selectedColor ?? AppDecoration.pillThumbColor(context, isBlurred: isBlurred);
   }
 
   Widget _buildTabBar(BuildContext context, bool isBlurred) {

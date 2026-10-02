@@ -30,7 +30,7 @@ class ComponentActionSheet {
     return ComponentResponsiveModal.show<void>(
       context: context,
       title: title ?? '',
-      showAppBar: false,
+      showAppBar: true,
       float: true,
       constraints: BoxConstraints(
         maxWidth: 420,
@@ -38,15 +38,15 @@ class ComponentActionSheet {
       ),
       builder: (BuildContext modalContext) {
         return Padding(
-          padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
+          padding: EdgeInsets.fromLTRB(16, context.topPadding(0), 16, 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               const ComponentSlideDownBar(),
-              if (title != null) ...[
-                const SizedBox(height: 16),
-                Text(title, style: modalContext.body2Heavy, textAlign: TextAlign.center),
-              ],
+              // if (title != null) ...[
+              //   const SizedBox(height: 16),
+              //   Text(title, style: modalContext.body2Heavy, textAlign: TextAlign.center),
+              // ],
               if (message != null) ...[
                 const SizedBox(height: 8),
                 Text(
@@ -104,9 +104,13 @@ class _ActionRow extends StatelessWidget {
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        margin: EdgeInsets.only(bottom: 10),
         decoration: ShapeDecoration(
           shape: RoundedSuperellipseBorder(
             borderRadius: AppDecoration.borderRadiusLg,
+            side: BorderSide(
+              color: context.componentTheme.borderColorIntense,
+            ),
           ),
         ),
         child: Row(

@@ -61,7 +61,9 @@ class ComponentSelectField<T> extends StatelessWidget {
         decoration: ShapeDecoration(
           shape: RoundedSuperellipseBorder(
             borderRadius: AppDecoration.borderRadiusCard,
-            side: BorderSide(color: context.componentTheme.borderColorIntense),
+            side: BorderSide(
+              color: context.componentTheme.borderColorIntense,
+            ),
           ),
         ),
         child: Row(

@@ -1,5 +1,5 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_components/components_context_extension.dart';
+import 'package:material_ui/material_ui.dart';
 
 class AppDecoration {
   static const spaceZero = EdgeInsets.zero;
@@ -21,6 +21,25 @@ class AppDecoration {
   static const radiusCard = Radius.circular(24);
   static const radiusStadium = Radius.circular(40);
   static const iOSModalRadius = Radius.circular(32);
+
+  static const double pillTrackHeight = 45;
+  static const EdgeInsets pillTrackPadding = EdgeInsets.fromLTRB(6, 4, 6, 4);
+
+  static Color pillTrackColor(BuildContext context, {bool isBlurred = false}) {
+    if (isBlurred) {
+      return context.isLightMode
+          ? Colors.grey.shade200.withValues(alpha: 0.6)
+          : Colors.grey.shade900.withValues(alpha: 0.6);
+    }
+    return context.isLightMode ? Colors.grey.shade200 : Colors.grey.shade900;
+  }
+
+  static Color pillThumbColor(BuildContext context, {bool isBlurred = false}) {
+    if (isBlurred) {
+      return context.isLightMode ? Colors.white.withValues(alpha: 0.7) : Colors.grey.shade900;
+    }
+    return context.isLightMode ? Colors.white : Colors.grey.shade800;
+  }
 
   static AnimationStyle get smoothSheetAnimationStyle => const AnimationStyle(
     duration: Duration(milliseconds: 400),

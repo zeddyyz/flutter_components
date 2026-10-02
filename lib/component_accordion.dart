@@ -83,7 +83,7 @@ class _AccordionRow extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: expanded
               ? Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.only(bottom: 16, left: 4, right: 4),
                   child: item.child,
                 )
               : const SizedBox(width: double.infinity),

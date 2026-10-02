@@ -28,8 +28,6 @@ class ComponentSegmentedControl<T> extends StatelessWidget {
   final ValueChanged<T> onChanged;
 
   static const Duration _thumbDuration = Duration(milliseconds: 220);
-  static const double _trackHeight = 36;
-  static const double _thumbInset = 3;
 
   int get _selectedIndex {
     final int index = segments.indexWhere(
@@ -47,24 +45,23 @@ class ComponentSegmentedControl<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final componentTheme = context.componentTheme;
     final int selectedIndex = _selectedIndex;
     final int segmentCount = segments.length;
 
     return SizedBox(
       width: double.infinity,
-      height: _trackHeight,
+      height: AppDecoration.pillTrackHeight,
       child: ClipRSuperellipse(
         borderRadius: AppDecoration.borderRadiusStadium,
         child: DecoratedBox(
           decoration: ShapeDecoration(
-            color: componentTheme.chipColor,
+            color: AppDecoration.pillTrackColor(context),
             shape: const RoundedSuperellipseBorder(
               borderRadius: AppDecoration.borderRadiusStadium,
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(_thumbInset),
+            padding: AppDecoration.pillTrackPadding,
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -78,7 +75,7 @@ class ComponentSegmentedControl<T> extends StatelessWidget {
                       heightFactor: 1,
                       child: DecoratedBox(
                         decoration: ShapeDecoration(
-                          color: componentTheme.cardColor,
+                          color: AppDecoration.pillThumbColor(context),
                           shape: const RoundedSuperellipseBorder(
                             borderRadius: AppDecoration.borderRadiusStadium,
                           ),
@@ -129,9 +126,10 @@ class _SegmentButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle style = isSelected
-        ? context.bodyHeavy
-        : context.bodyMedium.copyWith(color: context.componentTheme.hintColor);
+    final Color labelColor = isSelected ? context.primary : context.primary.withValues(alpha: 0.6);
+    final TextStyle style = (context.textTheme.bodyMedium ?? context.bodyMedium).copyWith(
+      color: labelColor,
+    );
 
     return Semantics(
       button: true,
