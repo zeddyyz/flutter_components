@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:flutter_components/component_page_indicator.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/shared/component_gesture_click.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
@@ -117,13 +118,23 @@ class _ComponentOnboardingCarouselState extends State<ComponentOnboardingCarouse
               ),
           ],
         ),
-        bottomNavigationBar: _OnboardingBottomBar(
-          isLastPage: isLastPage,
-          nextButtonLabel: widget.nextButtonLabel,
-          doneButtonLabel: widget.doneButtonLabel,
-          buttonColor: widget.buttonColor,
-          onNextTap: _goToNextPage,
-          onDoneTap: widget.onDone,
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ComponentPageIndicator(
+              count: pageCount,
+              index: _currentPage,
+              activeColor: widget.buttonColor,
+            ),
+            _OnboardingBottomBar(
+              isLastPage: isLastPage,
+              nextButtonLabel: widget.nextButtonLabel,
+              doneButtonLabel: widget.doneButtonLabel,
+              buttonColor: widget.buttonColor,
+              onNextTap: _goToNextPage,
+              onDoneTap: widget.onDone,
+            ),
+          ],
         ),
       ),
     );
