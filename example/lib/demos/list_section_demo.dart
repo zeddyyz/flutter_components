@@ -2,8 +2,16 @@ import 'package:example/gallery/demo_scaffold.dart';
 import 'package:flutter_components/flutter_components.dart';
 import 'package:material_ui/material_ui.dart';
 
-class ListSectionDemoPage extends StatelessWidget {
+class ListSectionDemoPage extends StatefulWidget {
   const ListSectionDemoPage({super.key});
+
+  @override
+  State<ListSectionDemoPage> createState() => _ListSectionDemoPageState();
+}
+
+class _ListSectionDemoPageState extends State<ListSectionDemoPage> {
+  bool _wifiOn = true;
+  bool _marketingOn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +48,28 @@ class ListSectionDemoPage extends StatelessWidget {
               title: const Text('Notifications'),
               trailing: Icon(Icons.chevron_right_rounded, color: context.hint),
               onTap: () => AlertSnackbar.show(message: 'Notifications'),
+            ),
+          ],
+        ),
+        ComponentListSection(
+          header: 'Settings rows',
+          footer: 'Use switch and checkbox tiles for compact on/off rows.',
+          children: [
+            ComponentListTile.switchTile(
+              key: const ValueKey<String>('section-switch-wifi'),
+              backgroundColor: Colors.transparent,
+              leading: Icon(Icons.wifi_rounded, color: context.primary),
+              title: const Text('Wi-Fi'),
+              value: _wifiOn,
+              onChanged: (bool value) => setState(() => _wifiOn = value),
+            ),
+            ComponentListTile.checkboxTile(
+              key: const ValueKey<String>('section-checkbox-marketing'),
+              backgroundColor: Colors.transparent,
+              leading: Icon(Icons.campaign_outlined, color: context.primary),
+              title: const Text('Marketing emails'),
+              value: _marketingOn,
+              onChanged: (bool value) => setState(() => _marketingOn = value),
             ),
           ],
         ),

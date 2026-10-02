@@ -7,7 +7,6 @@ import 'package:example/demos/blurred_app_bar_demo.dart';
 import 'package:example/demos/bottom_nav_demo.dart';
 import 'package:example/demos/buttons_demo.dart';
 import 'package:example/demos/calendar_demo.dart';
-import 'package:example/demos/checkbox_demo.dart';
 import 'package:example/demos/controls_demo.dart';
 import 'package:example/demos/date_picker_demo.dart';
 import 'package:example/demos/empty_state_demo.dart';
@@ -18,14 +17,13 @@ import 'package:example/demos/overlays_demo.dart';
 import 'package:example/demos/patterns_demo.dart';
 import 'package:example/demos/pickers_demo.dart';
 import 'package:example/demos/progress_demo.dart';
-import 'package:example/demos/radio_group_demo.dart';
 import 'package:example/demos/responsive_demo.dart';
 import 'package:example/demos/search_field_demo.dart';
 import 'package:example/demos/segmented_control_demo.dart';
+import 'package:example/demos/selection_card_demo.dart';
 import 'package:example/demos/skeleton_demo.dart';
 import 'package:example/demos/sliver_app_bar_demo.dart';
 import 'package:example/demos/surfaces_demo.dart';
-import 'package:example/demos/switch_demo.dart';
 import 'package:example/demos/tab_bar_demo.dart';
 import 'package:example/demos/text_field_demo.dart';
 import 'package:material_ui/material_ui.dart';
@@ -85,25 +83,11 @@ List<GallerySection> gallerySections() {
           page: (_) => const SearchFieldDemoPage(),
         ),
         GalleryEntry(
-          id: 'switch',
-          title: 'Switch',
-          subtitle: 'iOS-style toggle',
-          icon: Icons.toggle_on_rounded,
-          page: (_) => const SwitchDemoPage(),
-        ),
-        GalleryEntry(
-          id: 'checkbox',
-          title: 'Checkbox',
-          subtitle: 'Labeled and disabled states',
-          icon: Icons.check_box_outlined,
-          page: (_) => const CheckboxDemoPage(),
-        ),
-        GalleryEntry(
-          id: 'radio-group',
-          title: 'Radio group',
-          subtitle: 'Single-choice list',
-          icon: Icons.radio_button_checked_rounded,
-          page: (_) => const RadioGroupDemoPage(),
+          id: 'selection-card',
+          title: 'Selection card',
+          subtitle: 'Single, multi, and on/off choices',
+          icon: Icons.check_circle_outline_rounded,
+          page: (_) => const SelectionCardDemoPage(),
         ),
         GalleryEntry(
           id: 'segmented-control',
@@ -134,7 +118,7 @@ List<GallerySection> gallerySections() {
         GalleryEntry(
           id: 'list-section',
           title: 'List section',
-          subtitle: 'Inset grouped list with hairlines',
+          subtitle: 'Grouped list with switch and checkbox rows',
           icon: Icons.list_alt_rounded,
           page: (_) => const ListSectionDemoPage(),
         ),
