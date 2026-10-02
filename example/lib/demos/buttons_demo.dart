@@ -1,7 +1,8 @@
 import 'package:example/gallery/demo_scaffold.dart';
-import 'package:flutter_components/component_icon_button.dart';
 import 'package:flutter_components/flutter_components.dart';
 import 'package:material_ui/material_ui.dart';
+
+void _noop() {}
 
 class ButtonsDemoPage extends StatelessWidget {
   const ButtonsDemoPage({super.key});
@@ -126,6 +127,12 @@ class ButtonsDemoPage extends StatelessWidget {
                 isModalSheet: true,
                 onPressed: () => AlertSnackbar.show(message: 'Modal sheet light button'),
                 child: const Text('Modal sheet'),
+              ),
+              const ComponentLightButton(
+                key: ValueKey<String>('light-button-loading'),
+                isLoading: true,
+                onPressed: _noop,
+                child: Text('Loading'),
               ),
             ],
           ),

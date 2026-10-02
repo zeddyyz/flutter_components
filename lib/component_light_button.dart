@@ -9,6 +9,7 @@ class ComponentLightButton extends StatelessWidget {
     this.isModalSheet = false,
     this.backgroundColor,
     this.foregroundColor,
+    this.isLoading = false,
   });
 
   final VoidCallback onPressed;
@@ -16,6 +17,7 @@ class ComponentLightButton extends StatelessWidget {
   final bool isModalSheet;
   final Color? backgroundColor;
   final Color? foregroundColor;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class ComponentLightButton extends StatelessWidget {
         backgroundColor ?? (context.isLightMode ? Colors.grey.shade300 : Color(0xff2c2c2e));
 
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: isModalSheet ? modalSheetBackgroundColor : defaultBackgroundColor,
         foregroundColor: foregroundColor ?? context.primary,
@@ -47,7 +49,16 @@ class ComponentLightButton extends StatelessWidget {
         elevation: 0,
         enabledMouseCursor: SystemMouseCursors.click,
       ),
-      child: child,
+      child: isLoading
+          ? SizedBox(
+              width: 22,
+              height: 22,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.2,
+                color: foregroundColor ?? context.primary,
+              ),
+            )
+          : child,
     );
   }
 }

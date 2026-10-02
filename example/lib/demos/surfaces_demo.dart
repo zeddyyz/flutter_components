@@ -45,14 +45,13 @@ class _SurfacesDemoPageState extends State<SurfacesDemoPage> {
               spacing: 8,
               children: [
                 for (int i = 0; i < 3; i++)
-                  ComponentListTile(
+                  ComponentListTile.chevron(
                     key: ValueKey<String>('list-tile-$i'),
                     isSelected: _selectedTile == i,
                     displayBorder: true,
                     leading: Icon(Icons.folder_outlined, color: context.primary),
                     title: Text('Project ${i + 1}'),
                     subtitle: const Text('Updated just now'),
-                    trailing: Icon(Icons.chevron_right_rounded, color: context.hint),
                     onTap: () => setState(() => _selectedTile = i),
                   ),
               ],

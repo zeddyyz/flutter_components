@@ -7,12 +7,14 @@ class ComponentDangerButton extends StatelessWidget {
     this.icon,
     this.isIconLeftAligned = true,
     required this.onPressed,
+    this.isLoading = false,
   });
 
   final Widget child;
   final Widget? icon;
   final bool isIconLeftAligned;
   final VoidCallback onPressed;
+  final bool isLoading;
 
   ButtonStyle _style() {
     return ElevatedButton.styleFrom(
@@ -27,11 +29,22 @@ class ComponentDangerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (icon == null) {
+    final Widget content = isLoading
+        ? const SizedBox(
+            width: 22,
+            height: 22,
+            child: CircularProgressIndicator(
+              strokeWidth: 2.2,
+              color: Colors.red,
+            ),
+          )
+        : child;
+
+    if (icon == null || isLoading) {
       return ElevatedButton(
-        onPressed: onPressed,
+        onPressed: isLoading ? null : onPressed,
         style: _style(),
-        child: child,
+        child: content,
       );
     }
 

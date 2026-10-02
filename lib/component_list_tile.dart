@@ -1,4 +1,6 @@
+import 'package:flutter_components/component_checkbox.dart';
 import 'package:flutter_components/component_no_splash_theme.dart';
+import 'package:flutter_components/component_switch.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
 import 'package:material_ui/material_ui.dart';
@@ -20,7 +22,82 @@ class ComponentListTile extends StatefulWidget {
     this.displayBorder = false,
     this.borderRadius,
     this.backgroundColor,
+    this.showChevron = false,
+    this.switchValue,
+    this.onSwitchChanged,
+    this.checkboxValue,
+    this.onCheckboxChanged,
   });
+
+  const ComponentListTile.chevron({
+    super.key,
+    this.leading,
+    required this.title,
+    this.subtitle,
+    this.onTap,
+    this.isSelected = false,
+    this.isSelectedColor,
+    this.isWithinBottomSheet = false,
+    this.titleStyle,
+    this.subtitleStyle,
+    this.contentPadding,
+    this.displayBorder = false,
+    this.borderRadius,
+    this.backgroundColor,
+  }) : trailing = null,
+       showChevron = true,
+       switchValue = null,
+       onSwitchChanged = null,
+       checkboxValue = null,
+       onCheckboxChanged = null;
+
+  const ComponentListTile.switchTile({
+    super.key,
+    this.leading,
+    required this.title,
+    this.subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+    this.isSelected = false,
+    this.isSelectedColor,
+    this.isWithinBottomSheet = false,
+    this.titleStyle,
+    this.subtitleStyle,
+    this.contentPadding,
+    this.displayBorder = false,
+    this.borderRadius,
+    this.backgroundColor,
+  }) : trailing = null,
+       showChevron = false,
+       switchValue = value,
+       onSwitchChanged = onChanged,
+       checkboxValue = null,
+       onCheckboxChanged = null,
+       onTap = null;
+
+  const ComponentListTile.checkboxTile({
+    super.key,
+    this.leading,
+    required this.title,
+    this.subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+    this.isSelected = false,
+    this.isSelectedColor,
+    this.isWithinBottomSheet = false,
+    this.titleStyle,
+    this.subtitleStyle,
+    this.contentPadding,
+    this.displayBorder = false,
+    this.borderRadius,
+    this.backgroundColor,
+  }) : trailing = null,
+       showChevron = false,
+       switchValue = null,
+       onSwitchChanged = null,
+       checkboxValue = value,
+       onCheckboxChanged = onChanged,
+       onTap = null;
 
   final Widget? leading;
   final Widget title;
@@ -33,6 +110,11 @@ class ComponentListTile extends StatefulWidget {
   final bool displayBorder;
   final BorderRadius? borderRadius;
   final Color? backgroundColor;
+  final bool showChevron;
+  final bool? switchValue;
+  final ValueChanged<bool>? onSwitchChanged;
+  final bool? checkboxValue;
+  final ValueChanged<bool>? onCheckboxChanged;
 
   /// A modern list tile with a leading icon, title, subtitle, and trailing icon.
   /// The leading icon is optional, and the title is required.
@@ -64,9 +146,9 @@ class _ComponentListTileState extends State<ComponentListTile> {
       child: Builder(
         builder: (builderContext) {
           // Calculate theme-dependent values
-          final tileColor = widget.isWithinBottomSheet
-              ? context.bottomSheetCardColor
-              : context.cardColor;
+          final tileColor =
+              widget.backgroundColor ??
+              (widget.isWithinBottomSheet ? context.bottomSheetCardColor : context.cardColor);
 
           final borderColor = widget.isSelected
               ? (widget.isSelectedColor ??
@@ -95,7 +177,7 @@ class _ComponentListTileState extends State<ComponentListTile> {
               leading: widget.leading,
               title: widget.title,
               subtitle: widget.subtitle,
-              trailing: widget.trailing,
+              trailing: _buildTrailing(builderContext),
               tileColor: tileColor,
               shape: RoundedSuperellipseBorder(
                 borderRadius: widget.borderRadius ?? AppDecoration.borderRadiusCard,
@@ -104,11 +186,11 @@ class _ComponentListTileState extends State<ComponentListTile> {
               contentPadding: contentPadding,
               titleTextStyle: titleStyle,
               subtitleTextStyle: subtitleStyle,
-              onTap: widget.onTap,
+              onTap: _tileTap,
               splashColor: Colors.transparent,
               hoverColor: Colors.transparent,
               focusColor: Colors.transparent,
-              mouseCursor: widget.onTap != null
+              mouseCursor: _tileTap != null
                   ? SystemMouseCursors.click
                   : SystemMouseCursors.none,
             ),
@@ -116,5 +198,36 @@ class _ComponentListTileState extends State<ComponentListTile> {
         },
       ),
     );
+  }
+
+  VoidCallback? get _tileTap {
+    if (widget.onTap != null) return widget.onTap;
+    if (widget.onSwitchChanged != null) {
+      return () => widget.onSwitchChanged!(!widget.switchValue!);
+    }
+    if (widget.onCheckboxChanged != null) {
+      return () => widget.onCheckboxChanged!(!widget.checkboxValue!);
+    }
+    return null;
+  }
+
+  Widget? _buildTrailing(BuildContext context) {
+    if (widget.switchValue != null) {
+      return ComponentSwitch(
+        value: widget.switchValue!,
+        onChanged: widget.onSwitchChanged,
+      );
+    }
+    if (widget.checkboxValue != null) {
+      return ComponentCheckbox(
+        value: widget.checkboxValue!,
+        onChanged: widget.onCheckboxChanged,
+      );
+    }
+    if (widget.trailing != null) return widget.trailing;
+    if (widget.showChevron) {
+      return Icon(Icons.chevron_right_rounded, color: context.hint);
+    }
+    return null;
   }
 }

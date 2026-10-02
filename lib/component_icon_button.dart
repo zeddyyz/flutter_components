@@ -11,6 +11,7 @@ class ComponentIconButton extends StatelessWidget {
     this.isFilled = false,
     this.backgroundColor,
     this.foregroundColor,
+    this.isLoading = false,
   });
 
   final Widget icon;
@@ -19,13 +20,26 @@ class ComponentIconButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? foregroundColor;
   final VoidCallback onPressed;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
+    final Color indicatorColor = foregroundColor ?? context.primary;
+    final Widget iconChild = isLoading
+        ? SizedBox(
+            width: 18,
+            height: 18,
+            child: CircularProgressIndicator(
+              strokeWidth: 2.2,
+              color: indicatorColor,
+            ),
+          )
+        : icon;
+
     if (label == null) {
       return IconButton(
-        onPressed: onPressed,
-        icon: icon,
+        onPressed: isLoading ? null : onPressed,
+        icon: iconChild,
         style: IconButton.styleFrom(
           backgroundColor: isFilled ? backgroundColor ?? context.iconButtonBackgroundColor : null,
           foregroundColor: isFilled ? foregroundColor ?? context.primary : null,
@@ -40,9 +54,9 @@ class ComponentIconButton extends StatelessWidget {
     }
 
     return TextButton.icon(
-      onPressed: onPressed,
+      onPressed: isLoading ? null : onPressed,
       label: label!,
-      icon: icon,
+      icon: iconChild,
       style: TextButton.styleFrom(
         backgroundColor: isFilled ? backgroundColor ?? context.iconButtonBackgroundColor : null,
         foregroundColor: isFilled ? foregroundColor ?? context.primary : null,
