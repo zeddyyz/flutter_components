@@ -12,15 +12,14 @@ class OnboardingDemoPage extends StatelessWidget {
           backgroundColor: context.scaffoldBackgroundColor,
           buttonColor: const Color(0xFF2F80ED),
           screenBorderRadius: BorderRadius.zero,
-          imageHeightPercentage: 0.42,
-          textPadding: const EdgeInsets.fromLTRB(8, 24, 8, 8),
+          imageHeightPercentage: 0.75,
           skipButtonLabel: 'Skip',
           onSkip: () => Navigator.of(context).maybePop(),
           pages: const [
             ComponentOnboardingPage(
               imagePath: 'assets/onboarding/slide_1.png',
               title: 'Browse the catalog',
-              description: 'Every widget in flutter_components has a screen you can tap through.',
+              description: 'Every widget in flutter_components has a screen you can tap through.Every widget in flutter_components has a screen you can tap through.Every widget in flutter_components has a screen you can tap through.Every widget in flutter_components has a screen you can tap through.',
             ),
             ComponentOnboardingPage(
               imagePath: 'assets/onboarding/slide_2.png',
@@ -41,7 +40,7 @@ class OnboardingDemoPage extends StatelessWidget {
             alignment: Alignment.topLeft,
             child: Padding(
               padding: const EdgeInsets.all(12),
-              child: ComponentCloseButton.blurred(
+              child: ComponentCloseButton(
                 onTap: () => Navigator.of(context).maybePop(),
               ),
             ),

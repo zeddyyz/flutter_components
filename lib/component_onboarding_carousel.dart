@@ -1,8 +1,8 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_components/component_page_indicator.dart';
 import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/shared/component_gesture_click.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Single slide in a [ComponentOnboardingCarousel].
 class ComponentOnboardingPage {
@@ -34,9 +34,11 @@ class ComponentOnboardingCarousel extends StatefulWidget {
     this.imagePadding,
     required this.backgroundColor,
     required this.screenBorderRadius,
-    required this.imageHeightPercentage,
-    required this.textPadding,
-  });
+    this.imageHeightPercentage,
+  }) : assert(
+         imageHeightPercentage == null || (imageHeightPercentage > 0 && imageHeightPercentage <= 1),
+         'imageHeightPercentage must be between 0 (exclusive) and 1 (inclusive).',
+       );
 
   final List<ComponentOnboardingPage> pages;
   final VoidCallback onDone;
@@ -48,9 +50,11 @@ class ComponentOnboardingCarousel extends StatefulWidget {
   final Color buttonColor;
   final EdgeInsets? imagePadding;
   final Color backgroundColor;
-  final BorderRadiusGeometry screenBorderRadius;
-  final double imageHeightPercentage;
-  final EdgeInsetsGeometry textPadding;
+  final BorderRadius screenBorderRadius;
+
+  /// Optional cap on image height as a fraction of the slide (0–1).
+  /// When null, the image uses whatever space remains after the text.
+  final double? imageHeightPercentage;
 
   @override
   State<ComponentOnboardingCarousel> createState() => _ComponentOnboardingCarouselState();
@@ -90,11 +94,23 @@ class _ComponentOnboardingCarouselState extends State<ComponentOnboardingCarouse
       borderRadius: widget.screenBorderRadius,
       child: Scaffold(
         backgroundColor: widget.backgroundColor,
-        body: Stack(
-          children: [
-            LayoutBuilder(
-              builder: (context, bodyConstraints) {
-                return PageView.builder(
+        body: SafeArea(
+          bottom: false,
+          child: Column(
+            spacing: 12,
+            children: [
+              SizedBox(
+                height: 65,
+                child: widget.onSkip == null
+                    ? null
+                    : _OnboardingSkipButton(
+                        label: widget.skipButtonLabel,
+                        isVisible: !isLastPage,
+                        onTap: widget.onSkip!,
+                      ),
+              ),
+              Expanded(
+                child: PageView.builder(
                   controller: _pageController,
                   scrollDirection: Axis.horizontal,
                   itemCount: pageCount,
@@ -104,22 +120,17 @@ class _ComponentOnboardingCarouselState extends State<ComponentOnboardingCarouse
                       page: widget.pages[index],
                       imagePadding: widget.imagePadding ?? EdgeInsets.zero,
                       imageHeightPercentage: widget.imageHeightPercentage,
-                      textPadding: widget.textPadding,
+                      textPadding: const EdgeInsets.fromLTRB(8, 24, 8, 40),
                     );
                   },
-                );
-              },
-            ),
-            if (widget.onSkip != null)
-              _OnboardingSkipButton(
-                label: widget.skipButtonLabel,
-                isVisible: !isLastPage,
-                onTap: widget.onSkip!,
+                ),
               ),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: Column(
           mainAxisSize: MainAxisSize.min,
+          spacing: 8,
           children: [
             ComponentPageIndicator(
               count: pageCount,
@@ -151,7 +162,7 @@ class _OnboardingSlideLayout extends StatelessWidget {
 
   final ComponentOnboardingPage page;
   final EdgeInsets imagePadding;
-  final double imageHeightPercentage;
+  final double? imageHeightPercentage;
   final EdgeInsetsGeometry textPadding;
 
   @override
@@ -160,66 +171,65 @@ class _OnboardingSlideLayout extends StatelessWidget {
     final bool isLargeScreen = !context.isMobile;
     final bool isPortrait = context.isPortraitView;
 
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: isMobile ? 28 : 48),
-      child: SafeArea(
-        bottom: false,
-        minimum: EdgeInsets.only(top: isMobile ? kToolbarHeight + 40 : 32),
-        child: isMobile || isLargeScreen && isPortrait
-            ? _buildMobileContent(context)
-            : _buildTabletContent(context),
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        isMobile ? 28 : 48,
+        isMobile ? 8 : 32,
+        isMobile ? 28 : 48,
+        0,
       ),
+      child: isMobile || isLargeScreen && isPortrait
+          ? _buildMobileContent(context)
+          : _buildTabletContent(context),
     );
   }
 
   Widget _buildMobileContent(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final double imageHeight = constraints.maxHeight * imageHeightPercentage;
+        final double? maxImageHeight = imageHeightPercentage == null
+            ? null
+            : constraints.maxHeight * imageHeightPercentage!;
 
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: constraints.maxHeight),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: imageHeight,
-                  child: Center(
-                    child: Padding(
-                      padding: imagePadding,
-                      child: Image.asset(
-                        page.imagePath,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+        return Column(
+          children: [
+            Flexible(
+              child: Padding(
+                padding: imagePadding,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: maxImageHeight ?? constraints.maxHeight,
+                  ),
+                  child: Image.asset(
+                    page.imagePath,
+                    fit: BoxFit.contain,
+                    width: double.infinity,
                   ),
                 ),
-                Padding(
-                  padding: textPadding,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        page.title,
-                        style: Theme.of(context).textTheme.headlineLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        page.description,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: context.hintIntense,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+            Padding(
+              padding: textPadding,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    page.title,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    page.description,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: context.hintIntense,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ],
         );
       },
     );
@@ -285,31 +295,26 @@ class _OnboardingSkipButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Align(
-        alignment: Alignment.topRight,
-        child: IgnorePointer(
-          ignoring: !isVisible,
-          child: AnimatedOpacity(
-            opacity: isVisible ? 1 : 0,
-            duration: const Duration(milliseconds: 200),
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: context.isMobile ? 8 : 16,
-                right: context.isMobile ? 12 : 24,
-              ),
-              child: ComponentGestureClick(
-                key: const ValueKey('onboarding-skip'),
-                onTap: onTap,
-                semanticsLabel: label,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  child: Text(
-                    label,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: context.hintIntense,
-                      fontWeight: FontWeight.w600,
-                    ),
+    return Align(
+      alignment: Alignment.centerRight,
+      child: IgnorePointer(
+        ignoring: !isVisible,
+        child: AnimatedOpacity(
+          opacity: isVisible ? 1 : 0,
+          duration: const Duration(milliseconds: 200),
+          child: Padding(
+            padding: EdgeInsets.only(right: context.isMobile ? 12 : 24),
+            child: ComponentGestureClick(
+              key: const ValueKey('onboarding-skip'),
+              onTap: onTap,
+              semanticsLabel: label,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Text(
+                  label,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: context.hintIntense,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
@@ -389,11 +394,8 @@ class _OnboardingBottomBarState extends State<_OnboardingBottomBar>
         key: ValueKey(widget.isLastPage ? 'onboarding-done' : 'onboarding-next'),
         onTap: widget.isLastPage ? widget.onDoneTap : widget.onNextTap,
         child: Container(
-          constraints: isMobile ? null : const BoxConstraints(minWidth: 160),
-          padding: EdgeInsets.symmetric(
-            vertical: isMobile ? 16 : 14,
-            horizontal: isMobile ? 0 : 48,
-          ),
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(vertical: isMobile ? 16 : 14),
           decoration: ShapeDecoration(
             color: widget.buttonColor,
             shape: RoundedSuperellipseBorder(
@@ -428,12 +430,7 @@ class _OnboardingBottomBarState extends State<_OnboardingBottomBar>
             isMobile ? 40 : 48,
             16,
           ),
-          child: isMobile
-              ? button
-              : Align(
-                  alignment: Alignment.centerRight,
-                  child: button,
-                ),
+          child: button,
         ),
       ),
     );
