@@ -264,7 +264,9 @@ class AppThemeData {
         shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusCard),
       ),
       extensions: <ThemeExtension<dynamic>>[
-        ComponentThemeData.light(sheetBackgroundColor: bottomSheetBackgroundColor),
+        ComponentThemeData.light(
+          sheetBackgroundColor: bottomSheetBackgroundColor ?? Color(0xfff2f2f7),
+        ),
       ],
     );
   }
@@ -520,7 +522,9 @@ class AppThemeData {
         shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusCard),
       ),
       extensions: <ThemeExtension<dynamic>>[
-        ComponentThemeData.dark(sheetBackgroundColor: bottomSheetBackgroundColor),
+        ComponentThemeData.dark(
+          sheetBackgroundColor: bottomSheetBackgroundColor ?? Color(0xff1c1c1e),
+        ),
       ],
     );
   }

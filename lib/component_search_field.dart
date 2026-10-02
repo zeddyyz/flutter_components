@@ -134,55 +134,58 @@ class _ComponentSearchFieldState extends State<ComponentSearchField> {
     return Row(
       children: [
         Expanded(
-          child: DecoratedBox(
-            decoration: ShapeDecoration(
-              color: theme.chipColor,
-              shape: RoundedSuperellipseBorder(
-                borderRadius: AppDecoration.borderRadiusStadium,
-                side: BorderSide(color: theme.borderColor),
+          child: SizedBox(
+            height: 48,
+            child: DecoratedBox(
+              decoration: ShapeDecoration(
+                color: theme.cardColor,
+                shape: RoundedSuperellipseBorder(
+                  borderRadius: AppDecoration.borderRadiusStadium,
+                  side: BorderSide(color: theme.borderColor),
+                ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(14, 10, 10, 10),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.search_rounded,
-                    size: 22,
-                    color: theme.hintColor,
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: TextField(
-                      controller: widget.controller,
-                      autofocus: widget.autofocus,
-                      textInputAction: TextInputAction.search,
-                      keyboardType: TextInputType.text,
-                      style: style,
-                      cursorColor: context.primary,
-                      onChanged: _onChanged,
-                      onSubmitted: _onSubmitted,
-                      onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-                      decoration: InputDecoration.collapsed(
-                        hintText: widget.hintText,
-                        hintStyle: hintStyle,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(14, 10, 10, 10),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.search_rounded,
+                      size: 22,
+                      color: theme.hintColor,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: TextField(
+                        controller: widget.controller,
+                        autofocus: widget.autofocus,
+                        textInputAction: TextInputAction.search,
+                        keyboardType: TextInputType.text,
+                        style: style,
+                        cursorColor: context.primary,
+                        onChanged: _onChanged,
+                        onSubmitted: _onSubmitted,
+                        onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+                        decoration: InputDecoration.collapsed(
+                          hintText: widget.hintText,
+                          hintStyle: hintStyle,
+                        ),
                       ),
                     ),
-                  ),
-                  if (_isClearVisible) ...[
-                    const SizedBox(width: 8),
-                    ComponentGestureClick(
-                      key: _clearKey,
-                      semanticsLabel: 'Clear text',
-                      onTap: _clear,
-                      child: Icon(
-                        Icons.close_rounded,
-                        size: 20,
-                        color: theme.hintColor,
+                    if (_isClearVisible) ...[
+                      const SizedBox(width: 8),
+                      ComponentGestureClick(
+                        key: _clearKey,
+                        semanticsLabel: 'Clear text',
+                        onTap: _clear,
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 20,
+                          color: theme.hintColor,
+                        ),
                       ),
-                    ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ),
@@ -197,7 +200,7 @@ class _ComponentSearchFieldState extends State<ComponentSearchField> {
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               child: Text(
                 'Cancel',
-                style: context.body2Medium,
+                style: context.bodyHeavy,
               ),
             ),
           ),
