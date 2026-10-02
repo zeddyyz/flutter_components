@@ -28,10 +28,16 @@ class ComponentLightButton extends StatelessWidget {
     Color modalSheetBackgroundColor =
         backgroundColor ?? (context.isLightMode ? Colors.grey.shade300 : Color(0xff2c2c2e));
 
+    Color resolvedBackgroundColor = isModalSheet
+        ? modalSheetBackgroundColor
+        : defaultBackgroundColor;
+
     return ElevatedButton(
       onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: isModalSheet ? modalSheetBackgroundColor : defaultBackgroundColor,
+        backgroundColor: resolvedBackgroundColor,
+        disabledBackgroundColor: resolvedBackgroundColor.withValues(alpha: 0.5),
+        disabledForegroundColor: foregroundColor ?? context.primary.withValues(alpha: 0.5),
         foregroundColor: foregroundColor ?? context.primary,
         shadowColor: Colors.transparent,
         overlayColor: Colors.transparent,
@@ -48,6 +54,7 @@ class ComponentLightButton extends StatelessWidget {
         splashFactory: NoSplash.splashFactory,
         elevation: 0,
         enabledMouseCursor: SystemMouseCursors.click,
+        disabledMouseCursor: SystemMouseCursors.basic,
       ),
       child: isLoading
           ? SizedBox(
