@@ -4,6 +4,13 @@ import 'package:material_ui/material_ui.dart';
 
 void _noop() {}
 
+void _onIconButtonPressed() {
+  AlertSnackbar.show(
+    title: 'ComponentIconButton',
+    message: 'ComponentIconButton pressed',
+  );
+}
+
 class ButtonsDemoPage extends StatelessWidget {
   const ButtonsDemoPage({super.key});
 
@@ -56,57 +63,100 @@ class ButtonsDemoPage extends StatelessWidget {
                 },
                 child: Text('ComponentDangerButton'),
               ),
-              Row(
-                spacing: 12,
-                mainAxisAlignment: .center,
-                children: [
-                  ComponentIconButton(
-                    key: ValueKey<String>('button-icon'),
-                    isFilled: false,
-                    icon: const Icon(Icons.add),
-                    onPressed: () {
-                      AlertSnackbar.show(
-                        title: 'ComponentIconButton',
-                        message: 'ComponentIconButton pressed',
-                      );
-                    },
+            ],
+          ),
+        ),
+        DemoSection(
+          title: 'ComponentIconButton',
+          description: 'Icon or icon + text. Default, filled, or filled + blurred.',
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12,
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Text('Default', style: context.labelMedium),
+                    const SizedBox(height: 8),
+                    ComponentIconButton(
+                      key: const ValueKey<String>('button-icon'),
+                      icon: const Icon(Icons.add),
+                      onPressed: _onIconButtonPressed,
+                    ),
+                    const SizedBox(height: 8),
+                    ComponentIconButton(
+                      key: const ValueKey<String>('button-icon-label'),
+                      icon: const Icon(Icons.add),
+                      label: const Text('Add'),
+                      onPressed: _onIconButtonPressed,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Text('Filled', style: context.labelMedium),
+                    const SizedBox(height: 8),
+                    ComponentIconButton.filled(
+                      key: const ValueKey<String>('button-icon-filled'),
+                      icon: const Icon(Icons.add),
+                      onPressed: _onIconButtonPressed,
+                    ),
+                    const SizedBox(height: 8),
+                    ComponentIconButton.filled(
+                      key: const ValueKey<String>('button-icon-label-filled'),
+                      icon: const Icon(Icons.add),
+                      label: const Text('Add'),
+                      onPressed: _onIconButtonPressed,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ClipRSuperellipse(
+                  borderRadius: AppDecoration.borderRadiusXl,
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      const Positioned.fill(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFF4C6FFF), Color(0xFF9B5CFF), Color(0xFFFF7A59)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 12),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Blurred',
+                              style: context.labelMedium.copyWith(color: Colors.white),
+                            ),
+                            const SizedBox(height: 8),
+                            ComponentIconButton.blurred(
+                              key: const ValueKey<String>('button-icon-blurred'),
+                              icon: const Icon(Icons.add),
+                              onPressed: _onIconButtonPressed,
+                            ),
+                            const SizedBox(height: 8),
+                            ComponentIconButton.blurred(
+                              key: const ValueKey<String>('button-icon-label-blurred'),
+                              icon: const Icon(Icons.add),
+                              label: const Text('Add'),
+                              onPressed: _onIconButtonPressed,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  ComponentIconButton(
-                    key: ValueKey<String>('button-icon-label'),
-                    isFilled: false,
-                    icon: const Icon(Icons.add),
-                    label: const Text('Add'),
-                    onPressed: () {
-                      AlertSnackbar.show(
-                        title: 'ComponentIconButton',
-                        message: 'ComponentIconButton pressed',
-                      );
-                    },
-                  ),
-                  ComponentIconButton(
-                    key: ValueKey<String>('button-icon-filled'),
-                    isFilled: true,
-                    icon: const Icon(Icons.add),
-                    onPressed: () {
-                      AlertSnackbar.show(
-                        title: 'ComponentIconButton',
-                        message: 'ComponentIconButton pressed',
-                      );
-                    },
-                  ),
-                  ComponentIconButton(
-                    key: ValueKey<String>('button-icon-label-filled'),
-                    isFilled: true,
-                    icon: const Icon(Icons.add),
-                    label: const Text('Add'),
-                    onPressed: () {
-                      AlertSnackbar.show(
-                        title: 'ComponentIconButton',
-                        message: 'ComponentIconButton pressed',
-                      );
-                    },
-                  ),
-                ],
+                ),
               ),
             ],
           ),

@@ -59,7 +59,7 @@ List<GallerySection> gallerySections() {
         GalleryEntry(
           id: 'buttons',
           title: 'Buttons',
-          subtitle: 'Filled, outlined, danger, light, loading',
+          subtitle: 'Filled, outlined, danger, light, icon, loading',
           icon: Icons.smart_button_rounded,
           page: (_) => const ButtonsDemoPage(),
         ),
