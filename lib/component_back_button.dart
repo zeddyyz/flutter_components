@@ -62,7 +62,7 @@ class ComponentBackButton extends StatelessWidget {
         alignment: .center,
         child: ComponentWeightedIcon(
           icon: Icons.arrow_back_ios_new_rounded,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.bold,
           fontSize: 22,
           foregroundColor: iconColor ?? context.primary,
         ),

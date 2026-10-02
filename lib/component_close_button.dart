@@ -12,18 +12,16 @@ class ComponentCloseButton extends StatelessWidget {
     this.backgroundColor,
     this.foregroundColor,
     this.onTap,
-    this.isBlurred = false,
     this.isInAppBar = false,
-  });
+  }) : isBlurred = false;
 
   const ComponentCloseButton.blurred({
     super.key,
     this.backgroundColor,
     this.foregroundColor,
     this.onTap,
-    this.isBlurred = true,
     this.isInAppBar = false,
-  });
+  }) : isBlurred = true;
 
   final Color? backgroundColor;
   final Color? foregroundColor;
@@ -83,8 +81,9 @@ class ComponentCloseButton extends StatelessWidget {
         alignment: .center,
         child: ComponentWeightedIcon(
           icon: Icons.close_rounded,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.bold,
           fontSize: 24,
+          foregroundColor: foregroundColor ?? context.primary,
         ),
       ),
     );
@@ -106,6 +105,7 @@ class ComponentCloseButton extends StatelessWidget {
             child: Container(
               height: 40,
               width: 40,
+              alignment: .center,
               decoration: BoxDecoration(
                 color:
                     backgroundColor ??
@@ -113,10 +113,11 @@ class ComponentCloseButton extends StatelessWidget {
                     context.iconButtonBackgroundColor.withValues(alpha: 0.3),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                Icons.close_rounded,
-                size: 26,
-                color: foregroundColor ?? context.primary,
+              child: ComponentWeightedIcon(
+                icon: Icons.close_rounded,
+                fontWeight: FontWeight.bold,
+                fontSize: 26,
+                foregroundColor: foregroundColor ?? context.primary,
               ),
             ),
           ),
