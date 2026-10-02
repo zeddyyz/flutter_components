@@ -26,11 +26,6 @@ class OverlaysDemoPage extends StatelessWidget {
                 onPressed: () => _showModal(context, float: true),
                 child: const Text('Show floating modal'),
               ),
-              ComponentLightButton(
-                key: const ValueKey<String>('modal-scaffold'),
-                onPressed: () => _showScaffoldModal(context),
-                child: const Text('Show with scaffold'),
-              ),
               ElevatedButton(
                 key: const ValueKey<String>('modal-actions'),
                 onPressed: () => _showActionsModal(context),
@@ -150,22 +145,6 @@ class OverlaysDemoPage extends StatelessWidget {
               child: const Text('Close'),
             ),
           ],
-        );
-      },
-    );
-  }
-
-  Future<void> _showScaffoldModal(BuildContext context) {
-    return ComponentResponsiveModal.showWithScaffold<void>(
-      context: context,
-      title: 'Scaffold modal',
-      builder: (BuildContext modalContext, bool isDialog) {
-        return Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text(
-            isDialog ? 'Presented as a dialog' : 'Presented as a sheet',
-            style: modalContext.bodyMedium,
-          ),
         );
       },
     );

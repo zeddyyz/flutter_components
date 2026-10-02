@@ -151,14 +151,7 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
     return SliverAppBar(
       title: title,
       leading: shouldShowLeading
-          ? Row(
-              mainAxisSize: .min,
-              mainAxisAlignment: .end,
-              children: [
-                const SizedBox(width: 6),
-                (leading ?? ComponentBackButton.blurred(onTap: onBackButtonTap)),
-              ],
-            )
+          ? (leading ?? ComponentBackButton.blurred(onTap: onBackButtonTap))
           : null,
       actions: actions,
       actionsPadding: actionsPadding,

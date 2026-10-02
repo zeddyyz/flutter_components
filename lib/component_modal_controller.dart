@@ -62,7 +62,7 @@ typedef ComponentModalActionHandler = FutureOr<ComponentModalAction> Function();
 /// Pass a method tear-off such as `_save` rather than an inline closure so
 /// repeated [attach] calls can tell that nothing changed.
 class ComponentModalController extends ChangeNotifier {
-  ComponentModalController({required ValueSetter<Object?> onClose}) : _onClose = onClose;
+  ComponentModalController({required this._onClose});
 
   final ValueSetter<Object?> _onClose;
 
