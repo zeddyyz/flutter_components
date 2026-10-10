@@ -83,7 +83,11 @@ extension ContextExtension on BuildContext {
   EdgeInsets get mediaQueryViewPadding => MediaQuery.viewPaddingOf(this);
   EdgeInsets get mediaQueryViewInsets => MediaQuery.viewInsetsOf(this);
 
-  double get defaultPadding => 16.0;
+  static const double tabletRailWidth = 220.0;
+  static const double tabletRailPadding = 12.0;
+  static const double tabletTotalRailWidth = tabletRailWidth + tabletRailPadding;
+  double get defaultPadding => isMobile ? 16.0 : ((width - tabletTotalRailWidth) / 6);
+  // double get defaultPadding => 16.0;
   // double get defaultPadding => isMobile
   //     ? 16.0
   //     : isMediumScreen
