@@ -22,6 +22,7 @@ class ComponentIconButton extends StatelessWidget {
     this.isLoading = false,
     this.size,
     this.padding,
+    this.borderSide,
   }) : _surface = _IconButtonSurface.plain;
 
   const ComponentIconButton.filled({
@@ -34,6 +35,7 @@ class ComponentIconButton extends StatelessWidget {
     this.isLoading = false,
     this.size,
     this.padding,
+    this.borderSide,
   }) : _surface = _IconButtonSurface.filled;
 
   const ComponentIconButton.blurred({
@@ -46,6 +48,7 @@ class ComponentIconButton extends StatelessWidget {
     this.isLoading = false,
     this.size,
     this.padding,
+    this.borderSide,
   }) : _surface = _IconButtonSurface.blurred;
 
   final Widget icon;
@@ -56,6 +59,7 @@ class ComponentIconButton extends StatelessWidget {
   final bool isLoading;
   final Size? size;
   final EdgeInsets? padding;
+  final BorderSide? borderSide;
 
   final _IconButtonSurface _surface;
 
@@ -122,6 +126,7 @@ class ComponentIconButton extends StatelessWidget {
         shape: RoundedSuperellipseBorder(
           borderRadius: AppDecoration.borderRadiusStadium,
         ),
+        side: borderSide,
         elevation: 0,
         splashFactory: NoSplash.splashFactory,
         enabledMouseCursor: SystemMouseCursors.click,
@@ -150,6 +155,7 @@ class ComponentIconButton extends StatelessWidget {
         shape: const RoundedSuperellipseBorder(
           borderRadius: AppDecoration.borderRadiusStadium,
         ),
+        side: borderSide,
         elevation: 0,
         splashFactory: NoSplash.splashFactory,
         enabledMouseCursor: SystemMouseCursors.click,
