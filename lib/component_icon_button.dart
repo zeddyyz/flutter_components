@@ -20,6 +20,8 @@ class ComponentIconButton extends StatelessWidget {
     this.backgroundColor,
     this.foregroundColor,
     this.isLoading = false,
+    this.size,
+    this.padding,
   }) : _surface = _IconButtonSurface.plain;
 
   const ComponentIconButton.filled({
@@ -30,6 +32,8 @@ class ComponentIconButton extends StatelessWidget {
     this.backgroundColor,
     this.foregroundColor,
     this.isLoading = false,
+    this.size,
+    this.padding,
   }) : _surface = _IconButtonSurface.filled;
 
   const ComponentIconButton.blurred({
@@ -40,6 +44,8 @@ class ComponentIconButton extends StatelessWidget {
     this.backgroundColor,
     this.foregroundColor,
     this.isLoading = false,
+    this.size,
+    this.padding,
   }) : _surface = _IconButtonSurface.blurred;
 
   final Widget icon;
@@ -48,6 +54,8 @@ class ComponentIconButton extends StatelessWidget {
   final Color? foregroundColor;
   final VoidCallback onPressed;
   final bool isLoading;
+  final Size? size;
+  final EdgeInsets? padding;
 
   final _IconButtonSurface _surface;
 
@@ -119,9 +127,9 @@ class ComponentIconButton extends StatelessWidget {
         enabledMouseCursor: SystemMouseCursors.click,
         disabledMouseCursor: SystemMouseCursors.forbidden,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        minimumSize: const Size(40, 40),
-        maximumSize: const Size(40, 40),
-        padding: EdgeInsets.zero,
+        minimumSize: size ?? const Size(40, 40),
+        maximumSize: size ?? const Size(40, 40),
+        padding: padding ?? EdgeInsets.zero,
       ),
     );
   }
@@ -147,13 +155,15 @@ class ComponentIconButton extends StatelessWidget {
         enabledMouseCursor: SystemMouseCursors.click,
         disabledMouseCursor: SystemMouseCursors.forbidden,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        minimumSize: const Size(40, 40),
-        padding: const EdgeInsets.only(
-          left: 12,
-          top: 10,
-          bottom: 10,
-          right: 18,
-        ),
+        minimumSize: size ?? const Size(40, 40),
+        padding:
+            padding ??
+            const EdgeInsets.only(
+              left: 12,
+              top: 10,
+              bottom: 10,
+              right: 18,
+            ),
       ),
     );
   }
