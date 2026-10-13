@@ -12,6 +12,7 @@ import 'package:example/demos/date_picker_demo.dart';
 import 'package:example/demos/empty_state_demo.dart';
 import 'package:example/demos/large_title_app_bar_demo.dart';
 import 'package:example/demos/list_section_demo.dart';
+import 'package:example/demos/navigation_rail_demo.dart';
 import 'package:example/demos/onboarding_demo.dart';
 import 'package:example/demos/overlays_demo.dart';
 import 'package:example/demos/patterns_demo.dart';
@@ -161,6 +162,13 @@ List<GallerySection> gallerySections() {
           subtitle: 'Bottom bar on phones, sidebar on large screens',
           icon: Icons.view_sidebar_outlined,
           page: (_) => const AdaptiveNavigationDemoPage(),
+        ),
+        GalleryEntry(
+          id: 'navigation-rail',
+          title: 'Navigation rail',
+          subtitle: 'Compact icon rail or labeled sidebar, with header and footer',
+          icon: Icons.view_sidebar_rounded,
+          page: (_) => const NavigationRailDemoPage(),
         ),
       ],
     ),
