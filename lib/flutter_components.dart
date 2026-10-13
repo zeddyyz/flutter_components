@@ -28,6 +28,7 @@ export 'component_light_button.dart';
 export 'component_list_section.dart';
 export 'component_list_tile.dart';
 export 'component_modal_controller.dart';
+export 'component_navigation_rail.dart';
 export 'component_nested_scroll_view_config.dart';
 export 'component_network_image.dart';
 export 'component_no_splash_theme.dart';
