@@ -54,7 +54,7 @@ class _DestinationBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.all(context.defaultPadding),
+        padding: EdgeInsets.all(ContextExtension.defaultPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

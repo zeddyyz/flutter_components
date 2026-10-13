@@ -24,7 +24,7 @@ class ComponentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Widget card = Container(
-      padding: padding ?? EdgeInsets.all(context.defaultPadding),
+      padding: padding ?? EdgeInsets.all(ContextExtension.defaultPadding),
       decoration: ShapeDecoration(
         color: backgroundColor ?? (isInSheet ? context.bottomSheetCardColor : context.cardColor),
         shape: RoundedSuperellipseBorder(

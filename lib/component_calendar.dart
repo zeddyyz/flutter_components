@@ -89,8 +89,8 @@ class ComponentCalendar extends StatelessWidget {
       padding:
           padding ??
           EdgeInsets.symmetric(
-            horizontal: context.defaultPadding,
-          ).copyWith(bottom: context.defaultPadding),
+            horizontal: ContextExtension.defaultPadding,
+          ).copyWith(bottom: ContextExtension.defaultPadding),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

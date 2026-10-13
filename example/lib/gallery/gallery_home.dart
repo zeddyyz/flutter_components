@@ -61,9 +61,9 @@ class _GalleryHomeState extends State<GalleryHome> {
             ),
             SliverPadding(
               padding: EdgeInsets.fromLTRB(
-                context.defaultPadding,
+                ContextExtension.defaultPadding,
                 8,
-                context.defaultPadding,
+                ContextExtension.defaultPadding,
                 0,
               ),
               sliver: SliverToBoxAdapter(
@@ -89,9 +89,9 @@ class _GalleryHomeState extends State<GalleryHome> {
               for (final GallerySection section in sections) ...[
                 SliverPadding(
                   padding: EdgeInsets.fromLTRB(
-                    context.defaultPadding,
+                    ContextExtension.defaultPadding,
                     28,
-                    context.defaultPadding,
+                    ContextExtension.defaultPadding,
                     12,
                   ),
                   sliver: SliverToBoxAdapter(
@@ -99,7 +99,7 @@ class _GalleryHomeState extends State<GalleryHome> {
                   ),
                 ),
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: context.defaultPadding),
+                  padding: EdgeInsets.symmetric(horizontal: ContextExtension.defaultPadding),
                   sliver: SliverToBoxAdapter(
                     child: _SectionGrid(
                       entries: section.entries,

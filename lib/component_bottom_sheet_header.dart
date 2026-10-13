@@ -1,6 +1,6 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_components/component_close_button.dart';
 import 'package:flutter_components/components_context_extension.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ComponentBottomSheetHeader extends StatelessWidget {
   const ComponentBottomSheetHeader({
@@ -15,7 +15,7 @@ class ComponentBottomSheetHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: context.defaultPadding, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: ContextExtension.defaultPadding, vertical: 8),
       color: backgroundColor ?? context.bottomSheetTheme.backgroundColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

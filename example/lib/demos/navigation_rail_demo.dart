@@ -72,7 +72,7 @@ class _NavigationRailDemoPageState extends State<NavigationRailDemoPage> {
           Expanded(
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.all(context.defaultPadding),
+                padding: EdgeInsets.all(ContextExtension.defaultPadding),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

@@ -176,8 +176,8 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
         largeTitlePadding ??
         EdgeInsetsDirectional.only(
           top: 20,
-          start: context.defaultPadding,
-          end: context.defaultPadding,
+          start: ContextExtension.defaultPadding,
+          end: ContextExtension.defaultPadding,
           bottom: 12,
         );
 

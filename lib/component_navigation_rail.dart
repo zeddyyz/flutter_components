@@ -100,8 +100,8 @@ class ComponentNavigationRail extends StatelessWidget {
 
   static const double _compactWidth = 80;
   static const double _extendedWidth = 220;
-  static const double _largeWidth = 240;
-  static const double _xLargeWidth = 260;
+  // static const double _largeWidth = 240;
+  // static const double _xLargeWidth = 260;
 
   bool _isExtended(BuildContext context) {
     return switch (mode) {
@@ -115,12 +115,12 @@ class ComponentNavigationRail extends StatelessWidget {
     if (!isExtended) {
       return _compactWidth;
     }
-    if (context.isXLargeScreen) {
-      return _xLargeWidth;
-    }
-    if (context.isLargeScreen) {
-      return _largeWidth;
-    }
+    // if (context.isXLargeScreen) {
+    //   return _xLargeWidth;
+    // }
+    // if (context.isLargeScreen) {
+    //   return _largeWidth;
+    // }
     return _extendedWidth;
   }
 

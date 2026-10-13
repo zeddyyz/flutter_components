@@ -43,9 +43,9 @@ class _TabBarDemoPageState extends State<TabBarDemoPage> with TickerProviderStat
           for (final String tab in _tabs)
             ListView.builder(
               padding: EdgeInsets.fromLTRB(
-                context.defaultPadding,
+                ContextExtension.defaultPadding,
                 context.topPadding(120),
-                context.defaultPadding,
+                ContextExtension.defaultPadding,
                 context.paddingBottom,
               ),
               itemCount: 16,

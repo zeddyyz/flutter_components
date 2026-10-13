@@ -83,10 +83,11 @@ extension ContextExtension on BuildContext {
   EdgeInsets get mediaQueryViewPadding => MediaQuery.viewPaddingOf(this);
   EdgeInsets get mediaQueryViewInsets => MediaQuery.viewInsetsOf(this);
 
+  static const double tabletRailCompactWidth = 80.0;
   static const double tabletRailWidth = 220.0;
   static const double tabletRailPadding = 12.0;
   static const double tabletTotalRailWidth = tabletRailWidth + tabletRailPadding;
-  double get defaultPadding => isMobile ? 16.0 : ((width - tabletTotalRailWidth) / 6);
+  double get screenPadding => isMobile ? 16.0 : ((width - tabletTotalRailWidth) / 6);
   // double get defaultPadding => 16.0;
   // double get defaultPadding => isMobile
   //     ? 16.0
@@ -102,14 +103,15 @@ extension ContextExtension on BuildContext {
       ? 60.0
       : 120.0;
 
-  double get cardPadding => 12.0;
+  static double get defaultPadding => 16.0;
+  static double get cardPadding => 12.0;
   // double get cardPadding => isMobile
   //     ? 12.0
   //     : isMediumScreen
   //     ? 14.0
   //     : 26.0;
 
-  double get defaultIconSize => 22.0;
+  static double get defaultIconSize => 24.0;
   // double get defaultIconSize => isMobile
   //     ? 22.0
   //     : isMediumScreen

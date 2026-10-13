@@ -18,8 +18,8 @@ class BottomNavDemoPage extends StatelessWidget {
       body: ListView.builder(
         padding: EdgeInsets.only(
           top: MediaQuery.paddingOf(context).top + kToolbarHeight + 8,
-          left: context.defaultPadding,
-          right: context.defaultPadding,
+          left: ContextExtension.defaultPadding,
+          right: ContextExtension.defaultPadding,
           bottom: 140,
         ),
         itemCount: 24,

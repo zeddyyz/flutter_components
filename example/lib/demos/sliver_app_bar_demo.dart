@@ -17,9 +17,9 @@ class SliverAppBarDemoPage extends StatelessWidget {
           ),
           SliverPadding(
             padding: EdgeInsets.fromLTRB(
-              context.defaultPadding,
+              ContextExtension.defaultPadding,
               8,
-              context.defaultPadding,
+              ContextExtension.defaultPadding,
               context.paddingBottom,
             ),
             sliver: SliverList.builder(

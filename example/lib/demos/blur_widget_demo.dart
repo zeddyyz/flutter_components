@@ -19,8 +19,8 @@ class BlurWidgetDemoPage extends StatelessWidget {
           ListView.builder(
             padding: EdgeInsets.only(
               top: MediaQuery.paddingOf(context).top + kToolbarHeight + 8,
-              left: context.defaultPadding,
-              right: context.defaultPadding,
+              left: ContextExtension.defaultPadding,
+              right: ContextExtension.defaultPadding,
               bottom: 160,
             ),
             itemCount: 20,
@@ -49,9 +49,9 @@ class BlurWidgetDemoPage extends StatelessWidget {
                 top: false,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
-                    context.defaultPadding,
+                    ContextExtension.defaultPadding,
                     28,
-                    context.defaultPadding,
+                    ContextExtension.defaultPadding,
                     16,
                   ),
                   child: ComponentCard(

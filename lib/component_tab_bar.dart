@@ -128,7 +128,7 @@ class _ComponentTabBarState extends State<ComponentTabBar> {
         height: widget.height,
         margin: EdgeInsets.symmetric(
           vertical: 0,
-          horizontal: widget.marginHorizontal ?? context.defaultPadding,
+          horizontal: widget.marginHorizontal ?? ContextExtension.defaultPadding,
         ),
         padding: const EdgeInsets.only(left: 2, right: 2),
         decoration: ShapeDecoration(

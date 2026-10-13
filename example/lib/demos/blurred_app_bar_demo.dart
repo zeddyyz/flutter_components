@@ -17,8 +17,8 @@ class BlurredAppBarDemoPage extends StatelessWidget {
       body: ListView.builder(
         padding: EdgeInsets.only(
           top: MediaQuery.paddingOf(context).top + kToolbarHeight + 8,
-          left: context.defaultPadding,
-          right: context.defaultPadding,
+          left: ContextExtension.defaultPadding,
+          right: ContextExtension.defaultPadding,
           bottom: context.paddingBottom,
         ),
         itemCount: 30,

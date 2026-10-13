@@ -45,9 +45,9 @@ class DemoScaffold extends StatelessWidget {
       ),
       body: ListView(
         padding: EdgeInsets.fromLTRB(
-          context.defaultPadding,
+          ContextExtension.defaultPadding,
           topInset,
-          context.defaultPadding,
+          ContextExtension.defaultPadding,
           context.paddingBottom,
         ),
         children: children,
