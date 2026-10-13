@@ -7,6 +7,7 @@ class ComponentGestureClick extends StatelessWidget {
     required this.child,
     this.behavior,
     this.semanticsLabel,
+    this.selected = false,
   });
 
   final VoidCallback onTap;
@@ -17,6 +18,10 @@ class ComponentGestureClick extends StatelessWidget {
   /// [ValueKey] on this widget for agent driving.
   final String? semanticsLabel;
 
+  /// Marks the control as the current item in a selection group, such as a
+  /// navigation destination.
+  final bool selected;
+
   @override
   Widget build(BuildContext context) {
     Widget clickChild = child;
@@ -24,6 +29,7 @@ class ComponentGestureClick extends StatelessWidget {
       clickChild = Semantics(
         label: semanticsLabel,
         button: true,
+        selected: selected,
         child: child,
       );
     }
