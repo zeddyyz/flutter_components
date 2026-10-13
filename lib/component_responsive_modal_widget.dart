@@ -84,7 +84,10 @@ class ComponentResponsiveModalWidget extends StatelessWidget {
       title: Text(title, style: context.body2Heavy),
       centerTitle: true,
       toolbarHeight: kModalToolbarHeight,
-      leading: const _ModalCloseButton(),
+      leading: ComponentCloseButton.blurred(
+        backgroundColor: context.bottomSheetCardColor,
+        isInAppBar: true,
+      ),
       actions: actions,
       actionsPadding: _actionsPadding,
       backgroundColor: context.bottomSheetTheme.backgroundColor,
@@ -96,29 +99,15 @@ class ComponentResponsiveModalWidget extends StatelessWidget {
     return ComponentSliverLargeTitleAppBar(
       context: context,
       title: title,
-      leading: const _ModalCloseButton(),
+      leading: ComponentCloseButton.blurred(
+        backgroundColor: context.bottomSheetCardColor,
+        isInAppBar: true,
+      ),
       actions: actions,
       actionsPadding: _actionsPadding,
       backgroundColor: context.bottomSheetTheme.backgroundColor,
       borderRadius: _modalTopBorderRadius,
       toolbarHeight: kModalToolbarHeight,
-    );
-  }
-}
-
-class _ModalCloseButton extends StatelessWidget {
-  const _ModalCloseButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: .min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 14),
-          child: ComponentCloseButton.blurred(backgroundColor: context.bottomSheetCardColor),
-        ),
-      ],
     );
   }
 }
