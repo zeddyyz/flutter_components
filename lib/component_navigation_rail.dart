@@ -225,15 +225,16 @@ class _RailDestinationButtonState extends State<_RailDestinationButton> {
   bool _hovered = false;
 
   Color _backgroundColor(BuildContext context) {
+    final Color chip = context.chipColor;
     if (widget.isSelected) {
-      return context.chipColor;
+      return chip;
     }
     if (_hovered) {
-      return context.chipColor.withValues(
+      return chip.withValues(
         alpha: context.isLightMode ? 0.35 : 0.55,
       );
     }
-    return Colors.transparent;
+    return chip.withValues(alpha: 0);
   }
 
   @override

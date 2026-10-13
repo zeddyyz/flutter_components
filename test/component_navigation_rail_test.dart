@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter_components/component_navigation_rail.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -44,7 +45,7 @@ void main() {
       expect(find.text('Settings'), findsOneWidget);
       expect(
         tester.getSize(find.byKey(const ValueKey<String>('navigation-rail'))).width,
-        240,
+        220,
       );
     },
   );
@@ -65,6 +66,55 @@ void main() {
     expect(find.text('page-2'), findsOneWidget);
     expect(find.text('page-0'), findsNothing);
   });
+
+  testWidgets(
+    'unselected hover fill keeps chip RGB so the animation does not flash dark',
+    (WidgetTester tester) async {
+      _setViewSize(tester, largeSize);
+      await pumpComponentApp(
+        tester,
+        surfaceSize: largeSize,
+        child: const _RailHarness(),
+      );
+
+      final Color chip = Colors.grey.shade300;
+      Color destinationFill(String key) {
+        final Container container = tester.widget<Container>(
+          find.descendant(
+            of: find.byKey(ValueKey<String>(key)),
+            matching: find.byType(Container),
+          ),
+        );
+        return (container.decoration! as ShapeDecoration).color!;
+      }
+
+      final Color idle = destinationFill('nav-dest-1');
+      expect(idle.a, 0);
+      expect(idle.r, closeTo(chip.r, 0.01));
+      expect(idle.g, closeTo(chip.g, 0.01));
+      expect(idle.b, closeTo(chip.b, 0.01));
+
+      final TestGesture gesture = await tester.createGesture(
+        kind: PointerDeviceKind.mouse,
+      );
+      await gesture.addPointer(location: Offset.zero);
+      addTearDown(gesture.removePointer);
+      await tester.pump();
+
+      await gesture.moveTo(
+        tester.getCenter(find.byKey(const ValueKey<String>('nav-dest-1'))),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 32));
+
+      final Color midHover = destinationFill('nav-dest-1');
+      expect(midHover.r, closeTo(chip.r, 0.01));
+      expect(midHover.g, closeTo(chip.g, 0.01));
+      expect(midHover.b, closeTo(chip.b, 0.01));
+      expect(midHover.a, greaterThan(0));
+      expect(midHover.a, lessThan(0.35));
+    },
+  );
 
   testWidgets('forced modes ignore the screen size', (
     WidgetTester tester,
