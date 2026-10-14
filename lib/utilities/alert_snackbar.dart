@@ -9,18 +9,16 @@ import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// To initialize AlertSnackbar - add to MaterialApp builder
-///  builder: (context, child) => Overlay(
-//   initialEntries: [
-//     OverlayEntry(
-//       builder: (context) {
-//         AlertSnackbar.init(context);
-//         return child!;
-//       },
-//     ),
-//   ],
-// ),
-
+/// Optional fast path — call from [MaterialApp.builder] so [show] can insert
+/// into a known [Overlay] without walking the element tree:
+/// ```dart
+/// builder: (context, child) {
+///   AlertSnackbar.init(context);
+///   return child!;
+/// }
+/// ```
+/// [show] still works without [init] when a [Navigator] overlay is reachable.
+///
 /// A stacking, self-reflowing toast system styled after an iOS island banner.
 ///
 /// The first toast anchors just below the status bar. Subsequent toasts stagger
@@ -34,7 +32,10 @@ import 'package:material_ui/material_ui.dart';
 class AlertSnackbar {
   AlertSnackbar._();
 
-  static late BuildContext _context;
+  static BuildContext? _context;
+
+  /// Stores [context] so [show] can insert into that [Overlay] without walking
+  /// the element tree. Optional — [show] falls back to the root overlay.
   static void init(BuildContext context) => _context = context;
 
   /// Max number of toasts rendered on screen simultaneously.
@@ -90,8 +91,13 @@ class AlertSnackbar {
     required String message,
     Duration duration = const Duration(seconds: 5),
   }) {
-    _ensureEntry();
-
+    if (!_ensureEntry()) {
+      debugPrint(
+        'AlertSnackbar.show skipped: no Overlay is available. '
+        'Call AlertSnackbar.init(context) from MaterialApp.builder.',
+      );
+      return;
+    }
     final _ToastData toast = _ToastData(
       isError: isError,
       title: title,
@@ -187,12 +193,46 @@ class AlertSnackbar {
   }
 
   /// Lazily inserts the persistent overlay entry once.
-  static void _ensureEntry() {
-    if (_entry != null && _entry!.mounted) return;
+  ///
+  /// Returns `false` when no [Overlay] can be resolved so [show] can no-op
+  /// instead of throwing [LateInitializationError].
+  static bool _ensureEntry() {
+    if (_entry != null && _entry!.mounted) return true;
+    final OverlayState? overlay = _resolveOverlay();
+    if (overlay == null) return false;
     _entry = OverlayEntry(
       builder: (BuildContext overlayContext) => _ToastStack(context: overlayContext),
     );
-    Overlay.of(_context).insert(_entry!);
+    overlay.insert(_entry!);
+    return true;
+  }
+
+  /// Prefers the [init] context, then the first [Overlay] under the root
+  /// element so [show] works before [init] is called.
+  static OverlayState? _resolveOverlay() {
+    final BuildContext? stored = _context;
+    if (stored != null && stored.mounted) {
+      final OverlayState? overlay = Overlay.maybeOf(stored);
+      if (overlay != null) return overlay;
+    }
+    final Element? root = WidgetsBinding.instance.rootElement;
+    if (root == null) return null;
+    return _findDescendantOverlay(root);
+  }
+
+  static OverlayState? _findDescendantOverlay(Element root) {
+    OverlayState? found;
+    void visit(Element element) {
+      if (element is StatefulElement) {
+        final State<StatefulWidget> state = element.state;
+        if (state is OverlayState && state.mounted) {
+          found = state;
+        }
+      }
+      element.visitChildren(visit);
+    }
+    visit(root);
+    return found;
   }
 
   static void _removeEntry() {
@@ -213,6 +253,7 @@ class AlertSnackbar {
     _visible.value = <_ToastData>[];
     _pending.clear();
     _scrim.value = 0;
+    _context = null;
     _removeEntry();
   }
 }
