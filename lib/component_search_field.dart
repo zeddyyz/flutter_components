@@ -17,6 +17,9 @@ class ComponentSearchField extends StatefulWidget {
     this.showCancelButton = false,
     this.onCancel,
     this.autofocus = false,
+    this.backgroundColor,
+    this.borderColor,
+    this.height,
   });
 
   final TextEditingController controller;
@@ -29,6 +32,10 @@ class ComponentSearchField extends StatefulWidget {
   final bool showCancelButton;
   final VoidCallback? onCancel;
   final bool autofocus;
+
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final double? height;
 
   @override
   State<ComponentSearchField> createState() => _ComponentSearchFieldState();
@@ -135,13 +142,13 @@ class _ComponentSearchFieldState extends State<ComponentSearchField> {
       children: [
         Expanded(
           child: SizedBox(
-            height: 48,
+            height: widget.height ?? 48,
             child: DecoratedBox(
               decoration: ShapeDecoration(
-                color: theme.cardColor,
+                color: widget.backgroundColor ?? theme.cardColor,
                 shape: RoundedSuperellipseBorder(
                   borderRadius: AppDecoration.borderRadiusStadium,
-                  side: BorderSide(color: theme.borderColor),
+                  side: BorderSide(color: widget.borderColor ?? theme.borderColor),
                 ),
               ),
               child: Padding(
