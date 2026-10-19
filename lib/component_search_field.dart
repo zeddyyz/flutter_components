@@ -152,7 +152,7 @@ class _ComponentSearchFieldState extends State<ComponentSearchField> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(14, 10, 10, 12),
+                padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
                 child: Row(
                   children: [
                     Icon(
