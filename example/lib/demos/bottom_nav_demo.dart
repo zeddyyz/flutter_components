@@ -30,9 +30,7 @@ class BottomNavDemoPage extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 12),
             decoration: ShapeDecoration(
               color: color.withValues(alpha: 0.45),
-              shape: RoundedSuperellipseBorder(
-                borderRadius: AppDecoration.borderRadiusXl,
-              ),
+              shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusXl),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
@@ -92,10 +90,12 @@ class BottomNavDemoPage extends StatelessWidget {
           ComponentGestureClick(
             key: const ValueKey<String>('nav-add'),
             onTap: () => AlertSnackbar.show(message: 'Add'),
-            child: const Icon(
-              Icons.add_rounded,
-              size: 32,
-            ),
+            child: const Icon(Icons.add_rounded, size: 32),
+          ),
+          ComponentGestureClick(
+            key: const ValueKey<String>('nav-profile'),
+            onTap: () => AlertSnackbar.show(message: 'Profile'),
+            child: const Icon(Icons.person_rounded, size: 32),
           ),
         ],
       ),

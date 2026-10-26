@@ -167,7 +167,7 @@ class ComponentBottomNavBar extends StatelessWidget {
             Spacer(),
             Container(
               height: double.infinity,
-              width: childrenRightAligned!.length == 1 ? 60 : double.infinity,
+              width: childrenRightAligned!.length == 1 ? 60 : null,
               decoration: ShapeDecoration(
                 color: context.cardColor.withValues(alpha: context.isLightMode ? 0.1 : 0.5),
                 shape: RoundedSuperellipseBorder(
