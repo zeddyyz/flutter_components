@@ -14,12 +14,13 @@ class AppThemeData {
     ColorScheme? colorScheme,
     Color? bottomSheetBackgroundColor,
   }) {
+    final fallbackScaffoldBackgroundColor = const Color.fromARGB(255, 246, 246, 246);
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: colorScheme,
       // scaffoldBackgroundColor: scaffoldBackgroundColor ?? Color(0xfff2f2f7),
-      scaffoldBackgroundColor: scaffoldBackgroundColor ?? Colors.grey.shade100,
+      scaffoldBackgroundColor: scaffoldBackgroundColor ?? fallbackScaffoldBackgroundColor,
       primaryColor: primaryColor,
       primaryColorLight: Colors.white,
       primaryColorDark: Colors.black,
@@ -29,7 +30,7 @@ class AppThemeData {
         space: 1,
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: scaffoldBackgroundColor ?? Colors.grey.shade100,
+        backgroundColor: scaffoldBackgroundColor ?? fallbackScaffoldBackgroundColor,
         titleTextStyle: TextStyle(
           color: Colors.black,
           fontSize: 21,
