@@ -195,7 +195,7 @@ class ComponentBlurredAppBar extends StatelessWidget implements PreferredSizeWid
               title: title,
               titleSpacing: titleSpacing,
               leadingWidth: leadingWidth ?? 54,
-              titleTextStyle: context.textTheme.titleMedium,
+              titleTextStyle: context.title3.semibold,
               leading: shouldShowLeading
                   ? Row(
                       mainAxisSize: .min,

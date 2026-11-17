@@ -70,7 +70,7 @@ class ComponentSelectionCard extends StatelessWidget {
                         children: [
                           Text(
                             title,
-                            style: context.bodyHeavy,
+                            style: context.subheadline.semibold,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -78,7 +78,7 @@ class ComponentSelectionCard extends StatelessWidget {
                             const SizedBox(height: 2),
                             Text(
                               subtitle!,
-                              style: context.bodyLight.copyWith(
+                              style: context.subheadline.copyWith(
                                 color: context.hintIntenseIos,
                               ),
                               maxLines: 2,

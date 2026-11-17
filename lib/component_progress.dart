@@ -4,6 +4,9 @@ import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
 import 'package:material_ui/material_ui.dart';
 
+const Duration _kProgressAnimationDuration = Duration(milliseconds: 280);
+const Curve _kProgressAnimationCurve = Curves.easeOutCubic;
+
 class ComponentProgressBar extends StatelessWidget {
   const ComponentProgressBar({
     super.key,
@@ -25,11 +28,13 @@ class ComponentProgressBar extends StatelessWidget {
       child: SizedBox(
         height: height,
         child: Stack(
-          fit: StackFit.expand,
+          fit: .expand,
           children: [
             ColoredBox(color: backgroundColor ?? context.componentTheme.chipColor),
-            FractionallySizedBox(
-              alignment: Alignment.centerLeft,
+            AnimatedFractionallySizedBox(
+              duration: _kProgressAnimationDuration,
+              curve: _kProgressAnimationCurve,
+              alignment: .centerLeft,
               widthFactor: value,
               child: ColoredBox(color: color ?? Theme.of(context).primaryColor),
             ),
@@ -63,13 +68,23 @@ class ComponentProgressRing extends StatelessWidget {
     return SizedBox(
       width: size,
       height: size,
-      child: CustomPaint(
-        painter: _RingPainter(
-          value: value,
-          strokeWidth: strokeWidth,
-          color: color ?? Theme.of(context).primaryColor,
-          backgroundColor: backgroundColor ?? context.componentTheme.chipColor,
-        ),
+      child: TweenAnimationBuilder<double>(
+        tween: Tween<double>(end: value),
+        duration: _kProgressAnimationDuration,
+        curve: _kProgressAnimationCurve,
+        builder: (BuildContext context, double animatedValue, Widget? child) {
+          return RepaintBoundary(
+            child: CustomPaint(
+              painter: _RingPainter(
+                value: animatedValue,
+                strokeWidth: strokeWidth,
+                color: color ?? Theme.of(context).primaryColor,
+                backgroundColor: backgroundColor ?? context.componentTheme.chipColor,
+              ),
+              child: child,
+            ),
+          );
+        },
         child: child == null ? null : Center(child: child),
       ),
     );
@@ -97,15 +112,15 @@ class _RingPainter extends CustomPainter {
 
     final Paint background = Paint()
       ..color = backgroundColor
-      ..style = PaintingStyle.stroke
+      ..style = .stroke
       ..strokeWidth = strokeWidth
-      ..strokeCap = StrokeCap.round;
+      ..strokeCap = .round;
 
     final Paint foreground = Paint()
       ..color = color
-      ..style = PaintingStyle.stroke
+      ..style = .stroke
       ..strokeWidth = strokeWidth
-      ..strokeCap = StrokeCap.round;
+      ..strokeCap = .round;
 
     canvas.drawArc(rect, 0, math.pi * 2, false, background);
     canvas.drawArc(rect, -math.pi / 2, math.pi * 2 * value, false, foreground);

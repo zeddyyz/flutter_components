@@ -38,7 +38,7 @@ class _AdaptiveNavigationDemoPageState extends State<AdaptiveNavigationDemoPage>
           setState(() => _selectedIndex = index);
         },
         destinations: _destinations,
-        leading: Text('Components', style: context.body2Bold),
+        leading: Text('Components', style: context.headline.bold),
         body: _DestinationBody(label: _destinations[_selectedIndex].label),
       ),
     );
@@ -69,11 +69,11 @@ class _DestinationBody extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
-            Text(label, style: context.displayHeavy),
+            Text(label, style: context.title2.semibold),
             const SizedBox(height: 8),
             Text(
               'This is the $label destination.',
-              style: context.bodyMedium.copyWith(color: context.hintIntense),
+              style: context.subheadline.medium.copyWith(color: context.hintIntense),
             ),
           ],
         ),

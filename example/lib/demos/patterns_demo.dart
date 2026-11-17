@@ -28,7 +28,7 @@ class _PatternsDemoPageState extends State<PatternsDemoPage> {
           ),
         ),
         if (_otp.isNotEmpty)
-          Text('Current: $_otp', style: context.labelMedium.copyWith(color: context.hintIntense)),
+          Text('Current: $_otp', style: context.caption2.medium.copyWith(color: context.hintIntense)),
         DemoSection(
           title: 'Stepper',
           child: Column(

@@ -136,7 +136,7 @@ class ComponentDialogWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
                       description!,
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: context.subheadline,
                     ),
                   ),
                 ?content,

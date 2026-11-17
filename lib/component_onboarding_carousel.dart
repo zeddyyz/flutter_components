@@ -215,15 +215,13 @@ class _OnboardingSlideLayout extends StatelessWidget {
                 children: [
                   Text(
                     page.title,
-                    style: Theme.of(context).textTheme.headlineLarge,
+                    style: context.title2.bold,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
                   Text(
                     page.description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: context.hintIntense,
-                    ),
+                    style: context.body.copyWith(color: context.hintIntense),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -259,19 +257,12 @@ class _OnboardingSlideLayout extends StatelessWidget {
               children: [
                 Text(
                   page.title,
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: context.isMobile ? null : 28,
-                  ),
+                  style: context.title1.bold,
                 ),
                 const SizedBox(height: 20),
                 Text(
                   page.description,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: context.hintIntense,
-                    height: 1.5,
-                    fontSize: context.isMobile ? null : 16,
-                  ),
+                  style: context.body.copyWith(color: context.hintIntense),
                 ),
               ],
             ),

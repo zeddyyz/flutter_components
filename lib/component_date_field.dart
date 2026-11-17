@@ -58,7 +58,7 @@ class ComponentDateField extends StatelessWidget {
             Expanded(
               child: Text(
                 _label,
-                style: context.bodyMedium.copyWith(
+                style: context.subheadline.medium.copyWith(
                   color: value == null ? context.componentTheme.hintColor : context.primary,
                 ),
               ),

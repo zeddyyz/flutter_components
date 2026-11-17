@@ -87,11 +87,11 @@ class _NavigationRailDemoPageState extends State<NavigationRailDemoPage> {
                       ],
                     ),
                     const SizedBox(height: 24),
-                    Text(destination.label, style: context.displayHeavy),
+                    Text(destination.label, style: context.title2.semibold),
                     const SizedBox(height: 8),
                     Text(
                       'Header and footer stay pinned while destinations scroll.',
-                      style: context.bodyMedium.copyWith(
+                      style: context.subheadline.medium.copyWith(
                         color: context.hintIntense,
                       ),
                     ),

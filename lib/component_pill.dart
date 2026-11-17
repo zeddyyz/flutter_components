@@ -60,7 +60,7 @@ class ComponentPill extends StatelessWidget {
               padding: const EdgeInsets.only(left: 4),
               child: Text(
                 text,
-                style: context.textTheme.labelLarge,
+                style: context.footnote.semibold,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),

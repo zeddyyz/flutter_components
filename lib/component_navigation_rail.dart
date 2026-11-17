@@ -267,7 +267,7 @@ class _RailDestinationButtonState extends State<_RailDestinationButton> {
                 Expanded(
                   child: Text(
                     widget.destination.label,
-                    style: (widget.isSelected ? context.bodyHeavy : context.bodyMedium).copyWith(
+                    style: (widget.isSelected ? context.subheadline.semibold : context.subheadline.medium).copyWith(
                       color: widget.isSelected ? context.primary : context.hintIntense,
                     ),
                     maxLines: 1,

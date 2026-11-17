@@ -76,12 +76,12 @@ class DemoSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: context.body2Heavy),
+          Text(title, style: context.headline),
           if (description != null) ...[
             const SizedBox(height: 6),
             Text(
               description!,
-              style: context.bodyMedium.copyWith(color: context.hintIntense),
+              style: context.subheadline.medium.copyWith(color: context.hintIntense),
             ),
           ],
           const SizedBox(height: 12),

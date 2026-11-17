@@ -67,7 +67,7 @@ class _AccordionRow extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
             child: Row(
               children: [
-                Expanded(child: Text(item.title, style: context.body2Heavy)),
+                Expanded(child: Text(item.title, style: context.headline)),
                 AnimatedRotation(
                   turns: expanded ? 0.5 : 0,
                   duration: const Duration(milliseconds: 200),

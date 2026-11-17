@@ -45,6 +45,64 @@ class OverlaysDemoPage extends StatelessWidget {
           ),
         ),
         DemoSection(
+          title: 'ComponentBottomSheet',
+          description: 'Always a sheet. Snaps or hugs content, floats on large screens, and can sit left, center, or right.',
+          child: Column(
+            spacing: 12,
+            children: [
+              FilledButton(
+                key: const ValueKey<String>('bottom-sheet-content'),
+                onPressed: () => _showBottomSheet(context),
+                child: const Text('Content-sized'),
+              ),
+              OutlinedButton(
+                key: const ValueKey<String>('bottom-sheet-snaps'),
+                onPressed: () => _showBottomSheet(
+                  context,
+                  snapPoints: const [0.45, 0.9],
+                  showHandle: true,
+                  tall: true,
+                ),
+                child: const Text('Snap points'),
+              ),
+              OutlinedButton(
+                key: const ValueKey<String>('bottom-sheet-float'),
+                onPressed: () => _showBottomSheet(context, float: true, showHandle: true),
+                child: const Text('Floating'),
+              ),
+              OutlinedButton(
+                key: const ValueKey<String>('bottom-sheet-left'),
+                onPressed: () => _showBottomSheet(
+                  context,
+                  snapPoints: const [0.5, 0.9],
+                  placement: .left,
+                  tall: true,
+                ),
+                child: const Text('Place left'),
+              ),
+              OutlinedButton(
+                key: const ValueKey<String>('bottom-sheet-right'),
+                onPressed: () => _showBottomSheet(
+                  context,
+                  snapPoints: const [0.5, 0.9],
+                  placement: .right,
+                  tall: true,
+                ),
+                child: const Text('Place right'),
+              ),
+              ElevatedButton(
+                key: const ValueKey<String>('bottom-sheet-footer'),
+                onPressed: () => _showBottomSheet(
+                  context,
+                  hasFooter: true,
+                  expandOnKeyboard: true,
+                ),
+                child: const Text('Footer and keyboard'),
+              ),
+            ],
+          ),
+        ),
+        DemoSection(
           title: 'ComponentDialogWidget',
           child: Column(
             spacing: 8,
@@ -114,7 +172,7 @@ class OverlaysDemoPage extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
                   child: Text(
                     'ComponentBottomSheetHeader + ComponentSlideDownBar',
-                    style: context.bodyMedium.copyWith(color: context.hintIntense),
+                    style: context.subheadline.medium.copyWith(color: context.hintIntense),
                   ),
                 ),
               ],
@@ -122,6 +180,30 @@ class OverlaysDemoPage extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Future<void> _showBottomSheet(
+    BuildContext context, {
+    List<double>? snapPoints,
+    bool float = false,
+    ComponentBottomSheetPlacement placement = .center,
+    bool showHandle = false,
+    bool hasFooter = false,
+    bool expandOnKeyboard = false,
+    bool tall = false,
+  }) {
+    return ComponentBottomSheet.show<void>(
+      context: context,
+      snapPoints: snapPoints,
+      float: float,
+      placement: placement,
+      showHandle: showHandle,
+      expandOnKeyboard: expandOnKeyboard,
+      builder: (BuildContext modalContext) => _BottomSheetDemoBody(
+        hasFooter: hasFooter,
+        tall: tall,
+      ),
     );
   }
 
@@ -136,7 +218,7 @@ class OverlaysDemoPage extends StatelessWidget {
           children: [
             Text(
               'Resize the window: phones get a sheet, larger screens get a dialog.',
-              style: modalContext.bodyMedium,
+              style: modalContext.subheadline.medium,
             ),
             const SizedBox(height: 16),
             ComponentLightButton(
@@ -206,7 +288,7 @@ class OverlaysDemoPage extends StatelessWidget {
           title: const Text('Full screen'),
         ),
         body: Center(
-          child: Text('Slid up from the bottom', style: context.body2Heavy),
+          child: Text('Slid up from the bottom', style: context.headline),
         ),
       ),
     );
@@ -370,6 +452,90 @@ class _SimpleNameFormState extends State<_SimpleNameForm> {
       title: 'Edit name',
       actions: actions,
       slivers: slivers,
+    );
+  }
+}
+
+class _BottomSheetDemoBody extends StatefulWidget {
+  const _BottomSheetDemoBody({required this.hasFooter, required this.tall});
+
+  final bool hasFooter;
+  final bool tall;
+
+  @override
+  State<_BottomSheetDemoBody> createState() => _BottomSheetDemoBodyState();
+}
+
+class _BottomSheetDemoBodyState extends State<_BottomSheetDemoBody> {
+  static const List<String> _names = [
+    'Ada Lovelace',
+    'Alan Turing',
+    'Grace Hopper',
+    'Katherine Johnson',
+    'Linus Torvalds',
+    'Margaret Hamilton',
+    'Radia Perlman',
+    'Tim Berners-Lee',
+  ];
+
+  final TextEditingController _name = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _name.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _name.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final int count = widget.tall ? _names.length : 3;
+    return ComponentResponsiveModalWidget(
+      title: 'Bottom sheet',
+      footer: widget.hasFooter
+          ? ComponentLightButton(
+              key: const ValueKey<String>('bottom-sheet-submit'),
+              isModalSheet: true,
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Done'),
+            )
+          : null,
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+          sliver: SliverToBoxAdapter(
+            child: ComponentTextField(
+              controller: _name,
+              hintText: 'Your name',
+              icon: const Icon(Icons.person_outline_rounded),
+            ),
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+          sliver: SliverList.builder(
+            itemCount: count,
+            itemBuilder: (BuildContext context, int index) {
+              final String suggestedName = _names[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: ComponentListTile(
+                  isWithinBottomSheet: true,
+                  displayBorder: true,
+                  isSelected: _name.text == suggestedName,
+                  title: Text(suggestedName),
+                  onTap: () => _name.text = suggestedName,
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

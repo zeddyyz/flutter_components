@@ -47,7 +47,7 @@ class ComponentAvatar extends StatelessWidget {
           ? null
           : Text(
               _resolvedInitials,
-              style: context.bodyHeavy.copyWith(
+              style: context.subheadline.semibold.copyWith(
                 color: foreground,
                 fontSize: size * 0.36,
               ),

@@ -3,14 +3,11 @@ import 'package:flutter_components/component_close_button.dart';
 import 'package:flutter_components/component_modal_controller.dart';
 import 'package:flutter_components/component_responsive_modal_widget.dart';
 import 'package:flutter_components/components_context_extension.dart';
+import 'package:flutter_components/shared/modal_chrome.dart';
 import 'package:flutter_components/utilities/app_decoration.dart';
 import 'package:material_ui/material_ui.dart';
 
 const double kModalToolbarHeight = 65;
-
-const BorderRadius _kModalTopBorderRadius = BorderRadius.vertical(
-  top: AppDecoration.iOSModalRadius,
-);
 
 /// Shows either a modal bottom sheet (on small screens) or a dialog (on larger screens)
 class ComponentResponsiveModal {
@@ -230,7 +227,7 @@ Future<T?> _present<T>({
       useRootNavigator: useRootNavigator,
       barrierLabel: '',
       barrierDismissible: barrierDismissible,
-      barrierColor: _barrierColor(context),
+      barrierColor: modalBarrierColor(context),
       transitionDuration: const Duration(milliseconds: 400),
       transitionBuilder: _slideUpTransition,
       pageBuilder: (
@@ -250,10 +247,11 @@ Future<T?> _present<T>({
     isDismissible: barrierDismissible,
     backgroundColor: float ? Colors.transparent : context.bottomSheetTheme.backgroundColor,
     elevation: float ? 0 : null,
-    barrierColor: _barrierColor(context),
+    barrierColor: modalBarrierColor(context),
     shape: RoundedSuperellipseBorder(
-      borderRadius: float ? AppDecoration.iOSModalBorderRadius : _kModalTopBorderRadius,
+      borderRadius: float ? AppDecoration.iOSModalBorderRadius : kModalTopBorderRadius,
     ),
+    clipBehavior: .antiAlias,
     sheetAnimationStyle: animationStyle ?? AppDecoration.smoothSheetAnimationStyle,
     constraints: constraints == null
         ? const BoxConstraints.expand()
@@ -273,10 +271,6 @@ Future<T?> _present<T>({
 
 bool _hasFixedHeight(BoxConstraints? constraints) {
   return constraints != null && constraints.maxHeight.isFinite;
-}
-
-Color _barrierColor(BuildContext context) {
-  return context.isLightMode ? Colors.black45 : Colors.black.withValues(alpha: 0.7);
 }
 
 Widget _slideUpTransition(
@@ -308,11 +302,11 @@ PreferredSizeWidget _modalBlurredAppBar({
 }) {
   return ComponentBlurredAppBar(
     context: context,
-    borderRadius: _kModalTopBorderRadius,
+    borderRadius: kModalTopBorderRadius,
     toolbarHeight: kModalToolbarHeight,
     actions: actions,
     leading: const _ModalCloseLeading(),
-    title: Text(title, style: context.body2Heavy),
+    title: Text(title, style: context.headline),
     centerTitle: true,
     backgroundColor: context.bottomSheetTheme.backgroundColor,
   );
@@ -370,7 +364,8 @@ class _ModalFrame extends StatelessWidget {
               maxWidth: constraints?.maxWidth ?? 560,
               maxHeight: constraints?.maxHeight ?? context.viewHeight * 0.8,
             ),
-        child: ClipRSuperellipse(
+        clipBehavior: .antiAlias,
+        child: clipModalChrome(
           borderRadius: AppDecoration.iOSModalBorderRadius,
           child: MediaQuery.removeViewPadding(
             context: routeContext,
@@ -389,8 +384,8 @@ class _ModalFrame extends StatelessWidget {
           ? EdgeInsets.only(left: 12, right: 12, bottom: context.mediaQueryPadding.bottom)
           : EdgeInsets.zero,
       constraints: constraints ?? const BoxConstraints.expand(),
-      child: ClipRSuperellipse(
-        borderRadius: float ? AppDecoration.iOSModalBorderRadius : _kModalTopBorderRadius,
+      child: clipModalChrome(
+        borderRadius: float ? AppDecoration.iOSModalBorderRadius : kModalTopBorderRadius,
         child: MediaQuery.removePadding(
           context: routeContext,
           removeBottom: removeFloatingSheetBottomPadding && float,

@@ -167,10 +167,10 @@ class _ComponentListTileState extends State<ComponentListTile> {
                 },
               );
 
-          final titleStyle = widget.titleStyle ?? builderContext.textTheme.bodySmall;
+          final titleStyle = widget.titleStyle ?? builderContext.body;
           final subtitleStyle =
               widget.subtitleStyle ??
-              builderContext.textTheme.labelSmall!.copyWith(color: builderContext.hint);
+              builderContext.subheadline.copyWith(color: builderContext.hint);
 
           return ComponentNoSplashTheme(
             child: ListTile(
@@ -190,9 +190,7 @@ class _ComponentListTileState extends State<ComponentListTile> {
               splashColor: Colors.transparent,
               hoverColor: Colors.transparent,
               focusColor: Colors.transparent,
-              mouseCursor: _tileTap != null
-                  ? SystemMouseCursors.click
-                  : SystemMouseCursors.none,
+              mouseCursor: _tileTap != null ? SystemMouseCursors.click : SystemMouseCursors.none,
             ),
           );
         },

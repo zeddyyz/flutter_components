@@ -37,7 +37,7 @@ class ComponentListSection extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
               child: Text(
                 header!,
-                style: context.labelHeavy.copyWith(color: componentTheme.hintColor),
+                style: context.caption2.semibold.copyWith(color: componentTheme.hintColor),
               ),
             ),
           ComponentCard(
@@ -67,7 +67,7 @@ class ComponentListSection extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
               child: Text(
                 footer!,
-                style: context.labelMedium.copyWith(color: componentTheme.hintColor),
+                style: context.caption2.medium.copyWith(color: componentTheme.hintColor),
               ),
             ),
         ],

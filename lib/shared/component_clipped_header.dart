@@ -19,6 +19,10 @@ class ComponentClippedHeader extends StatelessWidget {
     if (borderRadius == null) {
       return ClipRect(child: child);
     }
-    return ClipRSuperellipse(borderRadius: borderRadius!, child: child);
+    return ClipRSuperellipse(
+      borderRadius: borderRadius!,
+      clipBehavior: .antiAliasWithSaveLayer,
+      child: child,
+    );
   }
 }

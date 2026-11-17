@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_components/component_back_button.dart';
 import 'package:flutter_components/shared/component_clipped_header.dart';
 import 'package:flutter_components/shared/fade_mask_painter.dart';
+import 'package:flutter_components/shared/modal_chrome.dart';
 import 'package:material_ui/material_ui.dart';
 
 class ComponentSliverBlurredAppBar extends StatelessWidget {
@@ -39,6 +40,7 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
     this.clipBehavior,
     this.borderRadius,
     this.xAxisOverflowExtent,
+    this.handle,
   });
 
   final BuildContext context;
@@ -132,6 +134,9 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
   /// The overflow extent of the app bar on the x-axis, in situations where the blurr seems padded on the left and right sides
   final double? xAxisOverflowExtent;
 
+  /// Grabber drawn at the top of the blurred header, inside the fade.
+  final Widget? handle;
+
   @override
   Widget build(BuildContext context) {
     bool isLightTheme = Theme.of(context).brightness == Brightness.light;
@@ -147,20 +152,38 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
         automaticallyImplyLeading && (leading != null || ModalRoute.of(context)?.canPop == true);
 
     final resolvedBackgroundColor = backgroundColor ?? defaultBackgroundColor;
+    final double baseToolbarHeight = toolbarHeight ?? kToolbarHeight;
+    final double handleHeight = handle == null ? 0 : kSheetHandleExtent;
+    final double barHeight = baseToolbarHeight + handleHeight;
+
+    Widget belowHandle(Widget child) {
+      if (handle == null) return child;
+      return Padding(
+        padding: EdgeInsets.only(top: handleHeight),
+        child: SizedBox(
+          height: baseToolbarHeight,
+          child: Center(child: child),
+        ),
+      );
+    }
+
+    final Widget? resolvedLeading = shouldShowLeading
+        ? Row(
+            mainAxisSize: .min,
+            mainAxisAlignment: .end,
+            children: [
+              const SizedBox(width: 6),
+              leading ?? ComponentBackButton.blurred(onTap: onBackButtonTap),
+            ],
+          )
+        : null;
 
     return SliverAppBar(
-      title: title,
-      leading: shouldShowLeading
-          ? (Row(
-              mainAxisSize: .min,
-              mainAxisAlignment: .end,
-              children: [
-                const SizedBox(width: 6),
-                (leading ?? ComponentBackButton.blurred(onTap: onBackButtonTap)),
-              ],
-            ))
-          : null,
-      actions: actions,
+      title: title == null ? null : belowHandle(title!),
+      leading: resolvedLeading == null ? null : belowHandle(resolvedLeading),
+      actions: handle == null || actions == null
+          ? actions
+          : [for (final Widget action in actions!) belowHandle(action)],
       actionsPadding: actionsPadding,
       centerTitle: centerTitle,
       backgroundColor: Colors.transparent,
@@ -168,7 +191,7 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
       elevation: elevation,
       scrolledUnderElevation: scrolledUnderElevation,
       automaticallyImplyLeading: false, // We handle this manually
-      toolbarHeight: toolbarHeight ?? kToolbarHeight,
+      toolbarHeight: barHeight,
       systemOverlayStyle:
           systemOverlayStyle ??
           SystemUiOverlayStyle(
@@ -220,6 +243,14 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
                 ),
               ),
               if (flexibleSpace != null) Positioned.fill(child: flexibleSpace!),
+              if (handle != null)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: handleHeight,
+                  child: handle!,
+                ),
             ],
           ),
         ),
@@ -231,7 +262,7 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
       stretchTriggerOffset: stretchTriggerOffset,
       onStretchTrigger: onStretchTrigger,
       forceElevated: forceElevated,
-      clipBehavior: clipBehavior,
+      clipBehavior: clipBehavior ?? (borderRadius == null ? .none : .antiAlias),
       shape: RoundedSuperellipseBorder(
         borderRadius: borderRadius ?? BorderRadius.zero,
       ),

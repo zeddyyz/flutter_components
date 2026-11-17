@@ -546,7 +546,7 @@ class _PickerCell extends StatelessWidget {
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: context.bodyBold.copyWith(
+                style: context.subheadline.bold.copyWith(
                   color: selected
                       ? context.primaryInverse
                       : (enabled ? context.primary : context.hintIos),
@@ -616,7 +616,7 @@ class _MonthHeader extends StatelessWidget {
                       textAlign: TextAlign.center,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: context.bodyBold,
+                      style: context.subheadline.bold,
                     ),
                   ),
                   AnimatedRotation(
@@ -701,7 +701,7 @@ class _WeekdayHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = context.labelMedium.copyWith(color: context.hintIos);
+    final style = context.caption2.medium.copyWith(color: context.hintIos);
     return Row(
       children: [
         for (final label in _labels)
@@ -818,7 +818,7 @@ class _DayCell extends StatelessWidget {
               ),
               child: Text(
                 '${day.day}',
-                style: context.bodyBold.copyWith(
+                style: context.subheadline.bold.copyWith(
                   color: isSelected
                       ? context.primaryInverse
                       : (inRange ? context.primary : context.hintIos),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_components/component_theme.dart';
 import 'package:flutter_components/shared/app_screen_size.dart';
 import 'package:material_ui/material_ui.dart';
@@ -151,182 +152,170 @@ extension ContextExtension on BuildContext {
   double get bottomPadding => MediaQuery.paddingOf(this).bottom + 80;
   double get paddingBottom => MediaQuery.paddingOf(this).bottom + 20;
 
-  String? get _fontFamily => textTheme.bodySmall!.fontFamily!;
+  /// Typography
+  String? get _fontFamily => textTheme.bodyMedium?.fontFamily;
 
-  TextStyle get labelLight => TextStyle(
-    color: primary,
-    fontSize: 11,
-    fontWeight: FontWeight.w400,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get labelMedium => TextStyle(
-    color: primary,
-    fontSize: 11,
-    fontWeight: FontWeight.w500,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get labelHeavy => TextStyle(
-    color: primary,
-    fontSize: 11,
-    fontWeight: FontWeight.w600,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get labelBold => TextStyle(
-    color: primary,
-    fontSize: 11,
-    fontWeight: FontWeight.w700,
-    fontFamily: _fontFamily,
-  );
+  TextStyle _styleFor(AppTextRole role) =>
+      role.style(platform: theme.platform, color: primary, fontFamily: _fontFamily);
 
-  TextStyle get bodyLight => TextStyle(
-    color: primary,
-    fontSize: 14,
-    fontWeight: FontWeight.w400,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get bodyMedium => TextStyle(
-    color: primary,
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get bodyHeavy => TextStyle(
-    color: primary,
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get bodyBold => TextStyle(
-    color: primary,
-    fontSize: 14,
-    fontWeight: FontWeight.w700,
-    fontFamily: _fontFamily,
-  );
+  /// Large collapsing screen titles (use `.bold`).
+  TextStyle get largeTitle => _styleFor(AppTextRole.largeTitle);
 
-  TextStyle get body2Light => TextStyle(
-    color: primary,
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get body2Medium => TextStyle(
-    color: primary,
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get body2Heavy => TextStyle(
-    color: primary,
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get body2Bold => TextStyle(
-    color: primary,
-    fontSize: 16,
-    fontWeight: FontWeight.w700,
-    fontFamily: _fontFamily,
-  );
+  /// Hero numbers, prices, stats, onboarding titles (use `.bold`).
+  TextStyle get title1 => _styleFor(AppTextRole.title1);
 
-  TextStyle get body3Light => TextStyle(
-    color: primary,
-    fontSize: 18,
-    fontWeight: FontWeight.w400,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get body3Medium => TextStyle(
-    color: primary,
-    fontSize: 18,
-    fontWeight: FontWeight.w500,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get body3Heavy => TextStyle(
-    color: primary,
-    fontSize: 18,
-    fontWeight: FontWeight.w600,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get body3Bold => TextStyle(
-    color: primary,
-    fontSize: 18,
-    fontWeight: FontWeight.w700,
-    fontFamily: _fontFamily,
-  );
+  /// Larger headings on roomy screens.
+  TextStyle get title2 => _styleFor(AppTextRole.title2);
 
-  TextStyle get body4Light => TextStyle(
-    color: primary,
-    fontSize: 20,
-    fontWeight: FontWeight.w400,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get body4Medium => TextStyle(
-    color: primary,
-    fontSize: 20,
-    fontWeight: FontWeight.w500,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get body4Heavy => TextStyle(
-    color: primary,
-    fontSize: 20,
-    fontWeight: FontWeight.w600,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get body4Bold => TextStyle(
-    color: primary,
-    fontSize: 20,
-    fontWeight: FontWeight.w700,
-    fontFamily: _fontFamily,
-  );
+  /// Section headings, sheet headers, empty state titles (use `.semibold`).
+  TextStyle get title3 => _styleFor(AppTextRole.title3);
 
-  TextStyle get headlineLight => TextStyle(
-    color: primary,
-    fontSize: 22,
-    fontWeight: FontWeight.w400,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get headlineMedium => TextStyle(
-    color: primary,
-    fontSize: 22,
-    fontWeight: FontWeight.w500,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get headlineHeavy => TextStyle(
-    color: primary,
-    fontSize: 22,
-    fontWeight: FontWeight.w600,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get headlineBold => TextStyle(
-    color: primary,
-    fontSize: 22,
-    fontWeight: FontWeight.w700,
-    fontFamily: _fontFamily,
-  );
+  /// Card titles, dialog titles, emphasised list rows.
+  TextStyle get headline => _styleFor(AppTextRole.headline);
 
-  TextStyle get displayLight => TextStyle(
-    color: primary,
-    fontSize: 24,
-    fontWeight: FontWeight.w400,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get displayMedium => TextStyle(
-    color: primary,
-    fontSize: 24,
-    fontWeight: FontWeight.w500,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get displayHeavy => TextStyle(
-    color: primary,
-    fontSize: 24,
-    fontWeight: FontWeight.w600,
-    fontFamily: _fontFamily,
-  );
-  TextStyle get displayBold => TextStyle(
-    color: primary,
-    fontSize: 24,
-    fontWeight: FontWeight.w700,
-    fontFamily: _fontFamily,
-  );
+  /// List row titles, paragraphs, text field input, trailing values.
+  TextStyle get body => _styleFor(AppTextRole.body);
+
+  /// Quotes, notes, callout boxes, inline text buttons (use `.semibold`).
+  TextStyle get callout => _styleFor(AppTextRole.callout);
+
+  /// List subtitles, card descriptions, dialog messages, snackbars, field labels.
+  TextStyle get subheadline => _styleFor(AppTextRole.subheadline);
+
+  /// Timestamps, metadata, helper/error text, section headers, tooltips, chips.
+  TextStyle get footnote => _styleFor(AppTextRole.footnote);
+
+  /// Character counters, legal and fine print.
+  TextStyle get caption1 => _styleFor(AppTextRole.caption1);
+
+  /// Tab bar and bottom nav labels, badge counts.
+  TextStyle get caption2 => _styleFor(AppTextRole.caption2);
+
+  @Deprecated('Use caption2')
+  TextStyle get labelLight => caption2;
+  @Deprecated('Use caption2.medium')
+  TextStyle get labelMedium => caption2.medium;
+  @Deprecated('Use caption2.semibold')
+  TextStyle get labelHeavy => caption2.semibold;
+  @Deprecated('Use caption2.bold')
+  TextStyle get labelBold => caption2.bold;
+
+  @Deprecated('Use subheadline')
+  TextStyle get bodyLight => subheadline;
+  @Deprecated('Use subheadline.medium')
+  TextStyle get bodyMedium => subheadline.medium;
+  @Deprecated('Use subheadline.semibold')
+  TextStyle get bodyHeavy => subheadline.semibold;
+  @Deprecated('Use subheadline.bold')
+  TextStyle get bodyBold => subheadline.bold;
+
+  @Deprecated('Use callout')
+  TextStyle get body2Light => callout;
+  @Deprecated('Use callout.medium')
+  TextStyle get body2Medium => callout.medium;
+  @Deprecated('Use headline')
+  TextStyle get body2Heavy => headline;
+  @Deprecated('Use headline.bold')
+  TextStyle get body2Bold => headline.bold;
+
+  @Deprecated('Use title3')
+  TextStyle get body3Light => title3;
+  @Deprecated('Use title3.medium')
+  TextStyle get body3Medium => title3.medium;
+  @Deprecated('Use title3.semibold')
+  TextStyle get body3Heavy => title3.semibold;
+  @Deprecated('Use title3.bold')
+  TextStyle get body3Bold => title3.bold;
+
+  @Deprecated('Use title3')
+  TextStyle get body4Light => title3;
+  @Deprecated('Use title3.medium')
+  TextStyle get body4Medium => title3.medium;
+  @Deprecated('Use title3.semibold')
+  TextStyle get body4Heavy => title3.semibold;
+  @Deprecated('Use title3.bold')
+  TextStyle get body4Bold => title3.bold;
+
+  @Deprecated('Use title2')
+  TextStyle get headlineLight => title2;
+  @Deprecated('Use title2.medium')
+  TextStyle get headlineMedium => title2.medium;
+  @Deprecated('Use title2.semibold')
+  TextStyle get headlineHeavy => title2.semibold;
+  @Deprecated('Use title2.bold')
+  TextStyle get headlineBold => title2.bold;
+
+  @Deprecated('Use title2')
+  TextStyle get displayLight => title2;
+  @Deprecated('Use title2.medium')
+  TextStyle get displayMedium => title2.medium;
+  @Deprecated('Use title2.semibold')
+  TextStyle get displayHeavy => title2.semibold;
+  @Deprecated('Use title2.bold')
+  TextStyle get displayBold => title2.bold;
+}
+
+/// Apple uses the iOS "Large (Default)" Dynamic Type metrics; every other platform, including
+/// web, uses the Material 3 type scale. The OS text-size setting is applied by [TextScaler].
+enum AppTextRole {
+  largeTitle(appleSize: 34, appleLeading: 41, materialSize: 32, materialLeading: 40),
+  title1(appleSize: 28, appleLeading: 34, materialSize: 28, materialLeading: 36),
+  title2(appleSize: 22, appleLeading: 28, materialSize: 24, materialLeading: 32),
+  title3(appleSize: 20, appleLeading: 25, materialSize: 22, materialLeading: 28),
+  headline(
+    appleSize: 17,
+    appleLeading: 22,
+    materialSize: 16,
+    materialLeading: 24,
+    appleWeight: FontWeight.w600,
+    materialWeight: FontWeight.w500,
+  ),
+  body(appleSize: 17, appleLeading: 22, materialSize: 16, materialLeading: 24),
+  callout(appleSize: 16, appleLeading: 21, materialSize: 16, materialLeading: 24),
+  subheadline(appleSize: 15, appleLeading: 20, materialSize: 14, materialLeading: 20),
+  footnote(appleSize: 13, appleLeading: 18, materialSize: 12, materialLeading: 16),
+  caption1(appleSize: 12, appleLeading: 16, materialSize: 12, materialLeading: 16),
+  caption2(appleSize: 11, appleLeading: 13, materialSize: 11, materialLeading: 16);
+
+  const AppTextRole({
+    required this.appleSize,
+    required this.appleLeading,
+    required this.materialSize,
+    required this.materialLeading,
+    this.appleWeight = FontWeight.w400,
+    this.materialWeight = FontWeight.w400,
+  });
+
+  final double appleSize;
+  final double appleLeading;
+  final double materialSize;
+  final double materialLeading;
+  final FontWeight appleWeight;
+  final FontWeight materialWeight;
+
+  static bool usesAppleMetrics(TargetPlatform platform) =>
+      !kIsWeb && (platform == TargetPlatform.iOS || platform == TargetPlatform.macOS);
+
+  TextStyle style({required TargetPlatform platform, Color? color, String? fontFamily}) {
+    final isApple = usesAppleMetrics(platform);
+    final fontSize = isApple ? appleSize : materialSize;
+    final leading = isApple ? appleLeading : materialLeading;
+    return TextStyle(
+      color: color,
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      height: leading / fontSize,
+      leadingDistribution: TextLeadingDistribution.even,
+      fontWeight: isApple ? appleWeight : materialWeight,
+    );
+  }
+}
+
+extension TextStyleWeightX on TextStyle {
+  TextStyle get regular => copyWith(fontWeight: FontWeight.w400);
+  TextStyle get medium => copyWith(fontWeight: FontWeight.w500);
+  TextStyle get semibold => copyWith(fontWeight: FontWeight.w600);
+  TextStyle get bold => copyWith(fontWeight: FontWeight.w700);
 }
 
 /// Allows you to insert widgets inside a CustomScrollView

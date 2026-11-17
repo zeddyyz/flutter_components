@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/services.dart';
 import 'package:flutter_components/flutter_components.dart';
+import 'package:flutter_components/shared/modal_chrome.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// A [ComponentSliverBlurredAppBar] with an iOS-style large title.
@@ -58,6 +59,7 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
     this.stretch = false,
     this.xAxisOverflowExtent,
     this.toolbarHeight = kToolbarHeight,
+    this.handle,
   });
 
   final BuildContext context;
@@ -158,11 +160,14 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
   /// The height of the app bar
   final double toolbarHeight;
 
+  /// Grabber drawn at the top of the blurred header, inside the fade.
+  final Widget? handle;
+
   @override
   Widget build(BuildContext context) {
     var resolvedLargeTitleStyle =
-        largeTitleStyle ?? context.displayBold.copyWith(height: 1.15, letterSpacing: 0);
-    var resolvedCollapsedTitleStyle = collapsedTitleStyle ?? context.body2Heavy;
+        largeTitleStyle ?? context.title2.bold.copyWith(height: 1.15, letterSpacing: 0);
+    var resolvedCollapsedTitleStyle = collapsedTitleStyle ?? context.headline;
 
     if (foregroundColor != null) {
       resolvedLargeTitleStyle = resolvedLargeTitleStyle.copyWith(color: foregroundColor);
@@ -170,7 +175,7 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
     }
 
     final resolvedSubtitleStyle =
-        subtitleStyle ?? context.bodyMedium.copyWith(color: context.hintIntense);
+        subtitleStyle ?? context.subheadline.medium.copyWith(color: context.hintIntense);
 
     final resolvedLargeTitlePadding =
         largeTitlePadding ??
@@ -217,9 +222,11 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
       automaticallyImplyLeading: automaticallyImplyLeading,
       onBackButtonTap: onBackButtonTap,
       toolbarHeight: toolbarHeight,
+      handle: handle,
       expandedHeight:
           expandedHeight ??
           toolbarHeight +
+              (handle == null ? 0 : kSheetHandleExtent) +
               largeTitleHeight +
               resolvedLargeTitlePadding.vertical +
               (bottom?.preferredSize.height ?? 0),

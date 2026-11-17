@@ -23,7 +23,7 @@ class ComponentTooltip extends StatelessWidget {
           borderRadius: AppDecoration.borderRadiusMd,
         ),
       ),
-      textStyle: context.labelMedium.copyWith(color: Colors.white),
+      textStyle: context.caption2.medium.copyWith(color: Colors.white),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: child,
     );

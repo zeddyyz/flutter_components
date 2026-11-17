@@ -207,7 +207,7 @@ class _ComponentSearchFieldState extends State<ComponentSearchField> {
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               child: Text(
                 'Cancel',
-                style: context.bodyHeavy,
+                style: context.subheadline.semibold,
               ),
             ),
           ),

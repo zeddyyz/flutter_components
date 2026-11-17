@@ -21,7 +21,7 @@ class NavigationRailDemoHeader extends StatelessWidget {
         Expanded(
           child: Text(
             'Components',
-            style: context.body2Bold,
+            style: context.headline.bold,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -54,13 +54,13 @@ class NavigationRailDemoFooter extends StatelessWidget {
             children: [
               Text(
                 'Ada Lovelace',
-                style: context.bodyHeavy,
+                style: context.subheadline.semibold,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
                 'ada@example.com',
-                style: context.labelMedium.copyWith(color: context.hintIntense),
+                style: context.caption2.medium.copyWith(color: context.hintIntense),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -89,7 +89,7 @@ class _ProductMark extends StatelessWidget {
       ),
       child: Text(
         'C',
-        style: context.body2Bold.copyWith(color: context.primaryInverse),
+        style: context.headline.bold.copyWith(color: context.primaryInverse),
       ),
     );
   }

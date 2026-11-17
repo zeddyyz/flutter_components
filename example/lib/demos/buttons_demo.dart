@@ -76,7 +76,7 @@ class ButtonsDemoPage extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    Text('Default', style: context.labelMedium),
+                    Text('Default', style: context.caption2.medium),
                     const SizedBox(height: 8),
                     ComponentIconButton(
                       key: const ValueKey<String>('button-icon'),
@@ -96,7 +96,7 @@ class ButtonsDemoPage extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    Text('Filled', style: context.labelMedium),
+                    Text('Filled', style: context.caption2.medium),
                     const SizedBox(height: 8),
                     ComponentIconButton.filled(
                       key: const ValueKey<String>('button-icon-filled'),
@@ -136,7 +136,7 @@ class ButtonsDemoPage extends StatelessWidget {
                           children: [
                             Text(
                               'Blurred',
-                              style: context.labelMedium.copyWith(color: Colors.white),
+                              style: context.caption2.medium.copyWith(color: Colors.white),
                             ),
                             const SizedBox(height: 8),
                             ComponentIconButton.blurred(
@@ -198,7 +198,7 @@ class ButtonsDemoPage extends StatelessWidget {
                   children: [
                     const ComponentBackButton(),
                     const SizedBox(width: 12),
-                    Text('ComponentBackButton', style: context.bodyMedium),
+                    Text('ComponentBackButton', style: context.subheadline.medium),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -206,7 +206,7 @@ class ButtonsDemoPage extends StatelessWidget {
                   children: [
                     const ComponentBackButton.blurred(),
                     const SizedBox(width: 12),
-                    Text('ComponentBackButton in AppBar (blurred)', style: context.bodyMedium),
+                    Text('ComponentBackButton in AppBar (blurred)', style: context.subheadline.medium),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -214,7 +214,7 @@ class ButtonsDemoPage extends StatelessWidget {
                   children: [
                     const ComponentCloseButton(),
                     const SizedBox(width: 12),
-                    Text('ComponentCloseButton', style: context.bodyMedium),
+                    Text('ComponentCloseButton', style: context.subheadline.medium),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -224,7 +224,7 @@ class ButtonsDemoPage extends StatelessWidget {
                   onTap: () => AlertSnackbar.show(message: 'ComponentGestureClick'),
                   child: Text(
                     'Tap this label (ComponentGestureClick)',
-                    style: context.body2Heavy,
+                    style: context.headline,
                   ),
                 ),
               ],

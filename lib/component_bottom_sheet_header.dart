@@ -20,7 +20,7 @@ class ComponentBottomSheetHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: Theme.of(context).textTheme.headlineMedium),
+          Text(title, style: context.title3.semibold),
           ComponentCloseButton(),
         ],
       ),

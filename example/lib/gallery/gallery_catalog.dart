@@ -204,7 +204,7 @@ List<GallerySection> gallerySections() {
         GalleryEntry(
           id: 'overlays',
           title: 'Modals & alerts',
-          subtitle: 'Sheet, dialog, snackbar, full screen',
+          subtitle: 'Sheet, bottom sheet, dialog, snackbar, full screen',
           icon: Icons.filter_none_rounded,
           page: (_) => const OverlaysDemoPage(),
         ),

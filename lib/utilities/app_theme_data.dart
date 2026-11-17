@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/services.dart';
 import 'package:flutter_components/component_theme.dart';
 import 'package:flutter_components/components_context_extension.dart';
@@ -5,6 +6,33 @@ import 'package:flutter_components/utilities/app_decoration.dart';
 import 'package:material_ui/material_ui.dart';
 
 class AppThemeData {
+  static TextStyle _roleStyle(AppTextRole role, {Color? color, String? fontFamily}) =>
+      role.style(platform: defaultTargetPlatform, color: color, fontFamily: fontFamily);
+
+  static TextStyle _appBarTitleStyle({required Color color, String? fontFamily}) =>
+      _roleStyle(AppTextRole.title3, color: color, fontFamily: fontFamily).semibold;
+
+  static TextStyle _buttonTextStyle(String? fontFamily) =>
+      _roleStyle(AppTextRole.headline, fontFamily: fontFamily).semibold;
+
+  static TextTheme _textTheme({required Color color, String? fontFamily}) {
+    TextStyle styleFor(AppTextRole role) => _roleStyle(role, color: color, fontFamily: fontFamily);
+    return TextTheme(
+      headlineLarge: styleFor(AppTextRole.largeTitle),
+      headlineMedium: styleFor(AppTextRole.title1),
+      headlineSmall: styleFor(AppTextRole.title2),
+      titleLarge: styleFor(AppTextRole.title3),
+      titleMedium: styleFor(AppTextRole.headline),
+      titleSmall: styleFor(AppTextRole.subheadline).medium,
+      bodyLarge: styleFor(AppTextRole.body),
+      bodyMedium: styleFor(AppTextRole.subheadline),
+      bodySmall: styleFor(AppTextRole.footnote),
+      labelLarge: styleFor(AppTextRole.subheadline).medium,
+      labelMedium: styleFor(AppTextRole.caption1).medium,
+      labelSmall: styleFor(AppTextRole.caption2).medium,
+    );
+  }
+
   static ThemeData lightTheme({
     required BuildContext context,
     Color? scaffoldBackgroundColor,
@@ -31,12 +59,7 @@ class AppThemeData {
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: scaffoldBackgroundColor ?? fallbackScaffoldBackgroundColor,
-        titleTextStyle: TextStyle(
-          color: Colors.black,
-          fontSize: 21,
-          fontWeight: FontWeight.w600,
-          fontFamily: fontFamily,
-        ),
+        titleTextStyle: _appBarTitleStyle(color: Colors.black, fontFamily: fontFamily),
         foregroundColor: Colors.black,
         elevation: 0,
         scrolledUnderElevation: 0.0,
@@ -58,98 +81,7 @@ class AppThemeData {
         ),
       ),
       fontFamily: fontFamily,
-      textTheme: TextTheme(
-        displayLarge: TextStyle(
-          color: Colors.black,
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          fontFamily: fontFamily,
-        ),
-        displayMedium: TextStyle(
-          color: Colors.black,
-          fontSize: 24,
-          fontWeight: FontWeight.w500,
-          fontFamily: fontFamily,
-        ),
-        displaySmall: TextStyle(
-          color: Colors.black,
-          fontSize: 24,
-          fontWeight: FontWeight.normal,
-          fontFamily: fontFamily,
-        ),
-        headlineLarge: TextStyle(
-          color: Colors.black,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          fontFamily: fontFamily,
-        ),
-        headlineMedium: TextStyle(
-          color: Colors.black,
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-          fontFamily: fontFamily,
-        ),
-        headlineSmall: TextStyle(
-          color: Colors.black,
-          fontSize: 20,
-          fontWeight: FontWeight.normal,
-          fontFamily: fontFamily,
-        ),
-        titleLarge: TextStyle(
-          color: Colors.black,
-          fontSize: 17,
-          fontWeight: FontWeight.bold,
-          fontFamily: fontFamily,
-        ),
-        titleMedium: TextStyle(
-          color: Colors.black,
-          fontSize: 17,
-          fontWeight: FontWeight.w500,
-          fontFamily: fontFamily,
-        ),
-        titleSmall: TextStyle(
-          color: Colors.black,
-          fontSize: 17,
-          fontWeight: FontWeight.normal,
-          fontFamily: fontFamily,
-        ),
-        bodyLarge: TextStyle(
-          color: Colors.black,
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-          fontFamily: fontFamily,
-        ),
-        bodyMedium: TextStyle(
-          color: Colors.black,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          fontFamily: fontFamily,
-        ),
-        bodySmall: TextStyle(
-          color: Colors.black,
-          fontSize: 14,
-          fontWeight: FontWeight.normal,
-          fontFamily: fontFamily,
-        ),
-        labelLarge: TextStyle(
-          color: Colors.black,
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          fontFamily: fontFamily,
-        ),
-        labelMedium: TextStyle(
-          color: Colors.black,
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-          fontFamily: fontFamily,
-        ),
-        labelSmall: TextStyle(
-          color: Colors.black,
-          fontSize: 12,
-          fontWeight: FontWeight.normal,
-          fontFamily: fontFamily,
-        ),
-      ),
+      textTheme: _textTheme(color: Colors.black, fontFamily: fontFamily),
       iconTheme: IconThemeData(
         color: primaryColor,
         fill: 0,
@@ -162,13 +94,7 @@ class AppThemeData {
           backgroundColor: WidgetStateProperty.all(primaryColor),
           foregroundColor: WidgetStateProperty.all(Colors.white),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
-          textStyle: WidgetStatePropertyAll(
-            TextStyle(
-              fontSize: context.isMobile ? 16 : 19,
-              fontWeight: FontWeight.w600,
-              fontFamily: fontFamily,
-            ),
-          ),
+          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
           splashFactory: NoSplash.splashFactory,
           elevation: WidgetStateProperty.all(0),
           shape: WidgetStateProperty.all(
@@ -182,13 +108,7 @@ class AppThemeData {
           backgroundColor: WidgetStateProperty.all(const Color.fromRGBO(12, 12, 12, 1.0)),
           foregroundColor: WidgetStateProperty.all(Colors.white),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
-          textStyle: WidgetStatePropertyAll(
-            TextStyle(
-              fontSize: context.isMobile ? 16 : 19,
-              fontWeight: FontWeight.w600,
-              fontFamily: fontFamily,
-            ),
-          ),
+          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
           splashFactory: NoSplash.splashFactory,
           elevation: WidgetStateProperty.all(0),
           shape: WidgetStateProperty.all(
@@ -202,13 +122,7 @@ class AppThemeData {
           backgroundColor: WidgetStateProperty.all(scaffoldBackgroundColor),
           foregroundColor: WidgetStateProperty.all(primaryColor),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
-          textStyle: WidgetStatePropertyAll(
-            TextStyle(
-              fontSize: context.isMobile ? 16 : 19,
-              fontWeight: FontWeight.w600,
-              fontFamily: fontFamily,
-            ),
-          ),
+          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
           splashFactory: NoSplash.splashFactory,
           elevation: WidgetStateProperty.all(0),
           side: WidgetStateProperty.all(
@@ -229,13 +143,7 @@ class AppThemeData {
         style: ButtonStyle(
           foregroundColor: WidgetStateProperty.all(primaryColor),
           backgroundColor: WidgetStateProperty.all(Colors.transparent),
-          textStyle: WidgetStatePropertyAll(
-            TextStyle(
-              fontSize: context.isMobile ? 16 : 19,
-              fontWeight: FontWeight.w600,
-              fontFamily: fontFamily,
-            ),
-          ),
+          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
           splashFactory: NoSplash.splashFactory,
           elevation: WidgetStateProperty.all(0),
           shape: WidgetStateProperty.all(
@@ -296,12 +204,7 @@ class AppThemeData {
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: scaffoldBackgroundColor ?? Color(0xff000000),
-        titleTextStyle: TextStyle(
-          color: Colors.white,
-          fontSize: 21,
-          fontWeight: FontWeight.w600,
-          fontFamily: fontFamily,
-        ),
+        titleTextStyle: _appBarTitleStyle(color: Colors.white, fontFamily: fontFamily),
         foregroundColor: Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0.0,
@@ -321,98 +224,7 @@ class AppThemeData {
         shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusLg),
       ),
       fontFamily: fontFamily,
-      textTheme: TextTheme(
-        displayLarge: TextStyle(
-          color: Colors.white,
-          fontSize: 24,
-          fontWeight: FontWeight.w700,
-          fontFamily: fontFamily,
-        ),
-        displayMedium: TextStyle(
-          color: Colors.white,
-          fontSize: 24,
-          fontWeight: FontWeight.w500,
-          fontFamily: fontFamily,
-        ),
-        displaySmall: TextStyle(
-          color: Colors.white,
-          fontSize: 24,
-          fontWeight: FontWeight.w400,
-          fontFamily: fontFamily,
-        ),
-        headlineLarge: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-          fontFamily: fontFamily,
-        ),
-        headlineMedium: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-          fontFamily: fontFamily,
-        ),
-        headlineSmall: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.w400,
-          fontFamily: fontFamily,
-        ),
-        titleLarge: TextStyle(
-          color: Colors.white,
-          fontSize: 17,
-          fontWeight: FontWeight.w700,
-          fontFamily: fontFamily,
-        ),
-        titleMedium: TextStyle(
-          color: Colors.white,
-          fontSize: 17,
-          fontWeight: FontWeight.w500,
-          fontFamily: fontFamily,
-        ),
-        titleSmall: TextStyle(
-          color: Colors.white,
-          fontSize: 17,
-          fontWeight: FontWeight.w400,
-          fontFamily: fontFamily,
-        ),
-        bodyLarge: TextStyle(
-          color: Colors.white,
-          fontSize: 14,
-          fontWeight: FontWeight.w700,
-          fontFamily: fontFamily,
-        ),
-        bodyMedium: TextStyle(
-          color: Colors.white,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          fontFamily: fontFamily,
-        ),
-        bodySmall: TextStyle(
-          color: Colors.white,
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          fontFamily: fontFamily,
-        ),
-        labelLarge: TextStyle(
-          color: Colors.white,
-          fontSize: 12,
-          fontWeight: FontWeight.w700,
-          fontFamily: fontFamily,
-        ),
-        labelMedium: TextStyle(
-          color: Colors.white,
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-          fontFamily: fontFamily,
-        ),
-        labelSmall: TextStyle(
-          color: Colors.white,
-          fontSize: 12,
-          fontWeight: FontWeight.w400,
-          fontFamily: fontFamily,
-        ),
-      ),
+      textTheme: _textTheme(color: Colors.white, fontFamily: fontFamily),
       iconTheme: IconThemeData(
         color: primaryColor,
         fill: 0,
@@ -426,13 +238,7 @@ class AppThemeData {
           foregroundColor: WidgetStateProperty.all(Colors.white),
           iconColor: WidgetStateProperty.all(Colors.white),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
-          textStyle: WidgetStatePropertyAll(
-            TextStyle(
-              fontSize: context.isMobile ? 16 : 19,
-              fontWeight: FontWeight.w600,
-              fontFamily: fontFamily,
-            ),
-          ),
+          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
           ),
@@ -446,13 +252,7 @@ class AppThemeData {
           backgroundColor: WidgetStateProperty.all(const Color.fromRGBO(245, 245, 245, 1.0)),
           foregroundColor: WidgetStateProperty.all(Colors.black),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
-          textStyle: WidgetStatePropertyAll(
-            TextStyle(
-              fontSize: context.isMobile ? 16 : 19,
-              fontWeight: FontWeight.w600,
-              fontFamily: fontFamily,
-            ),
-          ),
+          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
           ),
@@ -466,13 +266,7 @@ class AppThemeData {
           backgroundColor: WidgetStateProperty.all(scaffoldBackgroundColor),
           foregroundColor: WidgetStateProperty.all(Colors.white),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
-          textStyle: WidgetStatePropertyAll(
-            TextStyle(
-              fontSize: context.isMobile ? 16 : 19,
-              fontWeight: FontWeight.w600,
-              fontFamily: fontFamily,
-            ),
-          ),
+          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(
               borderRadius: AppDecoration.borderRadiusStadium,
@@ -487,13 +281,7 @@ class AppThemeData {
         style: ButtonStyle(
           foregroundColor: WidgetStateProperty.all(primaryColor),
           backgroundColor: WidgetStateProperty.all(Colors.transparent),
-          textStyle: WidgetStatePropertyAll(
-            TextStyle(
-              fontSize: context.isMobile ? 16 : 19,
-              fontWeight: FontWeight.w600,
-              fontFamily: fontFamily,
-            ),
-          ),
+          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
           splashFactory: NoSplash.splashFactory,
           elevation: WidgetStateProperty.all(0),
           shape: WidgetStateProperty.all(

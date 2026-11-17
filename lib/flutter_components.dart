@@ -10,6 +10,7 @@ export 'component_badge.dart';
 export 'component_blurred_app_bar.dart';
 export 'component_blurred_widget.dart';
 export 'component_bottom_nav_bar.dart';
+export 'component_bottom_sheet.dart';
 export 'component_bottom_sheet_header.dart';
 export 'component_calendar.dart';
 export 'component_card.dart';
