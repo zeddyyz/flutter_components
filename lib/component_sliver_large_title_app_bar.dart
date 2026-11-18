@@ -166,8 +166,8 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var resolvedLargeTitleStyle =
-        largeTitleStyle ?? context.title2.bold.copyWith(height: 1.15, letterSpacing: 0);
-    var resolvedCollapsedTitleStyle = collapsedTitleStyle ?? context.headline;
+        largeTitleStyle ?? context.textTheme.title.bold.copyWith(height: 1.15, letterSpacing: 0);
+    var resolvedCollapsedTitleStyle = collapsedTitleStyle ?? context.textTheme.headline;
 
     if (foregroundColor != null) {
       resolvedLargeTitleStyle = resolvedLargeTitleStyle.copyWith(color: foregroundColor);
@@ -175,7 +175,7 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
     }
 
     final resolvedSubtitleStyle =
-        subtitleStyle ?? context.subheadline.medium.copyWith(color: context.hintIntense);
+        subtitleStyle ?? context.textTheme.subheadline.medium.copyWith(color: context.hintIntense);
 
     final resolvedLargeTitlePadding =
         largeTitlePadding ??

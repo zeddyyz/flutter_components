@@ -113,7 +113,7 @@ class ComponentResponsiveModalWidget extends StatelessWidget {
   Widget _buildAppBar(BuildContext context, Widget? handle) {
     return ComponentSliverBlurredAppBar(
       context: context,
-      title: Text(title, style: context.headline),
+      title: Text(title, style: context.textTheme.headline),
       centerTitle: true,
       toolbarHeight: kModalToolbarHeight,
       leading: ComponentCloseButton.blurred(

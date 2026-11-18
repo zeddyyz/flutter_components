@@ -231,6 +231,7 @@ class AlertSnackbar {
       }
       element.visitChildren(visit);
     }
+
     visit(root);
     return found;
   }
@@ -656,7 +657,7 @@ class _ToastPillState extends State<_ToastPill> with TickerProviderStateMixin {
                         Text(
                           headline,
                           softWrap: true,
-                          style: widget.overlayContext.textTheme.bodyMedium?.copyWith(
+                          style: widget.overlayContext.textTheme.subheadline.copyWith(
                             color: palette.title,
                             height: 1.2,
                             letterSpacing: -0.25,
@@ -668,7 +669,7 @@ class _ToastPillState extends State<_ToastPill> with TickerProviderStateMixin {
                           Text(
                             subtitle,
                             softWrap: true,
-                            style: widget.overlayContext.textTheme.bodyMedium?.copyWith(
+                            style: widget.overlayContext.textTheme.subheadline.copyWith(
                               color: palette.accent,
                               height: 1.25,
                               letterSpacing: -0.15,

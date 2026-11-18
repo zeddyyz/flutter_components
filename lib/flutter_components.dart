@@ -66,5 +66,6 @@ export 'shared/component_gesture_click.dart';
 export 'shared/component_weighted_icon.dart';
 export 'utilities/alert_snackbar.dart';
 export 'utilities/app_decoration.dart';
+export 'utilities/app_text_theme.dart';
 export 'utilities/app_theme_data.dart';
 export 'utilities/logging_utility.dart';

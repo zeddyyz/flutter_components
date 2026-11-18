@@ -116,7 +116,7 @@ class ComponentDialogWidget extends StatelessWidget {
                         Expanded(
                           child: Text(
                             title,
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: context.textTheme.headline,
                           ),
                         ),
                       ],
@@ -127,7 +127,7 @@ class ComponentDialogWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
                       title,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: context.textTheme.headline,
                     ),
                   ),
                 const SizedBox(height: 16),
@@ -136,7 +136,7 @@ class ComponentDialogWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
                       description!,
-                      style: context.subheadline,
+                      style: context.textTheme.subheadline,
                     ),
                   ),
                 ?content,
@@ -165,7 +165,7 @@ class ComponentDialogWidget extends StatelessWidget {
                       ),
                       child: Text(
                         confirmText,
-                        style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        style: context.textTheme.headline.copyWith(
                           color: Colors.white,
                         ),
                       ),
@@ -197,7 +197,7 @@ class ComponentDialogWidget extends StatelessWidget {
                         ),
                         child: Text(
                           cancelText,
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: context.textTheme.headline,
                         ),
                       ),
                   ],

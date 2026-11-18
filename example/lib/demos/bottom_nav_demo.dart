@@ -43,7 +43,7 @@ class BottomNavDemoPage extends StatelessWidget {
                     child: Center(
                       child: Text(
                         '${index + 1}',
-                        style: context.subheadline.bold.copyWith(color: Colors.white),
+                        style: context.textTheme.subheadline.bold.copyWith(color: Colors.white),
                       ),
                     ),
                   ),
@@ -54,10 +54,10 @@ class BottomNavDemoPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 2,
                     children: [
-                      Text('Row ${index + 1}', style: context.headline),
+                      Text('Row ${index + 1}', style: context.textTheme.headline),
                       Text(
                         'Scroll so this text passes under the glass pills',
-                        style: context.caption2.medium.copyWith(
+                        style: context.textTheme.caption2.medium.copyWith(
                           color: context.primary.withValues(alpha: 0.7),
                         ),
                         maxLines: 1,

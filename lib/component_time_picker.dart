@@ -47,27 +47,35 @@ class _TimePickerBodyState extends State<_TimePickerBody> {
         children: [
           Row(
             children: [
-              Expanded(child: _Wheel(
-                label: 'Hour',
-                value: _hour,
-                min: 1,
-                max: 12,
-                onChanged: (int value) => setState(() => _hour = value),
-              )),
+              Expanded(
+                child: _Wheel(
+                  label: 'Hour',
+                  value: _hour,
+                  min: 1,
+                  max: 12,
+                  onChanged: (int value) => setState(() => _hour = value),
+                ),
+              ),
               const SizedBox(width: 12),
-              Expanded(child: _Wheel(
-                label: 'Minute',
-                value: _minute,
-                min: 0,
-                max: 59,
-                onChanged: (int value) => setState(() => _minute = value),
-              )),
+              Expanded(
+                child: _Wheel(
+                  label: 'Minute',
+                  value: _minute,
+                  min: 0,
+                  max: 59,
+                  onChanged: (int value) => setState(() => _minute = value),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 16),
           Row(
             children: [
-              _PeriodChip(label: 'AM', selected: !_isPm, onTap: () => setState(() => _isPm = false)),
+              _PeriodChip(
+                label: 'AM',
+                selected: !_isPm,
+                onTap: () => setState(() => _isPm = false),
+              ),
               const SizedBox(width: 8),
               _PeriodChip(label: 'PM', selected: _isPm, onTap: () => setState(() => _isPm = true)),
               const Spacer(),
@@ -103,7 +111,7 @@ class _Wheel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(label, style: context.caption2.medium.copyWith(color: context.hintIntense)),
+        Text(label, style: context.textTheme.caption2.medium.copyWith(color: context.hintIntense)),
         const SizedBox(height: 8),
         SizedBox(
           height: 140,
@@ -120,7 +128,7 @@ class _Wheel extends StatelessWidget {
                 return Center(
                   child: Text(
                     number.toString().padLeft(2, '0'),
-                    style: context.title3.semibold,
+                    style: context.textTheme.title3.semibold,
                   ),
                 );
               },
@@ -156,7 +164,9 @@ class _PeriodChip extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: context.caption2.semibold.copyWith(color: selected ? Colors.white : context.primary),
+          style: context.textTheme.caption2.semibold.copyWith(
+            color: selected ? Colors.white : context.primary,
+          ),
         ),
       ),
     );

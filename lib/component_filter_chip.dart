@@ -40,7 +40,7 @@ class ComponentFilterChip extends StatelessWidget {
       child: FilterChip(
         label: Text(
           label,
-          style: Theme.of(context).textTheme.labelMedium!.copyWith(
+          style: context.textTheme.caption1.medium.copyWith(
             color: labelColor ?? (isSelected ? Colors.white : context.primary),
           ),
         ),

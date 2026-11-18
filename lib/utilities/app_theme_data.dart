@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/services.dart';
 import 'package:flutter_components/component_theme.dart';
 import 'package:flutter_components/components_context_extension.dart';
@@ -6,32 +5,8 @@ import 'package:flutter_components/utilities/app_decoration.dart';
 import 'package:material_ui/material_ui.dart';
 
 class AppThemeData {
-  static TextStyle _roleStyle(AppTextRole role, {Color? color, String? fontFamily}) =>
-      role.style(platform: defaultTargetPlatform, color: color, fontFamily: fontFamily);
-
-  static TextStyle _appBarTitleStyle({required Color color, String? fontFamily}) =>
-      _roleStyle(AppTextRole.title3, color: color, fontFamily: fontFamily).semibold;
-
-  static TextStyle _buttonTextStyle(String? fontFamily) =>
-      _roleStyle(AppTextRole.headline, fontFamily: fontFamily).semibold;
-
-  static TextTheme _textTheme({required Color color, String? fontFamily}) {
-    TextStyle styleFor(AppTextRole role) => _roleStyle(role, color: color, fontFamily: fontFamily);
-    return TextTheme(
-      headlineLarge: styleFor(AppTextRole.largeTitle),
-      headlineMedium: styleFor(AppTextRole.title1),
-      headlineSmall: styleFor(AppTextRole.title2),
-      titleLarge: styleFor(AppTextRole.title3),
-      titleMedium: styleFor(AppTextRole.headline),
-      titleSmall: styleFor(AppTextRole.subheadline).medium,
-      bodyLarge: styleFor(AppTextRole.body),
-      bodyMedium: styleFor(AppTextRole.subheadline),
-      bodySmall: styleFor(AppTextRole.footnote),
-      labelLarge: styleFor(AppTextRole.subheadline).medium,
-      labelMedium: styleFor(AppTextRole.caption1).medium,
-      labelSmall: styleFor(AppTextRole.caption2).medium,
-    );
-  }
+  static AppTextTheme _appTextTheme({required Color color, String? fontFamily}) =>
+      AppTextTheme.resolve(color: color, fontFamily: fontFamily);
 
   static ThemeData lightTheme({
     required BuildContext context,
@@ -43,6 +18,7 @@ class AppThemeData {
     Color? bottomSheetBackgroundColor,
   }) {
     final fallbackScaffoldBackgroundColor = const Color.fromARGB(255, 246, 246, 246);
+    final appTextTheme = _appTextTheme(color: Colors.black, fontFamily: fontFamily);
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
@@ -59,7 +35,7 @@ class AppThemeData {
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: scaffoldBackgroundColor ?? fallbackScaffoldBackgroundColor,
-        titleTextStyle: _appBarTitleStyle(color: Colors.black, fontFamily: fontFamily),
+        titleTextStyle: appTextTheme.title3.semibold,
         foregroundColor: Colors.black,
         elevation: 0,
         scrolledUnderElevation: 0.0,
@@ -81,7 +57,7 @@ class AppThemeData {
         ),
       ),
       fontFamily: fontFamily,
-      textTheme: _textTheme(color: Colors.black, fontFamily: fontFamily),
+      textTheme: appTextTheme.toMaterialTextTheme(),
       iconTheme: IconThemeData(
         color: primaryColor,
         fill: 0,
@@ -94,7 +70,7 @@ class AppThemeData {
           backgroundColor: WidgetStateProperty.all(primaryColor),
           foregroundColor: WidgetStateProperty.all(Colors.white),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
-          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
+          textStyle: WidgetStatePropertyAll(appTextTheme.headline.semibold),
           splashFactory: NoSplash.splashFactory,
           elevation: WidgetStateProperty.all(0),
           shape: WidgetStateProperty.all(
@@ -108,7 +84,7 @@ class AppThemeData {
           backgroundColor: WidgetStateProperty.all(const Color.fromRGBO(12, 12, 12, 1.0)),
           foregroundColor: WidgetStateProperty.all(Colors.white),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
-          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
+          textStyle: WidgetStatePropertyAll(appTextTheme.headline.semibold),
           splashFactory: NoSplash.splashFactory,
           elevation: WidgetStateProperty.all(0),
           shape: WidgetStateProperty.all(
@@ -122,7 +98,7 @@ class AppThemeData {
           backgroundColor: WidgetStateProperty.all(scaffoldBackgroundColor),
           foregroundColor: WidgetStateProperty.all(primaryColor),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
-          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
+          textStyle: WidgetStatePropertyAll(appTextTheme.headline.semibold),
           splashFactory: NoSplash.splashFactory,
           elevation: WidgetStateProperty.all(0),
           side: WidgetStateProperty.all(
@@ -143,7 +119,7 @@ class AppThemeData {
         style: ButtonStyle(
           foregroundColor: WidgetStateProperty.all(primaryColor),
           backgroundColor: WidgetStateProperty.all(Colors.transparent),
-          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
+          textStyle: WidgetStatePropertyAll(appTextTheme.headline.semibold),
           splashFactory: NoSplash.splashFactory,
           elevation: WidgetStateProperty.all(0),
           shape: WidgetStateProperty.all(
@@ -173,6 +149,7 @@ class AppThemeData {
         shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusCard),
       ),
       extensions: <ThemeExtension<dynamic>>[
+        appTextTheme,
         ComponentThemeData.light(
           sheetBackgroundColor: bottomSheetBackgroundColor ?? Color(0xfff2f2f7),
         ),
@@ -189,6 +166,7 @@ class AppThemeData {
     ColorScheme? colorScheme,
     Color? bottomSheetBackgroundColor,
   }) {
+    final appTextTheme = _appTextTheme(color: Colors.white, fontFamily: fontFamily);
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
@@ -204,7 +182,7 @@ class AppThemeData {
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: scaffoldBackgroundColor ?? Color(0xff000000),
-        titleTextStyle: _appBarTitleStyle(color: Colors.white, fontFamily: fontFamily),
+        titleTextStyle: appTextTheme.title3.semibold,
         foregroundColor: Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0.0,
@@ -224,7 +202,7 @@ class AppThemeData {
         shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusLg),
       ),
       fontFamily: fontFamily,
-      textTheme: _textTheme(color: Colors.white, fontFamily: fontFamily),
+      textTheme: appTextTheme.toMaterialTextTheme(),
       iconTheme: IconThemeData(
         color: primaryColor,
         fill: 0,
@@ -238,7 +216,7 @@ class AppThemeData {
           foregroundColor: WidgetStateProperty.all(Colors.white),
           iconColor: WidgetStateProperty.all(Colors.white),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
-          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
+          textStyle: WidgetStatePropertyAll(appTextTheme.headline.semibold),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
           ),
@@ -252,7 +230,7 @@ class AppThemeData {
           backgroundColor: WidgetStateProperty.all(const Color.fromRGBO(245, 245, 245, 1.0)),
           foregroundColor: WidgetStateProperty.all(Colors.black),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
-          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
+          textStyle: WidgetStatePropertyAll(appTextTheme.headline.semibold),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusStadium),
           ),
@@ -266,7 +244,7 @@ class AppThemeData {
           backgroundColor: WidgetStateProperty.all(scaffoldBackgroundColor),
           foregroundColor: WidgetStateProperty.all(Colors.white),
           fixedSize: WidgetStatePropertyAll(Size(double.maxFinite, context.isMobile ? 52 : 54)),
-          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
+          textStyle: WidgetStatePropertyAll(appTextTheme.headline.semibold),
           shape: WidgetStateProperty.all(
             RoundedSuperellipseBorder(
               borderRadius: AppDecoration.borderRadiusStadium,
@@ -281,7 +259,7 @@ class AppThemeData {
         style: ButtonStyle(
           foregroundColor: WidgetStateProperty.all(primaryColor),
           backgroundColor: WidgetStateProperty.all(Colors.transparent),
-          textStyle: WidgetStatePropertyAll(_buttonTextStyle(fontFamily)),
+          textStyle: WidgetStatePropertyAll(appTextTheme.headline.semibold),
           splashFactory: NoSplash.splashFactory,
           elevation: WidgetStateProperty.all(0),
           shape: WidgetStateProperty.all(
@@ -311,6 +289,7 @@ class AppThemeData {
         shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusCard),
       ),
       extensions: <ThemeExtension<dynamic>>[
+        appTextTheme,
         ComponentThemeData.dark(
           sheetBackgroundColor: bottomSheetBackgroundColor ?? Color(0xff1c1c1e),
         ),

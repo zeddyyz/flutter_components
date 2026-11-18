@@ -19,7 +19,9 @@ class ComponentCheckbox extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool enabled = onChanged != null;
     final Color fill = value ? Theme.of(context).primaryColor : Colors.transparent;
-    final Color border = value ? Theme.of(context).primaryColor : context.componentTheme.borderColorIntense;
+    final Color border = value
+        ? Theme.of(context).primaryColor
+        : context.componentTheme.borderColorIntense;
 
     final Widget box = AnimatedContainer(
       duration: const Duration(milliseconds: 160),
@@ -45,7 +47,7 @@ class ComponentCheckbox extends StatelessWidget {
             children: [
               box,
               const SizedBox(width: 10),
-              Flexible(child: Text(label!, style: context.subheadline.medium)),
+              Flexible(child: Text(label!, style: context.textTheme.subheadline.medium)),
             ],
           );
 

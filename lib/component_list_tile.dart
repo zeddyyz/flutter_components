@@ -167,10 +167,10 @@ class _ComponentListTileState extends State<ComponentListTile> {
                 },
               );
 
-          final titleStyle = widget.titleStyle ?? builderContext.body;
+          final titleStyle = widget.titleStyle ?? builderContext.textTheme.body;
           final subtitleStyle =
               widget.subtitleStyle ??
-              builderContext.subheadline.copyWith(color: builderContext.hint);
+              builderContext.textTheme.subheadline.copyWith(color: builderContext.hint);
 
           return ComponentNoSplashTheme(
             child: ListTile(

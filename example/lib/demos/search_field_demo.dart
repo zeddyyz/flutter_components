@@ -61,7 +61,7 @@ class _SearchFieldDemoPageState extends State<SearchFieldDemoPage> {
               const SizedBox(height: 12),
               Text(
                 'Last emitted query: ${_lastEmittedQuery ?? '—'}',
-                style: context.subheadline.medium.copyWith(color: context.hintIntense),
+                style: context.textTheme.subheadline.medium.copyWith(color: context.hintIntense),
               ),
             ],
           ),

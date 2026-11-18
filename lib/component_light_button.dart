@@ -46,7 +46,7 @@ class ComponentLightButton extends StatelessWidget {
         textStyle: TextStyle(
           fontSize: context.isMobile ? 16 : 19,
           fontWeight: FontWeight.w600,
-          fontFamily: context.textTheme.bodySmall!.fontFamily,
+          fontFamily: context.textTheme.body.fontFamily,
         ),
         shape: RoundedSuperellipseBorder(
           borderRadius: AppDecoration.borderRadiusStadium,

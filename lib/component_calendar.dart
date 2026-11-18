@@ -101,7 +101,7 @@ class ComponentCalendar extends StatelessWidget {
                   color: resolvedTitleColor,
                   fontWeight: FontWeight.w600,
                 ) ??
-                Theme.of(context).textTheme.titleMedium?.copyWith(
+                context.textTheme.headline.copyWith(
                   color: resolvedTitleColor,
                   fontWeight: FontWeight.w600,
                 ),
@@ -119,7 +119,7 @@ class ComponentCalendar extends StatelessWidget {
                               color: resolvedWeekdayLabelColor,
                               fontWeight: FontWeight.w600,
                             ) ??
-                            Theme.of(context).textTheme.bodySmall?.copyWith(
+                            context.textTheme.footnote.copyWith(
                               color: resolvedWeekdayLabelColor,
                               fontWeight: FontWeight.w600,
                             ),
@@ -317,7 +317,7 @@ class _DayCell extends StatelessWidget {
                     color: textColor,
                     fontWeight: isHighlighted ? FontWeight.w600 : FontWeight.normal,
                   ) ??
-                  Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  context.textTheme.subheadline.copyWith(
                     color: textColor,
                     fontWeight: isHighlighted ? FontWeight.w600 : FontWeight.normal,
                   ),

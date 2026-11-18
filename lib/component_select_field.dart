@@ -75,7 +75,7 @@ class ComponentSelectField<T> extends StatelessWidget {
             Expanded(
               child: Text(
                 selected ?? hintText,
-                style: context.subheadline.medium.copyWith(
+                style: context.textTheme.subheadline.medium.copyWith(
                   color: selected == null ? context.componentTheme.hintColor : context.primary,
                 ),
               ),

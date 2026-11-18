@@ -1,7 +1,9 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_components/component_theme.dart';
 import 'package:flutter_components/shared/app_screen_size.dart';
+import 'package:flutter_components/utilities/app_text_theme.dart';
 import 'package:material_ui/material_ui.dart';
+
+export 'package:flutter_components/utilities/app_text_theme.dart';
 
 extension ContextExtension on BuildContext {
   ThemeData get theme => Theme.of(this);
@@ -22,8 +24,8 @@ extension ContextExtension on BuildContext {
   bool get isLandscapeView => MediaQuery.orientationOf(this) == Orientation.landscape;
   bool get isLandscape => isLandscapeView;
 
-  /// TextTheme
-  TextTheme get textTheme => theme.textTheme;
+  /// Semantic type styles. Flutter's Material [TextTheme] is [theme].textTheme.
+  AppTextTheme get textTheme => AppTextTheme.of(this);
 
   /// ColorScheme
   ColorScheme get colorScheme => theme.colorScheme;
@@ -152,170 +154,68 @@ extension ContextExtension on BuildContext {
   double get bottomPadding => MediaQuery.paddingOf(this).bottom + 80;
   double get paddingBottom => MediaQuery.paddingOf(this).bottom + 20;
 
-  /// Typography
-  String? get _fontFamily => textTheme.bodyMedium?.fontFamily;
+  @Deprecated('Use textTheme.caption2')
+  TextStyle get labelLight => textTheme.caption2;
+  @Deprecated('Use textTheme.caption2.medium')
+  TextStyle get labelMedium => textTheme.caption2.medium;
+  @Deprecated('Use textTheme.caption2.semibold')
+  TextStyle get labelHeavy => textTheme.caption2.semibold;
+  @Deprecated('Use textTheme.caption2.bold')
+  TextStyle get labelBold => textTheme.caption2.bold;
 
-  TextStyle _styleFor(AppTextRole role) =>
-      role.style(platform: theme.platform, color: primary, fontFamily: _fontFamily);
+  @Deprecated('Use textTheme.subheadline')
+  TextStyle get bodyLight => textTheme.subheadline;
+  @Deprecated('Use textTheme.subheadline.medium')
+  TextStyle get bodyMedium => textTheme.subheadline.medium;
+  @Deprecated('Use textTheme.subheadline.semibold')
+  TextStyle get bodyHeavy => textTheme.subheadline.semibold;
+  @Deprecated('Use textTheme.subheadline.bold')
+  TextStyle get bodyBold => textTheme.subheadline.bold;
 
-  /// Large collapsing screen titles (use `.bold`).
-  TextStyle get largeTitle => _styleFor(AppTextRole.largeTitle);
+  @Deprecated('Use textTheme.callout')
+  TextStyle get body2Light => textTheme.callout;
+  @Deprecated('Use textTheme.callout.medium')
+  TextStyle get body2Medium => textTheme.callout.medium;
+  @Deprecated('Use textTheme.headline')
+  TextStyle get body2Heavy => textTheme.headline;
+  @Deprecated('Use textTheme.headline.bold')
+  TextStyle get body2Bold => textTheme.headline.bold;
 
-  /// Hero numbers, prices, stats, onboarding titles (use `.bold`).
-  TextStyle get title1 => _styleFor(AppTextRole.title1);
+  @Deprecated('Use textTheme.title3')
+  TextStyle get body3Light => textTheme.title3;
+  @Deprecated('Use textTheme.title3.medium')
+  TextStyle get body3Medium => textTheme.title3.medium;
+  @Deprecated('Use textTheme.title3.semibold')
+  TextStyle get body3Heavy => textTheme.title3.semibold;
+  @Deprecated('Use textTheme.title3.bold')
+  TextStyle get body3Bold => textTheme.title3.bold;
 
-  /// Larger headings on roomy screens.
-  TextStyle get title2 => _styleFor(AppTextRole.title2);
+  @Deprecated('Use textTheme.title3')
+  TextStyle get body4Light => textTheme.title3;
+  @Deprecated('Use textTheme.title3.medium')
+  TextStyle get body4Medium => textTheme.title3.medium;
+  @Deprecated('Use textTheme.title3.semibold')
+  TextStyle get body4Heavy => textTheme.title3.semibold;
+  @Deprecated('Use textTheme.title3.bold')
+  TextStyle get body4Bold => textTheme.title3.bold;
 
-  /// Section headings, sheet headers, empty state titles (use `.semibold`).
-  TextStyle get title3 => _styleFor(AppTextRole.title3);
+  @Deprecated('Use textTheme.title')
+  TextStyle get headlineLight => textTheme.title;
+  @Deprecated('Use textTheme.title.medium')
+  TextStyle get headlineMedium => textTheme.title.medium;
+  @Deprecated('Use textTheme.title.semibold')
+  TextStyle get headlineHeavy => textTheme.title.semibold;
+  @Deprecated('Use textTheme.title.bold')
+  TextStyle get headlineBold => textTheme.title.bold;
 
-  /// Card titles, dialog titles, emphasised list rows.
-  TextStyle get headline => _styleFor(AppTextRole.headline);
-
-  /// List row titles, paragraphs, text field input, trailing values.
-  TextStyle get body => _styleFor(AppTextRole.body);
-
-  /// Quotes, notes, callout boxes, inline text buttons (use `.semibold`).
-  TextStyle get callout => _styleFor(AppTextRole.callout);
-
-  /// List subtitles, card descriptions, dialog messages, snackbars, field labels.
-  TextStyle get subheadline => _styleFor(AppTextRole.subheadline);
-
-  /// Timestamps, metadata, helper/error text, section headers, tooltips, chips.
-  TextStyle get footnote => _styleFor(AppTextRole.footnote);
-
-  /// Character counters, legal and fine print.
-  TextStyle get caption1 => _styleFor(AppTextRole.caption1);
-
-  /// Tab bar and bottom nav labels, badge counts.
-  TextStyle get caption2 => _styleFor(AppTextRole.caption2);
-
-  @Deprecated('Use caption2')
-  TextStyle get labelLight => caption2;
-  @Deprecated('Use caption2.medium')
-  TextStyle get labelMedium => caption2.medium;
-  @Deprecated('Use caption2.semibold')
-  TextStyle get labelHeavy => caption2.semibold;
-  @Deprecated('Use caption2.bold')
-  TextStyle get labelBold => caption2.bold;
-
-  @Deprecated('Use subheadline')
-  TextStyle get bodyLight => subheadline;
-  @Deprecated('Use subheadline.medium')
-  TextStyle get bodyMedium => subheadline.medium;
-  @Deprecated('Use subheadline.semibold')
-  TextStyle get bodyHeavy => subheadline.semibold;
-  @Deprecated('Use subheadline.bold')
-  TextStyle get bodyBold => subheadline.bold;
-
-  @Deprecated('Use callout')
-  TextStyle get body2Light => callout;
-  @Deprecated('Use callout.medium')
-  TextStyle get body2Medium => callout.medium;
-  @Deprecated('Use headline')
-  TextStyle get body2Heavy => headline;
-  @Deprecated('Use headline.bold')
-  TextStyle get body2Bold => headline.bold;
-
-  @Deprecated('Use title3')
-  TextStyle get body3Light => title3;
-  @Deprecated('Use title3.medium')
-  TextStyle get body3Medium => title3.medium;
-  @Deprecated('Use title3.semibold')
-  TextStyle get body3Heavy => title3.semibold;
-  @Deprecated('Use title3.bold')
-  TextStyle get body3Bold => title3.bold;
-
-  @Deprecated('Use title3')
-  TextStyle get body4Light => title3;
-  @Deprecated('Use title3.medium')
-  TextStyle get body4Medium => title3.medium;
-  @Deprecated('Use title3.semibold')
-  TextStyle get body4Heavy => title3.semibold;
-  @Deprecated('Use title3.bold')
-  TextStyle get body4Bold => title3.bold;
-
-  @Deprecated('Use title2')
-  TextStyle get headlineLight => title2;
-  @Deprecated('Use title2.medium')
-  TextStyle get headlineMedium => title2.medium;
-  @Deprecated('Use title2.semibold')
-  TextStyle get headlineHeavy => title2.semibold;
-  @Deprecated('Use title2.bold')
-  TextStyle get headlineBold => title2.bold;
-
-  @Deprecated('Use title2')
-  TextStyle get displayLight => title2;
-  @Deprecated('Use title2.medium')
-  TextStyle get displayMedium => title2.medium;
-  @Deprecated('Use title2.semibold')
-  TextStyle get displayHeavy => title2.semibold;
-  @Deprecated('Use title2.bold')
-  TextStyle get displayBold => title2.bold;
-}
-
-/// Apple uses the iOS "Large (Default)" Dynamic Type metrics; every other platform, including
-/// web, uses the Material 3 type scale. The OS text-size setting is applied by [TextScaler].
-enum AppTextRole {
-  largeTitle(appleSize: 34, appleLeading: 41, materialSize: 32, materialLeading: 40),
-  title1(appleSize: 28, appleLeading: 34, materialSize: 28, materialLeading: 36),
-  title2(appleSize: 22, appleLeading: 28, materialSize: 24, materialLeading: 32),
-  title3(appleSize: 20, appleLeading: 25, materialSize: 22, materialLeading: 28),
-  headline(
-    appleSize: 17,
-    appleLeading: 22,
-    materialSize: 16,
-    materialLeading: 24,
-    appleWeight: FontWeight.w600,
-    materialWeight: FontWeight.w500,
-  ),
-  body(appleSize: 17, appleLeading: 22, materialSize: 16, materialLeading: 24),
-  callout(appleSize: 16, appleLeading: 21, materialSize: 16, materialLeading: 24),
-  subheadline(appleSize: 15, appleLeading: 20, materialSize: 14, materialLeading: 20),
-  footnote(appleSize: 13, appleLeading: 18, materialSize: 12, materialLeading: 16),
-  caption1(appleSize: 12, appleLeading: 16, materialSize: 12, materialLeading: 16),
-  caption2(appleSize: 11, appleLeading: 13, materialSize: 11, materialLeading: 16);
-
-  const AppTextRole({
-    required this.appleSize,
-    required this.appleLeading,
-    required this.materialSize,
-    required this.materialLeading,
-    this.appleWeight = FontWeight.w400,
-    this.materialWeight = FontWeight.w400,
-  });
-
-  final double appleSize;
-  final double appleLeading;
-  final double materialSize;
-  final double materialLeading;
-  final FontWeight appleWeight;
-  final FontWeight materialWeight;
-
-  static bool usesAppleMetrics(TargetPlatform platform) =>
-      !kIsWeb && (platform == TargetPlatform.iOS || platform == TargetPlatform.macOS);
-
-  TextStyle style({required TargetPlatform platform, Color? color, String? fontFamily}) {
-    final isApple = usesAppleMetrics(platform);
-    final fontSize = isApple ? appleSize : materialSize;
-    final leading = isApple ? appleLeading : materialLeading;
-    return TextStyle(
-      color: color,
-      fontFamily: fontFamily,
-      fontSize: fontSize,
-      height: leading / fontSize,
-      leadingDistribution: TextLeadingDistribution.even,
-      fontWeight: isApple ? appleWeight : materialWeight,
-    );
-  }
-}
-
-extension TextStyleWeightX on TextStyle {
-  TextStyle get regular => copyWith(fontWeight: FontWeight.w400);
-  TextStyle get medium => copyWith(fontWeight: FontWeight.w500);
-  TextStyle get semibold => copyWith(fontWeight: FontWeight.w600);
-  TextStyle get bold => copyWith(fontWeight: FontWeight.w700);
+  @Deprecated('Use textTheme.title')
+  TextStyle get displayLight => textTheme.title;
+  @Deprecated('Use textTheme.title.medium')
+  TextStyle get displayMedium => textTheme.title.medium;
+  @Deprecated('Use textTheme.title.semibold')
+  TextStyle get displayHeavy => textTheme.title.semibold;
+  @Deprecated('Use textTheme.title.bold')
+  TextStyle get displayBold => textTheme.title.bold;
 }
 
 /// Allows you to insert widgets inside a CustomScrollView

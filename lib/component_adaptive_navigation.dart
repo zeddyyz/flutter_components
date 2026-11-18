@@ -219,9 +219,13 @@ class _SidebarDestinationButton extends StatelessWidget {
                 Expanded(
                   child: Text(
                     destination.label,
-                    style: (isSelected ? context.subheadline.semibold : context.subheadline.medium).copyWith(
-                      color: isSelected ? context.primary : context.hintIntense,
-                    ),
+                    style:
+                        (isSelected
+                                ? context.textTheme.subheadline.semibold
+                                : context.textTheme.subheadline.medium)
+                            .copyWith(
+                              color: isSelected ? context.primary : context.hintIntense,
+                            ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

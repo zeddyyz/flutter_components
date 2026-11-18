@@ -78,7 +78,7 @@ class _StepDot extends StatelessWidget {
               ? const Icon(Icons.check_rounded, size: 16, color: Colors.white)
               : Text(
                   '${index + 1}',
-                  style: context.caption2.semibold.copyWith(
+                  style: context.textTheme.caption2.semibold.copyWith(
                     color: state == _StepState.upcoming ? context.primary : Colors.white,
                   ),
                 ),
@@ -86,7 +86,7 @@ class _StepDot extends StatelessWidget {
         const SizedBox(height: 6),
         Text(
           label,
-          style: context.caption2.medium.copyWith(
+          style: context.textTheme.caption2.medium.copyWith(
             color: state == _StepState.upcoming ? context.hintIntense : context.primary,
           ),
         ),

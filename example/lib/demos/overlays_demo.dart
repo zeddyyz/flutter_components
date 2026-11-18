@@ -172,7 +172,9 @@ class OverlaysDemoPage extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
                   child: Text(
                     'ComponentBottomSheetHeader + ComponentSlideDownBar',
-                    style: context.subheadline.medium.copyWith(color: context.hintIntense),
+                    style: context.textTheme.subheadline.medium.copyWith(
+                      color: context.hintIntense,
+                    ),
                   ),
                 ),
               ],
@@ -218,7 +220,7 @@ class OverlaysDemoPage extends StatelessWidget {
           children: [
             Text(
               'Resize the window: phones get a sheet, larger screens get a dialog.',
-              style: modalContext.subheadline.medium,
+              style: modalContext.textTheme.subheadline.medium,
             ),
             const SizedBox(height: 16),
             ComponentLightButton(
@@ -288,7 +290,7 @@ class OverlaysDemoPage extends StatelessWidget {
           title: const Text('Full screen'),
         ),
         body: Center(
-          child: Text('Slid up from the bottom', style: context.headline),
+          child: Text('Slid up from the bottom', style: context.textTheme.headline),
         ),
       ),
     );

@@ -29,7 +29,7 @@ class SliverAppBarDemoPage extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 10),
                   child: ComponentCard(
                     displayBorder: true,
-                    child: Text('Sliver row ${index + 1}', style: context.headline),
+                    child: Text('Sliver row ${index + 1}', style: context.textTheme.headline),
                   ),
                 );
               },

@@ -29,7 +29,7 @@ class _ProgressDemoPageState extends State<ProgressDemoPage> {
           title: 'Ring',
           child: ComponentProgressRing(
             value: _value,
-            child: Text(percentLabel, style: context.caption2.semibold),
+            child: Text(percentLabel, style: context.textTheme.caption2.semibold),
           ),
         ),
         DemoSection(

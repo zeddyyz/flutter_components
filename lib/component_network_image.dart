@@ -28,10 +28,11 @@ class ComponentNetworkImage extends StatelessWidget {
         width: width,
         height: height,
         fit: fit,
-        frameBuilder: (BuildContext context, Widget child, int? frame, bool wasSynchronouslyLoaded) {
-          if (wasSynchronouslyLoaded || frame != null) return child;
-          return ComponentSkeleton(width: width ?? double.infinity, height: height ?? 160);
-        },
+        frameBuilder:
+            (BuildContext context, Widget child, int? frame, bool wasSynchronouslyLoaded) {
+              if (wasSynchronouslyLoaded || frame != null) return child;
+              return ComponentSkeleton(width: width ?? double.infinity, height: height ?? 160);
+            },
         errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
           return SizedBox(
             width: width,
