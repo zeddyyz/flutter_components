@@ -306,7 +306,7 @@ PreferredSizeWidget _modalBlurredAppBar({
     toolbarHeight: kModalToolbarHeight,
     actions: actions,
     leading: const _ModalCloseLeading(),
-    title: Text(title, style: context.textTheme.titleSmall),
+    title: Text(title, style: context.textTheme.bodyMedium?.semibold),
     centerTitle: true,
     backgroundColor: context.bottomSheetTheme.backgroundColor,
   );
