@@ -92,27 +92,6 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
         );
   }
 
-  /// Material [TextTheme] slots so built-in widgets pick up the same sizes.
-  TextTheme toMaterialTextTheme() {
-    return TextTheme(
-      displayLarge: screenTitle,
-      displayMedium: largeTitle,
-      displaySmall: title,
-      headlineLarge: screenTitle,
-      headlineMedium: largeTitle,
-      headlineSmall: title,
-      titleLarge: title3,
-      titleMedium: headline,
-      titleSmall: subheadline.medium,
-      bodyLarge: body,
-      bodyMedium: subheadline,
-      bodySmall: footnote,
-      labelLarge: subheadline.medium,
-      labelMedium: caption1.medium,
-      labelSmall: caption2.medium,
-    );
-  }
-
   @override
   AppTextTheme copyWith({
     TextStyle? screenTitle,

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_components/component_back_button.dart';
+import 'package:flutter_components/components_context_extension.dart';
 import 'package:flutter_components/shared/component_clipped_header.dart';
 import 'package:flutter_components/shared/fade_mask_painter.dart';
 import 'package:flutter_components/shared/modal_chrome.dart';
@@ -180,6 +181,7 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
 
     return SliverAppBar(
       title: title == null ? null : belowHandle(title!),
+      titleTextStyle: context.textTheme.titleMedium?.copyWith(fontSize: 18),
       leading: resolvedLeading == null ? null : belowHandle(resolvedLeading),
       actions: handle == null || actions == null
           ? actions

@@ -83,7 +83,7 @@ class _ComponentOtpFieldState extends State<ComponentOtpField> {
               keyboardType: TextInputType.number,
               maxLength: 1,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              style: context.textTheme.title3.semibold,
+              style: context.textTheme.titleLarge?.semibold,
               decoration: InputDecoration(
                 counterText: '',
                 filled: true,

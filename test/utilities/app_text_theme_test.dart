@@ -34,40 +34,27 @@ void main() {
       expect(theme.title.semibold.fontWeight, FontWeight.w600);
       expect(theme.title.bold.fontWeight, FontWeight.w700);
     });
-
-    test('maps semantic styles onto Material TextTheme slots', () {
-      final theme = AppTextTheme.resolve(platform: TargetPlatform.android, color: Colors.black);
-      final material = theme.toMaterialTextTheme();
-
-      expect(material.displayLarge, theme.screenTitle);
-      expect(material.titleLarge, theme.title3);
-      expect(material.titleMedium, theme.headline);
-      expect(material.bodyLarge, theme.body);
-      expect(material.bodyMedium, theme.subheadline);
-      expect(material.bodySmall, theme.footnote);
-      expect(material.labelSmall, theme.caption2.medium);
-    });
   });
 
-  testWidgets('context.textTheme is the AppTextTheme registered on AppThemeData', (
+  testWidgets('context.textTheme is Material TextTheme from AppThemeData', (
     WidgetTester tester,
   ) async {
-    late AppTextTheme fromContext;
     late TextTheme material;
     await pumpComponentApp(
       tester,
       child: Builder(
         builder: (BuildContext context) {
-          fromContext = context.textTheme;
-          material = Theme.of(context).textTheme;
+          material = context.textTheme;
           return const SizedBox.shrink();
         },
       ),
     );
 
-    expect(fromContext, isA<AppTextTheme>());
-    expect(material.titleMedium?.fontSize, fromContext.headline.fontSize);
-    expect(material.titleMedium?.fontWeight, fromContext.headline.fontWeight);
-    expect(material.bodyLarge?.fontSize, fromContext.body.fontSize);
+    expect(material.displayLarge?.fontSize, 28);
+    expect(material.headlineLarge?.fontSize, 24);
+    expect(material.titleLarge?.fontSize, 20);
+    expect(material.bodyLarge?.fontSize, 16);
+    expect(material.labelLarge?.fontSize, 11);
+    expect(material.bodyMedium?.fontWeight, FontWeight.w500);
   });
 }

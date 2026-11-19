@@ -167,30 +167,33 @@ class _ComponentListTileState extends State<ComponentListTile> {
                 },
               );
 
-          final titleStyle = widget.titleStyle ?? builderContext.textTheme.body;
+          final titleStyle = widget.titleStyle ?? builderContext.textTheme.bodySmall;
           final subtitleStyle =
               widget.subtitleStyle ??
-              builderContext.textTheme.subheadline.copyWith(color: builderContext.hint);
+              builderContext.textTheme.labelSmall?.copyWith(color: builderContext.hint);
 
           return ComponentNoSplashTheme(
-            child: ListTile(
-              leading: widget.leading,
-              title: widget.title,
-              subtitle: widget.subtitle,
-              trailing: _buildTrailing(builderContext),
-              tileColor: tileColor,
-              shape: RoundedSuperellipseBorder(
-                borderRadius: widget.borderRadius ?? AppDecoration.borderRadiusCard,
-                side: widget.displayBorder ? BorderSide(color: borderColor) : BorderSide.none,
+            child: Material(
+              type: MaterialType.transparency,
+              child: ListTile(
+                leading: widget.leading,
+                title: widget.title,
+                subtitle: widget.subtitle,
+                trailing: _buildTrailing(builderContext),
+                tileColor: tileColor,
+                shape: RoundedSuperellipseBorder(
+                  borderRadius: widget.borderRadius ?? AppDecoration.borderRadiusCard,
+                  side: widget.displayBorder ? BorderSide(color: borderColor) : BorderSide.none,
+                ),
+                contentPadding: contentPadding,
+                titleTextStyle: titleStyle,
+                subtitleTextStyle: subtitleStyle,
+                onTap: _tileTap,
+                splashColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                mouseCursor: _tileTap != null ? SystemMouseCursors.click : SystemMouseCursors.none,
               ),
-              contentPadding: contentPadding,
-              titleTextStyle: titleStyle,
-              subtitleTextStyle: subtitleStyle,
-              onTap: _tileTap,
-              splashColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-              focusColor: Colors.transparent,
-              mouseCursor: _tileTap != null ? SystemMouseCursors.click : SystemMouseCursors.none,
             ),
           );
         },

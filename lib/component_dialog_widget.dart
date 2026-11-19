@@ -116,7 +116,7 @@ class ComponentDialogWidget extends StatelessWidget {
                         Expanded(
                           child: Text(
                             title,
-                            style: context.textTheme.headline,
+                            style: context.textTheme.titleMedium?.semibold,
                           ),
                         ),
                       ],
@@ -127,7 +127,7 @@ class ComponentDialogWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
                       title,
-                      style: context.textTheme.headline,
+                      style: context.textTheme.titleMedium?.semibold,
                     ),
                   ),
                 const SizedBox(height: 16),
@@ -136,10 +136,14 @@ class ComponentDialogWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
                       description!,
-                      style: context.textTheme.subheadline,
+                      style: context.textTheme.bodySmall,
                     ),
                   ),
-                ?content,
+                if (content != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: content,
+                  ),
                 if (height != null) const Spacer() else const SizedBox(height: 24),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -165,7 +169,7 @@ class ComponentDialogWidget extends StatelessWidget {
                       ),
                       child: Text(
                         confirmText,
-                        style: context.textTheme.headline.copyWith(
+                        style: context.textTheme.bodyMedium?.semibold.copyWith(
                           color: Colors.white,
                         ),
                       ),
@@ -197,7 +201,7 @@ class ComponentDialogWidget extends StatelessWidget {
                         ),
                         child: Text(
                           cancelText,
-                          style: context.textTheme.headline,
+                          style: context.textTheme.bodyMedium?.semibold,
                         ),
                       ),
                   ],

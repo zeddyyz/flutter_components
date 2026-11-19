@@ -62,7 +62,7 @@ class ComponentBadge extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               label ?? '',
-              style: context.textTheme.caption2.bold.copyWith(color: foreground, height: 1),
+              style: context.textTheme.labelLarge?.copyWith(color: foreground, height: 1),
             ),
           );
 

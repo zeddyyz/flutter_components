@@ -1,6 +1,5 @@
 import 'package:flutter_components/component_theme.dart';
 import 'package:flutter_components/shared/app_screen_size.dart';
-import 'package:flutter_components/utilities/app_text_theme.dart';
 import 'package:material_ui/material_ui.dart';
 
 export 'package:flutter_components/utilities/app_text_theme.dart';
@@ -25,7 +24,8 @@ extension ContextExtension on BuildContext {
   bool get isLandscape => isLandscapeView;
 
   /// Semantic type styles. Flutter's Material [TextTheme] is [theme].textTheme.
-  AppTextTheme get textTheme => AppTextTheme.of(this);
+  // AppTextTheme get textTheme => AppTextTheme.of(this);
+  TextTheme get textTheme => theme.textTheme;
 
   /// ColorScheme
   ColorScheme get colorScheme => theme.colorScheme;
@@ -153,74 +153,12 @@ extension ContextExtension on BuildContext {
   double topPadding(double value) => value + MediaQuery.paddingOf(this).top + 20;
   double get bottomPadding => MediaQuery.paddingOf(this).bottom + 80;
   double get paddingBottom => MediaQuery.paddingOf(this).bottom + 20;
-
-  @Deprecated('Use textTheme.caption2')
-  TextStyle get labelLight => textTheme.caption2;
-  @Deprecated('Use textTheme.caption2.medium')
-  TextStyle get labelMedium => textTheme.caption2.medium;
-  @Deprecated('Use textTheme.caption2.semibold')
-  TextStyle get labelHeavy => textTheme.caption2.semibold;
-  @Deprecated('Use textTheme.caption2.bold')
-  TextStyle get labelBold => textTheme.caption2.bold;
-
-  @Deprecated('Use textTheme.subheadline')
-  TextStyle get bodyLight => textTheme.subheadline;
-  @Deprecated('Use textTheme.subheadline.medium')
-  TextStyle get bodyMedium => textTheme.subheadline.medium;
-  @Deprecated('Use textTheme.subheadline.semibold')
-  TextStyle get bodyHeavy => textTheme.subheadline.semibold;
-  @Deprecated('Use textTheme.subheadline.bold')
-  TextStyle get bodyBold => textTheme.subheadline.bold;
-
-  @Deprecated('Use textTheme.callout')
-  TextStyle get body2Light => textTheme.callout;
-  @Deprecated('Use textTheme.callout.medium')
-  TextStyle get body2Medium => textTheme.callout.medium;
-  @Deprecated('Use textTheme.headline')
-  TextStyle get body2Heavy => textTheme.headline;
-  @Deprecated('Use textTheme.headline.bold')
-  TextStyle get body2Bold => textTheme.headline.bold;
-
-  @Deprecated('Use textTheme.title3')
-  TextStyle get body3Light => textTheme.title3;
-  @Deprecated('Use textTheme.title3.medium')
-  TextStyle get body3Medium => textTheme.title3.medium;
-  @Deprecated('Use textTheme.title3.semibold')
-  TextStyle get body3Heavy => textTheme.title3.semibold;
-  @Deprecated('Use textTheme.title3.bold')
-  TextStyle get body3Bold => textTheme.title3.bold;
-
-  @Deprecated('Use textTheme.title3')
-  TextStyle get body4Light => textTheme.title3;
-  @Deprecated('Use textTheme.title3.medium')
-  TextStyle get body4Medium => textTheme.title3.medium;
-  @Deprecated('Use textTheme.title3.semibold')
-  TextStyle get body4Heavy => textTheme.title3.semibold;
-  @Deprecated('Use textTheme.title3.bold')
-  TextStyle get body4Bold => textTheme.title3.bold;
-
-  @Deprecated('Use textTheme.title')
-  TextStyle get headlineLight => textTheme.title;
-  @Deprecated('Use textTheme.title.medium')
-  TextStyle get headlineMedium => textTheme.title.medium;
-  @Deprecated('Use textTheme.title.semibold')
-  TextStyle get headlineHeavy => textTheme.title.semibold;
-  @Deprecated('Use textTheme.title.bold')
-  TextStyle get headlineBold => textTheme.title.bold;
-
-  @Deprecated('Use textTheme.title')
-  TextStyle get displayLight => textTheme.title;
-  @Deprecated('Use textTheme.title.medium')
-  TextStyle get displayMedium => textTheme.title.medium;
-  @Deprecated('Use textTheme.title.semibold')
-  TextStyle get displayHeavy => textTheme.title.semibold;
-  @Deprecated('Use textTheme.title.bold')
-  TextStyle get displayBold => textTheme.title.bold;
 }
 
 /// Allows you to insert widgets inside a CustomScrollView
 extension WidgetSliverBoxX on Widget {
   Widget get sliverBox => SliverToBoxAdapter(child: this);
+  Widget sliverPadding(EdgeInsets padding) => SliverPadding(padding: padding, sliver: this);
 }
 
 extension FirstWhereExt<T> on List<T> {

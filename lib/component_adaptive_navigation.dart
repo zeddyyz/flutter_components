@@ -221,9 +221,9 @@ class _SidebarDestinationButton extends StatelessWidget {
                     destination.label,
                     style:
                         (isSelected
-                                ? context.textTheme.subheadline.semibold
-                                : context.textTheme.subheadline.medium)
-                            .copyWith(
+                                ? context.textTheme.bodyMedium?.semibold
+                                : context.textTheme.bodySmall?.medium)
+                            ?.copyWith(
                               color: isSelected ? context.primary : context.hintIntense,
                             ),
                     maxLines: 1,

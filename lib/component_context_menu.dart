@@ -56,7 +56,7 @@ class ComponentContextMenu extends StatelessWidget {
                 ],
                 Text(
                   items[i].label,
-                  style: context.textTheme.subheadline.medium.copyWith(
+                  style: context.textTheme.bodyMedium?.copyWith(
                     color: items[i].isDestructive
                         ? context.componentTheme.dangerColor
                         : context.primary,

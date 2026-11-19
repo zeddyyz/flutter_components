@@ -111,7 +111,7 @@ class _Wheel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(label, style: context.textTheme.caption2.medium.copyWith(color: context.hintIntense)),
+        Text(label, style: context.textTheme.labelMedium?.copyWith(color: context.hintIntense)),
         const SizedBox(height: 8),
         SizedBox(
           height: 140,
@@ -128,7 +128,7 @@ class _Wheel extends StatelessWidget {
                 return Center(
                   child: Text(
                     number.toString().padLeft(2, '0'),
-                    style: context.textTheme.title3.semibold,
+                    style: context.textTheme.titleLarge?.semibold,
                   ),
                 );
               },
@@ -164,7 +164,7 @@ class _PeriodChip extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: context.textTheme.caption2.semibold.copyWith(
+          style: context.textTheme.labelLarge?.semibold.copyWith(
             color: selected ? Colors.white : context.primary,
           ),
         ),

@@ -215,13 +215,13 @@ class _OnboardingSlideLayout extends StatelessWidget {
                 children: [
                   Text(
                     page.title,
-                    style: context.textTheme.title.bold,
+                    style: context.textTheme.headlineLarge,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
                   Text(
                     page.description,
-                    style: context.textTheme.body.copyWith(color: context.hintIntense),
+                    style: context.textTheme.bodySmall?.copyWith(color: context.hintIntense),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -257,12 +257,12 @@ class _OnboardingSlideLayout extends StatelessWidget {
               children: [
                 Text(
                   page.title,
-                  style: context.textTheme.largeTitle.bold,
+                  style: context.textTheme.displayLarge,
                 ),
                 const SizedBox(height: 20),
                 Text(
                   page.description,
-                  style: context.textTheme.body.copyWith(color: context.hintIntense),
+                  style: context.textTheme.bodySmall?.copyWith(color: context.hintIntense),
                 ),
               ],
             ),
@@ -303,7 +303,7 @@ class _OnboardingSkipButton extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Text(
                   label,
-                  style: context.textTheme.headline.copyWith(
+                  style: context.textTheme.titleSmall?.copyWith(
                     color: context.hintIntense,
                     fontWeight: FontWeight.w600,
                   ),
@@ -399,7 +399,7 @@ class _OnboardingBottomBarState extends State<_OnboardingBottomBar>
               buttonText,
               key: ValueKey<String>(buttonText),
               textAlign: TextAlign.center,
-              style: context.textTheme.headline.copyWith(
+              style: context.textTheme.titleSmall?.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
                 fontSize: context.isMobile ? null : 20,

@@ -43,7 +43,7 @@ class _DatePickerDemoPageState extends State<DatePickerDemoPage> {
                 displayBorder: true,
                 child: Text(
                   MaterialLocalizations.of(context).formatFullDate(_selected),
-                  style: context.textTheme.headline,
+                  style: context.textTheme.titleSmall,
                 ),
               ),
               FilledButton(

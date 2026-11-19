@@ -58,7 +58,7 @@ class BlurWidgetDemoPage extends StatelessWidget {
                     displayBorder: true,
                     child: Text(
                       'ComponentBlurredWidget fades the backdrop above this card.',
-                      style: context.textTheme.subheadline.medium,
+                      style: context.textTheme.bodyMedium,
                     ),
                   ),
                 ),

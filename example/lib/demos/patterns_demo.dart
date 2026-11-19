@@ -30,7 +30,7 @@ class _PatternsDemoPageState extends State<PatternsDemoPage> {
         if (_otp.isNotEmpty)
           Text(
             'Current: $_otp',
-            style: context.textTheme.caption2.medium.copyWith(color: context.hintIntense),
+            style: context.textTheme.labelMedium?.copyWith(color: context.hintIntense),
           ),
         DemoSection(
           title: 'Stepper',
@@ -44,10 +44,12 @@ class _PatternsDemoPageState extends State<PatternsDemoPage> {
               Row(
                 children: [
                   TextButton(
+                    key: const ValueKey<String>('stepper.backButton'),
                     onPressed: _step == 0 ? null : () => setState(() => _step -= 1),
                     child: const Text('Back'),
                   ),
                   TextButton(
+                    key: const ValueKey<String>('stepper.nextButton'),
                     onPressed: _step == 2 ? null : () => setState(() => _step += 1),
                     child: const Text('Next'),
                   ),

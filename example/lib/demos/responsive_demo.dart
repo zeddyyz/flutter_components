@@ -30,12 +30,12 @@ class ResponsiveDemoPage extends StatelessWidget {
               children: [
                 Text(
                   '${context.viewWidth.toStringAsFixed(0)} × ${context.viewHeight.toStringAsFixed(0)}',
-                  style: context.textTheme.title.semibold,
+                  style: context.textTheme.headlineMedium?.semibold,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   breakpoint,
-                  style: context.textTheme.subheadline.medium.copyWith(color: context.hintIntense),
+                  style: context.textTheme.bodyMedium?.copyWith(color: context.hintIntense),
                 ),
               ],
             ),
@@ -88,7 +88,7 @@ class _BreakpointCard extends StatelessWidget {
           ),
         ),
         alignment: Alignment.center,
-        child: Text(label, style: context.textTheme.title.semibold),
+        child: Text(label, style: context.textTheme.headlineMedium?.semibold),
       ),
     );
   }

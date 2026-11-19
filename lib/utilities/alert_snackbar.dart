@@ -657,10 +657,11 @@ class _ToastPillState extends State<_ToastPill> with TickerProviderStateMixin {
                         Text(
                           headline,
                           softWrap: true,
-                          style: widget.overlayContext.textTheme.subheadline.copyWith(
+                          style: widget.overlayContext.textTheme.labelMedium?.copyWith(
+                            fontSize: 13,
                             color: palette.title,
                             height: 1.2,
-                            letterSpacing: -0.25,
+                            letterSpacing: -0.1,
                           ),
                           textAlign: subtitle != null ? TextAlign.start : TextAlign.center,
                         ),
@@ -669,10 +670,11 @@ class _ToastPillState extends State<_ToastPill> with TickerProviderStateMixin {
                           Text(
                             subtitle,
                             softWrap: true,
-                            style: widget.overlayContext.textTheme.subheadline.copyWith(
+                            style: widget.overlayContext.textTheme.labelMedium?.copyWith(
                               color: palette.accent,
-                              height: 1.25,
-                              letterSpacing: -0.15,
+                              // height: 1.25,
+                              letterSpacing: -0.1,
+                              fontSize: 14,
                             ),
                           ),
                         ],

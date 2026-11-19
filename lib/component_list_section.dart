@@ -15,12 +15,16 @@ class ComponentListSection extends StatelessWidget {
     required this.children,
     this.footer,
     this.isInSheet = false,
+    this.dividerIndent = 20,
+    this.dividerEndIndent = 0,
   });
 
   final String? header;
   final List<Widget> children;
   final String? footer;
   final bool isInSheet;
+  final double dividerIndent;
+  final double dividerEndIndent;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,7 @@ class ComponentListSection extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
               child: Text(
                 header!,
-                style: context.textTheme.caption2.semibold.copyWith(
+                style: context.textTheme.bodySmall?.semibold.copyWith(
                   color: componentTheme.hintColor,
                 ),
               ),
@@ -46,22 +50,26 @@ class ComponentListSection extends StatelessWidget {
             padding: EdgeInsets.zero,
             displayBorder: false,
             isInSheet: isInSheet,
-            child: ClipRSuperellipse(
-              borderRadius: componentTheme.cardBorderRadius,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  for (int index = 0; index < children.length; index++) ...[
-                    children[index],
-                    if (index < children.length - 1)
-                      SizedBox(
-                        height: 0.5,
-                        width: double.infinity,
-                        child: ColoredBox(color: componentTheme.hairlineColor),
-                      ),
-                  ],
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (int index = 0; index < children.length; index++) ...[
+                  children[index],
+                  if (index < children.length - 1)
+                    Divider(
+                      thickness: 0.6,
+                      height: 0.5,
+                      color: componentTheme.hairlineColor,
+                      indent: dividerIndent,
+                      endIndent: dividerEndIndent,
+                    ),
+                  // SizedBox(
+                  //   height: 0.5,
+                  //   width: double.infinity,
+                  //   child: ColoredBox(color: componentTheme.hairlineColor),
+                  // ),
                 ],
-              ),
+              ],
             ),
           ),
           if (footer != null)
@@ -69,7 +77,7 @@ class ComponentListSection extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
               child: Text(
                 footer!,
-                style: context.textTheme.caption2.medium.copyWith(color: componentTheme.hintColor),
+                style: context.textTheme.labelMedium?.copyWith(color: componentTheme.hintColor),
               ),
             ),
         ],

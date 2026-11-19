@@ -36,9 +36,11 @@ class ComponentEmptyState extends StatelessWidget {
         ? context.componentTheme.dangerColor
         : context.componentTheme.hintColor;
     final TextAlign textAlign = isCompact ? TextAlign.center : TextAlign.start;
-    final TextStyle titleStyle = isCompact
-        ? context.textTheme.title.semibold
-        : context.textTheme.title3.semibold;
+    final TextStyle titleStyle =
+        (isCompact
+            ? context.textTheme.headlineMedium?.semibold
+            : context.textTheme.titleLarge?.semibold) ??
+        const TextStyle();
 
     final Widget content = Column(
       mainAxisSize: MainAxisSize.min,
@@ -61,7 +63,7 @@ class ComponentEmptyState extends StatelessWidget {
           Text(
             message!,
             textAlign: textAlign,
-            style: context.textTheme.subheadline.medium.copyWith(
+            style: context.textTheme.bodyMedium?.copyWith(
               color: context.componentTheme.hintColor,
             ),
           ),

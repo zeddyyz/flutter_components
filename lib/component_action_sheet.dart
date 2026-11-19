@@ -45,13 +45,13 @@ class ComponentActionSheet {
               const ComponentSlideDownBar(),
               // if (title != null) ...[
               //   const SizedBox(height: 16),
-              //   Text(title, style: modalContext.textTheme.headline, textAlign: TextAlign.center),
+              //   Text(title, style: modalContext.textTheme.titleSmall, textAlign: TextAlign.center),
               // ],
               if (message != null) ...[
                 const SizedBox(height: 8),
                 Text(
                   message,
-                  style: modalContext.textTheme.subheadline.medium.copyWith(
+                  style: modalContext.textTheme.bodyMedium?.copyWith(
                     color: modalContext.hintIntense,
                   ),
                   textAlign: TextAlign.center,
@@ -76,7 +76,7 @@ class ComponentActionSheet {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   alignment: Alignment.center,
-                  child: Text(cancelLabel, style: modalContext.textTheme.headline),
+                  child: Text(cancelLabel, style: modalContext.textTheme.titleMedium),
                 ),
               ),
             ],
@@ -127,7 +127,7 @@ class _ActionRow extends StatelessWidget {
             Expanded(
               child: Text(
                 action.label,
-                style: context.textTheme.headline.copyWith(color: color),
+                style: context.textTheme.headlineSmall?.copyWith(color: color),
               ),
             ),
           ],

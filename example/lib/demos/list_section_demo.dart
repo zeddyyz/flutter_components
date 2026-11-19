@@ -21,8 +21,9 @@ class _ListSectionDemoPageState extends State<ListSectionDemoPage> {
         Text(
           'Pass backgroundColor: Colors.transparent on ComponentListTile when '
           'placing tiles inside a ComponentListSection so they share one card.',
-          style: context.textTheme.subheadline.medium.copyWith(color: context.hintIntense),
+          style: context.textTheme.bodyMedium?.copyWith(color: context.hintIntense),
         ),
+        const SizedBox(height: 20),
         ComponentListSection(
           children: [
             ComponentListTile(
@@ -83,7 +84,7 @@ class _ListSectionDemoPageState extends State<ListSectionDemoPage> {
               title: const Text('Version'),
               trailing: Text(
                 '0.0.87',
-                style: context.textTheme.caption2.medium.copyWith(color: context.hint),
+                style: context.textTheme.labelMedium?.copyWith(color: context.hint),
               ),
             ),
             ComponentListTile(

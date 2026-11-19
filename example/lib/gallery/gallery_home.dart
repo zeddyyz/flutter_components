@@ -81,7 +81,7 @@ class _GalleryHomeState extends State<GalleryHome> {
                 child: Center(
                   child: Text(
                     'No widgets match that search',
-                    style: context.textTheme.subheadline.medium.copyWith(
+                    style: context.textTheme.bodyMedium?.copyWith(
                       color: context.hintIntense,
                     ),
                   ),
@@ -97,7 +97,7 @@ class _GalleryHomeState extends State<GalleryHome> {
                     12,
                   ),
                   sliver: SliverToBoxAdapter(
-                    child: Text(section.title, style: context.textTheme.headline),
+                    child: Text(section.title, style: context.textTheme.titleSmall),
                   ),
                 ),
                 SliverPadding(
@@ -192,11 +192,11 @@ class _GalleryCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(entry.title, style: context.textTheme.headline),
+                Text(entry.title, style: context.textTheme.bodySmall),
                 const SizedBox(height: 4),
                 Text(
                   entry.subtitle,
-                  style: context.textTheme.subheadline.medium.copyWith(color: context.hintIntense),
+                  style: context.textTheme.labelMedium?.copyWith(color: context.hintIntense),
                 ),
               ],
             ),

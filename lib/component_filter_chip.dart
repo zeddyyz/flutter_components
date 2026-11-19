@@ -34,14 +34,14 @@ class ComponentFilterChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color bgColor =
-        backgroundColor ?? (context.isLightMode ? Colors.grey.shade100 : Colors.grey.shade900);
+        backgroundColor ?? (context.isLightMode ? Colors.grey.shade200 : Colors.grey.shade900);
 
     return ComponentNoSplashTheme(
       child: FilterChip(
         label: Text(
           label,
-          style: context.textTheme.caption1.medium.copyWith(
-            color: labelColor ?? (isSelected ? Colors.white : context.primary),
+          style: context.textTheme.labelMedium?.copyWith(
+            color: labelColor ?? context.primary,
           ),
         ),
         selected: isSelected,
@@ -49,13 +49,15 @@ class ComponentFilterChip extends StatelessWidget {
         selectedColor: selectedColor,
         backgroundColor: bgColor,
         showCheckmark: showCheckmark ?? false,
-        checkmarkColor: checkmarkColor ?? (isSelected ? Colors.white : context.primary),
+        checkmarkColor: checkmarkColor ?? context.primary,
         shape: RoundedSuperellipseBorder(
           borderRadius: borderRadius ?? AppDecoration.borderRadiusStadium,
           side:
               borderSide ??
               BorderSide(
-                color: isSelected ? Colors.transparent : context.borderColorIntense,
+                color: isSelected
+                    ? context.primary.withValues(alpha: 0.2)
+                    : context.borderColorIntense,
               ),
         ),
         padding: padding ?? EdgeInsets.all(10),

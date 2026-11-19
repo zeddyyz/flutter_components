@@ -101,9 +101,8 @@ class ComponentCalendar extends StatelessWidget {
                   color: resolvedTitleColor,
                   fontWeight: FontWeight.w600,
                 ) ??
-                context.textTheme.headline.copyWith(
+                context.textTheme.headlineLarge?.semibold.copyWith(
                   color: resolvedTitleColor,
-                  fontWeight: FontWeight.w600,
                 ),
           ),
           const SizedBox(height: 16),
@@ -119,9 +118,8 @@ class ComponentCalendar extends StatelessWidget {
                               color: resolvedWeekdayLabelColor,
                               fontWeight: FontWeight.w600,
                             ) ??
-                            context.textTheme.footnote.copyWith(
+                            context.textTheme.labelMedium?.semibold.copyWith(
                               color: resolvedWeekdayLabelColor,
-                              fontWeight: FontWeight.w600,
                             ),
                       ),
                     ),
@@ -317,7 +315,7 @@ class _DayCell extends StatelessWidget {
                     color: textColor,
                     fontWeight: isHighlighted ? FontWeight.w600 : FontWeight.normal,
                   ) ??
-                  context.textTheme.subheadline.copyWith(
+                  context.textTheme.bodyMedium?.copyWith(
                     color: textColor,
                     fontWeight: isHighlighted ? FontWeight.w600 : FontWeight.normal,
                   ),

@@ -151,8 +151,8 @@ class _ComponentTabBarState extends State<ComponentTabBar> {
           labelColor: widget.labelColor ?? context.primary,
           unselectedLabelColor:
               widget.unselectedLabelColor ?? context.primary.withValues(alpha: 0.6),
-          labelStyle: context.textTheme.caption2.medium,
-          unselectedLabelStyle: context.textTheme.caption2.medium,
+          labelStyle: context.textTheme.labelMedium,
+          unselectedLabelStyle: context.textTheme.labelMedium,
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
           dividerColor: Colors.transparent,
           dividerHeight: 0,

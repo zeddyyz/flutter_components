@@ -26,13 +26,13 @@ class _SurfacesDemoPageState extends State<SurfacesDemoPage> {
               ComponentCard(
                 displayBorder: true,
                 onTap: () => AlertSnackbar.show(message: 'Bordered card'),
-                child: Text('Bordered card', style: context.textTheme.headline),
+                child: Text('Bordered card', style: context.textTheme.bodySmall),
               ),
               ComponentCard(
                 isInSheet: true,
                 displayBorder: false,
                 onTap: () => AlertSnackbar.show(message: 'Sheet card'),
-                child: Text('Sheet card color', style: context.textTheme.headline),
+                child: Text('Sheet card color', style: context.textTheme.bodySmall),
               ),
             ],
           ),

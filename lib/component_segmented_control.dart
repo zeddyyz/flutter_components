@@ -127,9 +127,8 @@ class _SegmentButton<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color labelColor = isSelected ? context.primary : context.primary.withValues(alpha: 0.6);
-    final TextStyle style = context.textTheme.subheadline.medium.copyWith(
-      color: labelColor,
-    );
+    final TextStyle style =
+        context.textTheme.bodyMedium?.copyWith(color: labelColor) ?? const TextStyle();
 
     return Semantics(
       button: true,

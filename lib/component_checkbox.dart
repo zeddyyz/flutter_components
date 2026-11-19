@@ -47,7 +47,7 @@ class ComponentCheckbox extends StatelessWidget {
             children: [
               box,
               const SizedBox(width: 10),
-              Flexible(child: Text(label!, style: context.textTheme.subheadline.medium)),
+              Flexible(child: Text(label!, style: context.textTheme.bodyMedium)),
             ],
           );
 

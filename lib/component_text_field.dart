@@ -256,7 +256,8 @@ class _ComponentTextFieldState extends State<ComponentTextField> {
               (fillColor == Colors.transparent
                   ? (context.isLightMode ? context.borderColorIntense : context.borderColor)
                   : (widget.backgroundColor ?? Colors.transparent));
-    final TextStyle effectiveStyle = widget.style ?? context.textTheme.body;
+    final TextStyle effectiveStyle =
+        widget.style ?? context.textTheme.bodySmall ?? const TextStyle();
     final TextStyle hintStyle = effectiveStyle.copyWith(color: context.hintIntense);
 
     return Container(

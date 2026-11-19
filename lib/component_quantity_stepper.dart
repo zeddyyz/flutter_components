@@ -47,7 +47,7 @@ class ComponentQuantityStepper extends StatelessWidget {
             child: Text(
               '$value',
               textAlign: TextAlign.center,
-              style: context.textTheme.headline,
+              style: context.textTheme.titleSmall,
             ),
           ),
           _StepButton(

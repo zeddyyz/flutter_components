@@ -35,7 +35,7 @@ class BlurredAppBarDemoPage extends StatelessWidget {
             ),
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text('Scroll under the bar  ${index + 1}', style: context.textTheme.headline),
+            child: Text('Scroll under the bar  ${index + 1}', style: context.textTheme.titleSmall),
           );
         },
       ),

@@ -166,16 +166,19 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var resolvedLargeTitleStyle =
-        largeTitleStyle ?? context.textTheme.title.bold.copyWith(height: 1.15, letterSpacing: 0);
-    var resolvedCollapsedTitleStyle = collapsedTitleStyle ?? context.textTheme.headline;
+        largeTitleStyle ??
+        context.textTheme.displayLarge?.copyWith(fontSize: 26, height: 1.1, letterSpacing: 0);
+    var resolvedCollapsedTitleStyle = collapsedTitleStyle ?? context.textTheme.bodyMedium?.semibold;
 
     if (foregroundColor != null) {
-      resolvedLargeTitleStyle = resolvedLargeTitleStyle.copyWith(color: foregroundColor);
-      resolvedCollapsedTitleStyle = resolvedCollapsedTitleStyle.copyWith(color: foregroundColor);
+      resolvedLargeTitleStyle = resolvedLargeTitleStyle?.copyWith(color: foregroundColor);
+      resolvedCollapsedTitleStyle = resolvedCollapsedTitleStyle?.copyWith(color: foregroundColor);
     }
 
     final resolvedSubtitleStyle =
-        subtitleStyle ?? context.textTheme.subheadline.medium.copyWith(color: context.hintIntense);
+        subtitleStyle ??
+        context.textTheme.bodySmall?.copyWith(fontSize: 14, color: context.hintIntense) ??
+        const TextStyle();
 
     final resolvedLargeTitlePadding =
         largeTitlePadding ??
@@ -196,7 +199,7 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
     var largeTitleHeight = _measureTextHeight(
       context,
       text: title,
-      style: resolvedLargeTitleStyle,
+      style: resolvedLargeTitleStyle!,
       maxWidth: availableWidth,
       maxLines: 1,
     );
@@ -214,7 +217,7 @@ class ComponentSliverLargeTitleAppBar extends StatelessWidget {
 
     return ComponentSliverBlurredAppBar(
       context: context,
-      title: _CollapsedTitle(title: title, style: resolvedCollapsedTitleStyle),
+      title: _CollapsedTitle(title: title, style: resolvedCollapsedTitleStyle!),
       centerTitle: centerCollapsedTitle,
       leading: leading,
       actions: actions,

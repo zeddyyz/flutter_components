@@ -135,7 +135,7 @@ class _ComponentSearchFieldState extends State<ComponentSearchField> {
   @override
   Widget build(BuildContext context) {
     final ComponentThemeData theme = context.componentTheme;
-    final TextStyle style = context.textTheme.body;
+    final TextStyle style = context.textTheme.bodySmall ?? const TextStyle();
     final TextStyle hintStyle = style.copyWith(color: theme.hintColor);
 
     return Row(
@@ -207,7 +207,7 @@ class _ComponentSearchFieldState extends State<ComponentSearchField> {
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               child: Text(
                 'Cancel',
-                style: context.textTheme.subheadline.semibold,
+                style: context.textTheme.bodyMedium?.semibold,
               ),
             ),
           ),

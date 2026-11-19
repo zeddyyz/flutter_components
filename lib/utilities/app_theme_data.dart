@@ -8,6 +8,33 @@ class AppThemeData {
   static AppTextTheme _appTextTheme({required Color color, String? fontFamily}) =>
       AppTextTheme.resolve(color: color, fontFamily: fontFamily);
 
+  /// Original Material slots: Large/Medium/Small are weights, not sizes.
+  static TextTheme _materialTextTheme({required Color color, String? fontFamily}) {
+    TextStyle style(double fontSize, FontWeight fontWeight) => TextStyle(
+      color: color,
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      fontFamily: fontFamily,
+    );
+    return TextTheme(
+      displayLarge: style(28, .w700),
+      displayMedium: style(28, .w500),
+      displaySmall: style(28, .w400),
+      headlineLarge: style(24, .w700),
+      headlineMedium: style(24, .w500),
+      headlineSmall: style(24, .w400),
+      titleLarge: style(20, .w700),
+      titleMedium: style(20, .w500),
+      titleSmall: style(20, .w400),
+      bodyLarge: style(16, .w700),
+      bodyMedium: style(16, .w500),
+      bodySmall: style(16, .w400),
+      labelLarge: style(12, .w700),
+      labelMedium: style(12, .w500),
+      labelSmall: style(12, .w400),
+    );
+  }
+
   static ThemeData lightTheme({
     required BuildContext context,
     Color? scaffoldBackgroundColor,
@@ -57,7 +84,7 @@ class AppThemeData {
         ),
       ),
       fontFamily: fontFamily,
-      textTheme: appTextTheme.toMaterialTextTheme(),
+      textTheme: _materialTextTheme(color: Colors.black, fontFamily: fontFamily),
       iconTheme: IconThemeData(
         color: primaryColor,
         fill: 0,
@@ -202,7 +229,7 @@ class AppThemeData {
         shape: RoundedSuperellipseBorder(borderRadius: AppDecoration.borderRadiusLg),
       ),
       fontFamily: fontFamily,
-      textTheme: appTextTheme.toMaterialTextTheme(),
+      textTheme: _materialTextTheme(color: Colors.white, fontFamily: fontFamily),
       iconTheme: IconThemeData(
         color: primaryColor,
         fill: 0,
