@@ -181,7 +181,7 @@ class ComponentSliverBlurredAppBar extends StatelessWidget {
 
     return SliverAppBar(
       title: title == null ? null : belowHandle(title!),
-      titleTextStyle: context.textTheme.titleMedium?.copyWith(fontSize: 18),
+      titleTextStyle: context.textTheme.titleMedium?.semibold,
       leading: resolvedLeading == null ? null : belowHandle(resolvedLeading),
       actions: handle == null || actions == null
           ? actions
